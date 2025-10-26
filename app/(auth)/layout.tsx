@@ -7,6 +7,7 @@ import { redirect } from "next/navigation";
 const Layout = async ({ children }: { children: React.ReactNode }) => {
   const session = await auth.api.getSession({ headers: await headers() });
 
+  // for future git update., last changes
   if (session?.user) redirect("/");
 
   return (
