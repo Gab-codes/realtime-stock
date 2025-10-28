@@ -1,4 +1,12 @@
-import { Facebook, Twitter, Instagram, Linkedin, Github } from "lucide-react";
+import { APP_NAME } from "@/lib/utils";
+import {
+  Facebook,
+  Twitter,
+  Instagram,
+  Linkedin,
+  Github,
+  Biohazard,
+} from "lucide-react";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -9,7 +17,8 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 pb-8">
           <div className="lg:col-span-2">
             <h2 className="text-2xl font-bold text-white mb-4">
-              Crypto<span className="text-crypto-purple">Flow</span>
+              {APP_NAME}
+              <Biohazard className="size-7 text-crypto-purple" />
             </h2>
             <p className="text-gray-400 mb-6 max-w-xs">
               The most trusted cryptocurrency platform, empowering traders with
