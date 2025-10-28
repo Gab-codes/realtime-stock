@@ -1,4 +1,5 @@
 import { features } from "@/data/featuresData";
+import { APP_NAME } from "@/lib/utils";
 
 const Features = () => {
   return (
@@ -12,7 +13,7 @@ const Features = () => {
             Powerful Features
           </h2>
           <p className="text-gray-400 max-w-2xl mx-auto">
-            CryptoFlow gives you the edge with advanced tools designed for both
+            {APP_NAME} gives you the edge with advanced tools designed for both
             beginners and professional traders.
           </p>
         </div>

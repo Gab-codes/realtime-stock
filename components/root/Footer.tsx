@@ -205,7 +205,7 @@ const Footer = () => {
         <div className="border-t border-white/10 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-400 text-sm mb-4 md:mb-0">
-              &copy; {currentYear} CryptoFlow. All rights reserved.
+              &copy; {currentYear} {APP_NAME}. All rights reserved.
             </p>
             <div className="flex space-x-6">
               <a
