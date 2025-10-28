@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { steps } from "@/data/howItWorks";
+import { APP_NAME } from "@/lib/utils";
 
 const HowItWorks = () => {
   return (
@@ -13,7 +14,7 @@ const HowItWorks = () => {
             How It Works
           </h2>
           <p className="text-gray-400 max-w-2xl mx-auto">
-            Getting started with CryptoFlow is easy. Follow these simple steps
+            Getting started with {APP_NAME} is easy. Follow these simple steps
             to begin your crypto journey.
           </p>
         </div>

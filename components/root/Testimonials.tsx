@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Star } from "lucide-react";
 import { testimonials } from "@/data/testimonials";
+import { APP_NAME } from "@/lib/utils";
 
 const Testimonials = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -51,7 +52,7 @@ const Testimonials = () => {
           </h2>
           <p className="text-gray-400 max-w-2xl mx-auto">
             Join thousands of satisfied traders who have transformed their
-            trading experience with CryptoFlow.
+            trading experience with {APP_NAME}.
           </p>
         </div>
 

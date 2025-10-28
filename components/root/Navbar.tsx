@@ -149,15 +149,17 @@ const Navbar = () => {
                 </Link>
               </li>
               <li className="pt-4 flex flex-col space-y-3">
-                <Button
-                  variant="ghost"
-                  className="text-gray-300 hover:text-white w-full justify-start"
-                >
-                  Login
-                </Button>
-                <Link href="/#">
+                <Link href={"/sign-in"}>
+                  <Button
+                    variant="ghost"
+                    className="text-gray-300 hover:text-white w-full justify-start"
+                  >
+                    Login
+                  </Button>
+                </Link>
+                <Link href="/sign-up">
                   <Button className="bg-crypto-purple hover:bg-crypto-dark-purple text-white w-full">
-                    Buy Now
+                    Sign Up
                   </Button>
                 </Link>
               </li>

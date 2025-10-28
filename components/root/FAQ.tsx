@@ -5,6 +5,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { faqItems } from "@/data/faqData";
+import { APP_NAME } from "@/lib/utils";
 
 const FAQ = () => {
   return (
@@ -18,7 +19,7 @@ const FAQ = () => {
             Frequently Asked Questions
           </h2>
           <p className="text-gray-400 max-w-2xl mx-auto">
-            Got questions about CryptoFlow? We've got answers. If you don't see
+            Got questions about {APP_NAME}? We've got answers. If you don't see
             what you're looking for, reach out to our support team.
           </p>
         </div>
