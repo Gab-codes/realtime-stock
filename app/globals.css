@@ -4,6 +4,10 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --color-crypto-blue: #1a1f2c;
+  --color-crypto-purple: #9b87f5;
+  --color-crypto-light-purple: #d6bcfa;
+  --color-crypto-dark-purple: #6e59a5;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
@@ -142,6 +146,25 @@
 }
 
 @layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-r from-crypto-purple to-crypto-light-purple bg-clip-text text-transparent;
+  }
+
+  .bg-gradient-hero {
+    @apply bg-gradient-to-br from-crypto-blue via-[#252A3C] to-[#1E2233];
+  }
+
+  .hero-glow:after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      circle at 50% 50%,
+      rgba(155, 135, 245, 0.15),
+      transparent 70%
+    );
+    pointer-events: none;
+  }
   .container {
     @apply mx-auto max-w-screen-2xl px-4 md:px-6 lg:px-8;
   }
@@ -386,6 +409,32 @@
 
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
+}
+
+/* animate scroll  */
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.animate-on-scroll.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 /* TradingView Advanced Chart Widget Styles */
