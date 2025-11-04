@@ -10,7 +10,7 @@ const Overview = () => {
   const scriptUrl = `https://s3.tradingview.com/external-embedding/embed-widget-`;
 
   return (
-    <div className="flex home-wrapper">
+    <div className="flex flex-col mt-20 p-4 md:p-6 bg-gradient-to-b from-[#12141C] to-crypto-blue">
       <section className="grid w-full gap-8 home-section">
         {/* trading view market container  */}
         <div className="md:col-span-1 xl:col-span-1">

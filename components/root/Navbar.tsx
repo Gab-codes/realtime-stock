@@ -71,6 +71,14 @@ const Navbar = () => {
               FAQ
             </Link>
           </li>
+          <li>
+            <Link
+              href="/overview"
+              className="text-gray-300 hover:text-white transition-colors"
+            >
+              Market Overview
+            </Link>
+          </li>
         </ul>
 
         <div className="hidden lg:flex items-center space-x-4">
@@ -102,7 +110,15 @@ const Navbar = () => {
       {isMobileMenuOpen && (
         <div className="lg:hidden bg-crypto-blue/95 backdrop-blur-lg absolute top-full left-0 w-full py-4 shadow-lg">
           <div className="container mx-auto px-4">
-            <ul className="flex flex-col space-y-4">
+            <ul className="flex flex-col ps-4 space-y-4">
+              <li>
+                <Link
+                  href="/overview"
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
+                  Market Overview
+                </Link>
+              </li>
               <li>
                 <Link
                   href="/#features"
@@ -132,15 +148,6 @@ const Navbar = () => {
               </li>
               <li>
                 <Link
-                  href="/#pricing"
-                  className="text-gray-300 hover:text-white transition-colors block py-2"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Pricing
-                </Link>
-              </li>
-              <li>
-                <Link
                   href="/#faq"
                   className="text-gray-300 hover:text-white transition-colors block py-2"
                   onClick={() => setIsMobileMenuOpen(false)}
@@ -148,10 +155,10 @@ const Navbar = () => {
                   FAQ
                 </Link>
               </li>
-              <li className="pt-4 flex flex-col space-y-3">
+              <li className="pt-4 flex gap-5">
                 <Link href={"/sign-in"}>
                   <Button
-                    variant="ghost"
+                    variant="outline"
                     className="text-gray-300 hover:text-white w-full justify-start"
                   >
                     Login

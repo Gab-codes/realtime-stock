@@ -1,4 +1,6 @@
 import { auth } from "@/lib/better-auth/auth";
+import { APP_NAME } from "@/lib/utils";
+import { Biohazard } from "lucide-react";
 import { headers } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
@@ -10,27 +12,27 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
   if (session?.user) redirect("/");
 
   return (
-    <main className="auth-layout">
+    <main className="auth-layout bg-gradient-to-b from-[#12141C] to-crypto-blue">
       {/* left section  */}
       <section className="auth-left-section scrollbar-hide-default">
         <Link href="/" className="auth-logo">
-          <Image
-            src="/assets/icons/logo.svg"
-            alt="Signalist logo"
-            width={140}
-            height={32}
-            className="h-8 w-auto cursor-pointer"
-          />
+          <div className="flex items-center">
+            <h1 className="text-2xl font-semibold text-white inline-flex gap-2 items-center">
+              {APP_NAME}
+
+              <Biohazard className="size-7 text-crypto-purple" />
+            </h1>
+          </div>
         </Link>
 
         <div className="pb-6 lg:pb-8 flex-1">{children}</div>
       </section>
 
       {/* right section  */}
-      <section className="auth-right-section">
+      <section className="auth-right-section bg-gradient-to-b from-[#12141C] to-crypto-blue">
         <div className="z-10 relative lg:mt-4 lg:mb-16">
           <blockquote className="auth-blockqote">
-            Signalist turned my wathclist inot a winning list. The alerts are
+            {APP_NAME} turned my wathclist inot a winning list. The alerts are
             spot on, and i feel more confident making moves in the market.
           </blockquote>
           <div className="flex items-center justify-between">

@@ -79,7 +79,7 @@ const SignIn = () => {
         <Button
           type="submit"
           disabled={isSubmitting}
-          className="yellow-btn w-full mt-5"
+          className="purple-btn w-full mt-5"
         >
           {isSubmitting ? "Signing In..." : "Sign In"}
         </Button>
