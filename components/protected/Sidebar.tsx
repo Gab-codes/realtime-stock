@@ -32,7 +32,7 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="w-64 h-screen sticky top-0 bg-[#0a0a0a] border-r border-white/10 flex flex-col justify-between">
+    <aside className="hidden md:flex  w-64 h-screen sticky top-0 bg-[#0a0a0a] border-r border-white/10 flex-col justify-between">
       {/* Top Section */}
       <div>
         {/* Logo */}

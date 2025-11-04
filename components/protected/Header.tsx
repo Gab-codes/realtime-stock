@@ -1,6 +1,6 @@
 import Link from "next/link";
-import NavItems from "@/components/dashboard/NavItems";
-import UserDropdown from "@/components/dashboard/UserDropdown";
+import NavItems from "@/components/protected/NavItems";
+import UserDropdown from "@/components/protected/UserDropdown";
 import { searchStocks } from "@/lib/actions/finnhub.actions";
 
 const Header = async ({ user }: { user: User }) => {
