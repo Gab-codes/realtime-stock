@@ -8,7 +8,7 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { Button } from "@/components/ui/button";
-import { Loader2, TrendingUp } from "lucide-react";
+import { Loader2, Search, TrendingUp } from "lucide-react";
 import Link from "next/link";
 import { searchStocks } from "@/lib/actions/finnhub.actions";
 import { useDebounce } from "@/hooks/useDebounce";
@@ -67,8 +67,12 @@ export default function SearchCommand({
   return (
     <>
       {renderAs === "text" ? (
-        <span onClick={() => setOpen(true)} className="search-text">
+        <span
+          onClick={() => setOpen(true)}
+          className="search-text flex items-center gap-2"
+        >
           {label}
+          <Search className="size-5" />
         </span>
       ) : (
         <Button onClick={() => setOpen(true)} className="search-btn">

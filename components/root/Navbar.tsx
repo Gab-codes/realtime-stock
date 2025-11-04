@@ -6,18 +6,26 @@ import { Biohazard, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { APP_NAME } from "@/lib/utils";
 
+// Centralized navigation links
+const NAV_LINKS = [
+  { href: "/#features", label: "Features" },
+  { href: "/#how-it-works", label: "How it works" },
+  { href: "/#testimonials", label: "Testimonials" },
+  { href: "/#faq", label: "FAQ" },
+  { href: "/overview", label: "Market Overview" },
+];
+
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
-
+    const handleScroll = () => setIsScrolled(window.scrollY > 10);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleLinkClick = () => setIsMobileMenuOpen(false);
 
   return (
     <nav
@@ -28,61 +36,31 @@ const Navbar = () => {
       }`}
     >
       <div className="container mx-auto px-4 flex justify-between items-center">
+        {/* Logo */}
         <div className="flex items-center">
           <h1 className="text-2xl font-bold text-white inline-flex gap-2 items-center">
             {APP_NAME}
-
             <Biohazard className="size-7 text-crypto-purple" />
           </h1>
         </div>
 
-        {/* Desktop menu */}
+        {/* Desktop Menu */}
         <ul className="hidden lg:flex items-center space-x-8">
-          <li>
-            <Link
-              href="/#features"
-              className="text-gray-300 hover:text-white transition-colors"
-            >
-              Features
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/#how-it-works"
-              className="text-gray-300 hover:text-white transition-colors"
-            >
-              How it works
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/#testimonials"
-              className="text-gray-300 hover:text-white transition-colors"
-            >
-              Testimonials
-            </Link>
-          </li>
-
-          <li>
-            <Link
-              href="/#faq"
-              className="text-gray-300 hover:text-white transition-colors"
-            >
-              FAQ
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/overview"
-              className="text-gray-300 hover:text-white transition-colors"
-            >
-              Market Overview
-            </Link>
-          </li>
+          {NAV_LINKS.map((link) => (
+            <li key={link.href}>
+              <Link
+                href={link.href}
+                className="text-gray-300 hover:text-white transition-colors"
+              >
+                {link.label}
+              </Link>
+            </li>
+          ))}
         </ul>
 
+        {/* Desktop Buttons */}
         <div className="hidden lg:flex items-center space-x-4">
-          <Link href={"/sign-in"}>
+          <Link href="/sign-in">
             <Button
               variant="outline"
               className="text-gray-300 hover:text-white"
@@ -97,7 +75,7 @@ const Navbar = () => {
           </Link>
         </div>
 
-        {/* Mobile menu button */}
+        {/* Mobile Menu Toggle */}
         <button
           className="lg:hidden text-white"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -106,57 +84,26 @@ const Navbar = () => {
         </button>
       </div>
 
-      {/* Mobile menu */}
+      {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <div className="lg:hidden bg-crypto-blue/95 backdrop-blur-lg absolute top-full left-0 w-full py-4 shadow-lg">
           <div className="container mx-auto px-4">
             <ul className="flex flex-col ps-4 space-y-4">
-              <li>
-                <Link
-                  href="/overview"
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  Market Overview
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/#features"
-                  className="text-gray-300 hover:text-white transition-colors block py-2"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Features
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/#how-it-works"
-                  className="text-gray-300 hover:text-white transition-colors block py-2"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  How it works
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/#testimonials"
-                  className="text-gray-300 hover:text-white transition-colors block py-2"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Testimonials
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/#faq"
-                  className="text-gray-300 hover:text-white transition-colors block py-2"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  FAQ
-                </Link>
-              </li>
+              {NAV_LINKS.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-gray-300 hover:text-white transition-colors block py-2"
+                    onClick={handleLinkClick}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+
+              {/* Buttons */}
               <li className="pt-4 flex gap-5">
-                <Link href={"/sign-in"}>
+                <Link href="/sign-in">
                   <Button
                     variant="outline"
                     className="text-gray-300 hover:text-white w-full justify-start"

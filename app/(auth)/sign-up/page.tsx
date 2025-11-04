@@ -12,7 +12,7 @@ import {
   RISK_TOLERANCE_OPTIONS,
 } from "@/lib/constants";
 import { useRouter } from "next/navigation";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 const SignUp = () => {
@@ -38,7 +38,7 @@ const SignUp = () => {
     try {
       const result = await signUpWithEmail(data);
       if (result.success) {
-        router.push("/");
+        router.push("/dashboard");
       }
     } catch (error) {
       console.error(error);
