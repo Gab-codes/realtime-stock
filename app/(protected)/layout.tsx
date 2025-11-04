@@ -1,5 +1,6 @@
-import Header from "@/components/dashboard/Header";
-import Sidebar from "@/components/dashboard/Sidebar";
+import Header from "@/components/protected/Header";
+import MobileNav from "@/components/protected/MobileNav";
+import Sidebar from "@/components/protected/Sidebar";
 import { auth } from "@/lib/better-auth/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
@@ -20,10 +21,11 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
   return (
     <main className="min-h-screen text-gray-400 flex">
       <Sidebar />
-      <div className="flex-col w-full">
+      <div className="flex-col w-full max-sm:mb-15">
         <Header user={user} />
-        <div className="container py-10">{children}</div>
+        <div className="container py-5">{children}</div>
       </div>
+      <MobileNav />
     </main>
   );
 };

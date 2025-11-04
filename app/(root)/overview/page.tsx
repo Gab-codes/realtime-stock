@@ -1,4 +1,4 @@
-import TradingViewWidget from "@/components/dashboard/TradingViewWidget";
+import TradingViewWidget from "@/components/protected/TradingViewWidget";
 import {
   HEATMAP_WIDGET_CONFIG,
   MARKET_DATA_WIDGET_CONFIG,

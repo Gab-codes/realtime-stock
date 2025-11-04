@@ -1,5 +1,5 @@
-import TradingViewWidget from "@/components/dashboard/TradingViewWidget";
-import WatchlistButton from "@/components/dashboard/WatchlistButton";
+import TradingViewWidget from "@/components/protected/TradingViewWidget";
+import WatchlistButton from "@/components/protected/WatchlistButton";
 import {
   SYMBOL_INFO_WIDGET_CONFIG,
   CANDLE_CHART_WIDGET_CONFIG,
