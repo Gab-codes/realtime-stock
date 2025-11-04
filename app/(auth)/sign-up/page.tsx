@@ -53,7 +53,7 @@ const SignUp = () => {
 
   return (
     <>
-      <h1 className="form-title">Sign Up & Personalize</h1>
+      <h1 className="form-title">Sign Up & Start Trading</h1>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         {/* inputs  */}
@@ -139,7 +139,7 @@ const SignUp = () => {
         <Button
           type="submit"
           disabled={isSubmitting}
-          className="yellow-btn w-full mt-5"
+          className="purple-btn w-full mt-5"
         >
           {isSubmitting
             ? "Creating account..."

@@ -1,6 +1,7 @@
 import { ArrowRight, ArrowUpRight, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import Link from "next/link";
 
 const Hero = () => {
   return (
@@ -35,21 +36,25 @@ const Hero = () => {
               analytics, AI insights, and AI auto trading.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button
-                size="lg"
-                className="bg-crypto-purple hover:bg-crypto-dark-purple text-white px-8 py-6"
-              >
-                Start Trading
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-              <Button
-                variant="outline"
-                size="lg"
-                className="border-gray-700 text-white hover:bg-white/5 py-6"
-              >
-                Create Account
-                <ArrowUpRight className="ml-2 h-5 w-5" />
-              </Button>
+              <Link href="/sign-in">
+                <Button
+                  size="lg"
+                  className="w-full bg-crypto-purple hover:bg-crypto-dark-purple text-white px-8 py-6"
+                >
+                  Start Trading
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </Link>
+              <Link href="/sign-up">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="border-gray-700 w-full text-white hover:bg-white/5 py-6"
+                >
+                  Create Account
+                  <ArrowUpRight className="ml-2 h-5 w-5" />
+                </Button>
+              </Link>
             </div>
             <div className="mt-8 flex items-center space-x-6">
               <div>
