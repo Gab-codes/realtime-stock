@@ -7,7 +7,7 @@ const Header = async ({ user }: { user: User }) => {
   const initialStocks = await searchStocks();
 
   return (
-    <header className="header">
+    <header className="sticky top-0 header">
       <div className="container header-wrapper">
         <nav>
           <NavItems initialStocks={initialStocks} />
