@@ -25,7 +25,6 @@ const navItems = [
   { label: "Deposit", href: "/deposit", icon: ArrowDownToLine },
   { label: "Withdraw", href: "/withdraw", icon: ArrowUpToLine },
   { label: "Settings", href: "/settings", icon: Settings },
-  { label: "Support", href: "/support", icon: HelpCircle },
 ];
 
 export default function Sidebar() {
@@ -46,7 +45,7 @@ export default function Sidebar() {
           </div>
         </Link>
         {/* Navigation */}
-        <nav className="px-4 space-y-1 mt-4">
+        <nav className="px-4 flex flex-col gap-2 mt-4">
           {navItems.map(({ label, href, icon: Icon }) => (
             <Link key={href} href={href}>
               <Button

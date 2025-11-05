@@ -12,7 +12,7 @@ const DashboardOverview = () => {
   };
 
   return (
-    <div className=" space-y-4">
+    <div className="space-y-4">
       <h2 className="text-2xl font-bold text-white">Dashboard Overview</h2>
 
       {/* Total Balance Section */}

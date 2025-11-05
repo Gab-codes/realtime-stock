@@ -1,11 +1,12 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { PlusCircle, Wallet } from "lucide-react";
+import { HandCoins, PlusCircle, Wallet } from "lucide-react";
+import Link from "next/link";
 
 const DepositWithdrawActions = () => {
   return (
-    <div className="flex justify-center items-center gap-3 mt-4">
+    <div className="flex justify-center items-center gap-1.5 mt-4">
       <Button className="bg-crypto-purple hover:bg-crypto-dark-purple text-white flex items-center gap-2">
         <PlusCircle size={18} />
         Deposit
@@ -17,6 +18,12 @@ const DepositWithdrawActions = () => {
         <Wallet size={18} />
         Withdraw
       </Button>
+      <Link href="#invest">
+        <Button className="bg-green-500 text-white hover:text-white border-gray-600">
+          <HandCoins size={18} />
+          Invest
+        </Button>
+      </Link>
     </div>
   );
 };

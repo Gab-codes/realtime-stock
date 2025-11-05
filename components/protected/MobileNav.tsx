@@ -35,7 +35,7 @@ export default function MobileNav() {
   ];
 
   return (
-    <div className="fixed bottom-0 left-0 w-full bg-[#0a0a0a]/95 backdrop-blur-md border-t border-white/10 flex justify-around px-2 py-3 md:hidden z-50">
+    <div className="fixed bottom-0 -left-3 w-full bg-[#0a0a0a]/95 backdrop-blur-md border-t border-white/10 flex justify-around py-3 md:hidden z-50">
       {/* Normal Tabs */}
       {tabs.map(({ label, href, icon: Icon }) => (
         <Link key={href} href={href} className="flex-1">
@@ -54,12 +54,12 @@ export default function MobileNav() {
       {/* Drawer for "More" */}
       <Drawer>
         <DrawerTrigger asChild>
-          <button className="flex flex-col items-center text-gray-400 text-xs">
+          <button className="flex flex-col items-center cursor-pointer text-gray-400 text-xs">
             <MoreHorizontal size={22} />
             <span className="mt-1">More</span>
           </button>
         </DrawerTrigger>
-        <DrawerContent className="bg-[#0a0a0a] h-[75vh] border-t border-white/10 text-white">
+        <DrawerContent className="bg-[#0a0a0a] h-[88vh] border-t border-white/10 text-white">
           <DrawerHeader>
             <DrawerTitle className="text-lg font-semibold">
               More Options
@@ -74,7 +74,6 @@ export default function MobileNav() {
             <DrawerLink href="/market" icon={LineChart} label="Market" />
             <DrawerLink href="/settings" icon={Settings} label="Settings" />
             <DrawerLink href="/support" icon={HelpCircle} label="Support" />
-            <DrawerLink href="/logout" icon={LogOut} label="Logout" />
           </div>
         </DrawerContent>
       </Drawer>
