@@ -1,4 +1,3 @@
-import Link from "next/link";
 import NavItems from "@/components/protected/NavItems";
 import UserDropdown from "@/components/protected/UserDropdown";
 import { searchStocks } from "@/lib/actions/finnhub.actions";
