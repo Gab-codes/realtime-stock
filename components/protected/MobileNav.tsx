@@ -21,6 +21,7 @@ import {
   DrawerTitle,
   DrawerDescription,
   DrawerTrigger,
+  DrawerClose,
 } from "@/components/ui/drawer";
 import { cn } from "@/lib/utils";
 
@@ -35,10 +36,10 @@ export default function MobileNav() {
   ];
 
   return (
-    <div className="fixed bottom-0 -left-3 w-full bg-[#0a0a0a]/95 backdrop-blur-md border-t border-white/10 flex justify-around py-3 md:hidden z-50">
+    <div className="fixed bottom-0 left-0 w-full bg-[#0a0a0a]/95 backdrop-blur-md border-t border-white/10 flex py-3 px-7 md:hidden z-50">
       {/* Normal Tabs */}
       {tabs.map(({ label, href, icon: Icon }) => (
-        <Link key={href} href={href} className="flex-1">
+        <Link key={href} href={href} className="flex justify-between w-full">
           <div
             className={cn(
               "flex flex-col items-center text-gray-400 text-xs transition-colors",
@@ -92,12 +93,11 @@ function DrawerLink({
   label: string;
 }) {
   return (
-    <Link
-      href={href}
-      className="flex items-center gap-3 text-gray-300 hover:text-white hover:bg-white/5 px-4 py-2 rounded-md transition"
-    >
-      <Icon size={20} />
-      <span>{label}</span>
+    <Link href={href}>
+      <DrawerClose className="flex items-center gap-3 text-gray-300 hover:text-white hover:bg-white/5 px-4 py-2 rounded-md transition">
+        <Icon size={20} />
+        <span>{label}</span>
+      </DrawerClose>
     </Link>
   );
 }
