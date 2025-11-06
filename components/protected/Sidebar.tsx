@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
   History,
-  Wallet,
   ArrowDownToLine,
   ArrowUpToLine,
   Briefcase,
@@ -24,6 +23,7 @@ const navItems = [
   { label: "Transactions", href: "/transactions", icon: History },
   { label: "Deposit", href: "/deposit", icon: ArrowDownToLine },
   { label: "Withdraw", href: "/withdraw", icon: ArrowUpToLine },
+  { label: "Verification Center", href: "/kyc", icon: HelpCircle },
   { label: "Settings", href: "/settings", icon: Settings },
 ];
 
