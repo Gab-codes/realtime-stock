@@ -74,7 +74,11 @@ export default function MobileNav() {
             <DrawerLink href="/portfolio" icon={Briefcase} label="Portfolio" />
             <DrawerLink href="/market" icon={LineChart} label="Market" />
             <DrawerLink href="/settings" icon={Settings} label="Settings" />
-            <DrawerLink href="/support" icon={HelpCircle} label="Support" />
+            <DrawerLink
+              href="/kyc"
+              icon={HelpCircle}
+              label="Verification Center"
+            />
           </div>
         </DrawerContent>
       </Drawer>
