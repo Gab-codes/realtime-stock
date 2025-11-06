@@ -152,9 +152,9 @@ export default function WithdrawalForm() {
           <div className="flex gap-2 text-xs text-amber-300">
             <Info size={14} />
             <p>
-              Withdrawals are processed manually and may take up to 24 hours.
-              Ensure your wallet address is correct — transactions cannot be
-              reversed.
+              Withdrawals are processed automatically and may take up to 24
+              hours. Ensure your wallet address is correct — transactions cannot
+              be reversed.
             </p>
           </div>
 
