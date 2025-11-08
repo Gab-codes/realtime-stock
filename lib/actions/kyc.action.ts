@@ -3,7 +3,6 @@
 import { kycModel } from "@/models/kyc.model";
 import { auth } from "../better-auth/auth";
 import { headers } from "next/headers";
-import userExtraModel from "@/models/userExtra.model";
 
 export const submitKYC = async ({
   idType,
@@ -37,11 +36,6 @@ export const submitKYC = async ({
       backImageUrl,
       status: "pending",
     });
-
-    await userExtraModel.updateOne(
-      { userId },
-      { $set: { kycVerified: false } }
-    );
 
     return { success: true, message: "KYC submitted successfully" };
   } catch (error) {

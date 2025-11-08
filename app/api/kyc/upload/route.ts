@@ -1,8 +1,6 @@
-// app/api/kyc/submit/route.ts
 import { NextResponse } from "next/server";
-import { auth } from "@/lib/better-auth/auth"; // your exported auth instance
+import { auth } from "@/lib/better-auth/auth";
 import { kycModel } from "@/models/kyc.model";
-import userExtraModel from "@/models/userExtra.model";
 import { headers } from "next/headers";
 
 export async function POST(req: Request) {
@@ -39,12 +37,6 @@ export async function POST(req: Request) {
         status: "pending",
       },
       { upsert: true, new: true, setDefaultsOnInsert: true }
-    );
-
-    // mark user extra kycVerified false (pending)
-    await userExtraModel.updateOne(
-      { userId },
-      { $set: { kycVerified: false } }
     );
 
     return NextResponse.json({ success: true, message: "KYC submitted" });

@@ -1,13 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import {
-  upload,
-  ImageKitAbortError,
-  ImageKitInvalidRequestError,
-  ImageKitUploadNetworkError,
-  ImageKitServerError,
-} from "@imagekit/next";
+import { upload } from "@imagekit/next";
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -31,7 +25,7 @@ const KycForm = () => {
     return res.json();
   };
 
-  // Upload a single file and return the ImageKit response (must call authenticator per file)
+  // Upload a single file and return the ImageKit response - we call authenticator per file
   const uploadSingleFile = async (
     file: File,
     onProgress: (p: number) => void
@@ -82,7 +76,7 @@ const KycForm = () => {
           const backImageUrl = backResp.url;
 
           // send to backend to create KYC record
-          const apiRes = await fetch("/api/kyc/submit", {
+          const apiRes = await fetch("/api/kyc/upload", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
