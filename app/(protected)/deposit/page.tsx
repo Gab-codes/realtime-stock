@@ -1,20 +1,12 @@
-// components/deposit/DepositFlow.tsx
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Copy, Info } from "lucide-react";
 import { toast } from "sonner";
-import Link from "next/link";
+import Step1 from "@/components/protected/deposit/step1";
+import Step2 from "@/components/protected/deposit/step2";
+import Step3 from "@/components/protected/deposit/step3";
+import { formatPrice } from "@/lib/utils";
 
 // Merchant deposit addresses (replace with your real addresses)
 const MERCHANT_ADDRESSES = {
@@ -22,19 +14,9 @@ const MERCHANT_ADDRESSES = {
   USDT: "TXYZ...EXAMPLE_TRON_USDT_ADDRESS_OR_ERC20",
 } as const;
 
-type Currency = keyof typeof MERCHANT_ADDRESSES;
+export type Currency = keyof typeof MERCHANT_ADDRESSES;
 
 // Deposit record shape (client-side demo)
-type DepositRecord = {
-  id: string;
-  currency: Currency;
-  usdAmount: number;
-  cryptoAmount: number;
-  address: string;
-  status: "pending" | "completed" | "failed";
-  createdAt: string;
-  txHash?: string | null;
-};
 
 function uid(prefix = "") {
   return prefix + Math.random().toString(36).slice(2, 9);
@@ -79,7 +61,6 @@ export default function DepositFlow({
     null
   );
   const [isCreating, setIsCreating] = useState(false);
-  const [copied, setCopied] = useState(false);
 
   // Local list of deposits (demo)
   const [deposits, setDeposits] = useState<DepositRecord[]>([]);
@@ -118,20 +99,6 @@ export default function DepositFlow({
 
   function addressFor(currency: Currency) {
     return MERCHANT_ADDRESSES[currency];
-  }
-
-  async function handleCopyAddress() {
-    try {
-      await navigator.clipboard.writeText(addressFor(currency));
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1800);
-      // optional toast
-      try {
-        toast.success("Wallet address copied to clipboard.");
-      } catch {}
-    } catch {
-      // ignore
-    }
   }
 
   function validateStep1() {
@@ -187,14 +154,6 @@ export default function DepositFlow({
     }
   }
 
-  // Render helpers
-  const formattedUsd = (v: number) =>
-    v.toLocaleString(undefined, {
-      style: "currency",
-      currency: "USD",
-      maximumFractionDigits: 2,
-    });
-
   const paymentURI = useMemo(() => {
     if (!addressFor(currency)) return "";
     // Make QR-friendly URI strings per currency.
@@ -244,188 +203,41 @@ export default function DepositFlow({
           </div>
 
           {step === 1 && (
-            <div className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm text-gray-400">Currency</label>
-                  <Select
-                    value={currency}
-                    onValueChange={(v) => setCurrency(v as Currency)}
-                  >
-                    <SelectTrigger className="w-full">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="USDT">USDT (stablecoin)</SelectItem>
-                      <SelectItem value="BTC">BTC (Bitcoin)</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div>
-                  <label className="text-sm text-gray-400">Amount (USD)</label>
-                  <Input
-                    type="number"
-                    min={1}
-                    step="0.01"
-                    placeholder="Enter USD amount"
-                    value={usdAmount}
-                    onChange={(e) =>
-                      setUsdAmount(
-                        e.target.value ? parseFloat(e.target.value) : ""
-                      )
-                    }
-                    className="bg-black/20"
-                  />
-                </div>
-              </div>
-
-              <div className="text-sm text-gray-300">
-                <div>
-                  Live prices:{" "}
-                  {loadingPrices ? (
-                    <span className="text-gray-400">loading...</span>
-                  ) : errorPrices ? (
-                    <span className="text-rose-400">{errorPrices}</span>
-                  ) : prices ? (
-                    <span className="text-gray-200">
-                      BTC {prices.BTC ? `$${prices.BTC.toLocaleString()}` : "—"}{" "}
-                      · USDT {prices.USDT ? `$${prices.USDT.toFixed(2)}` : "—"}
-                    </span>
-                  ) : null}
-                </div>
-              </div>
-
-              <div className="flex gap-2 mt-4">
-                <Button
-                  onClick={() => {
-                    setUsdAmount("");
-                    setCurrency("USDT");
-                  }}
-                >
-                  Reset
-                </Button>
-                <Button
-                  className="bg-crypto-purple text-white ml-auto"
-                  onClick={goToPayment}
-                >
-                  Next: Payment details
-                </Button>
-              </div>
-            </div>
+            <Step1
+              {...{
+                currency,
+                setCurrency,
+                usdAmount,
+                setUsdAmount,
+                loadingPrices,
+                prices,
+                errorPrices,
+                goToPayment,
+              }}
+            />
           )}
 
           {step === 2 && (
-            <div className="space-y-4">
-              <div className="grid sm:grid-cols-2 gap-6">
-                <div>
-                  <label className="text-sm text-gray-400">
-                    Send to wallet
-                  </label>
-                  <div className="mt-2 p-3 bg-[#071022] rounded-md border border-white/5">
-                    <div className="flex items-center justify-between gap-2">
-                      <div>
-                        <div className="text-xs text-gray-400">Address</div>
-                        <div className="text-sm break-all select-all">
-                          {addressFor(currency)}
-                        </div>
-                      </div>
-                      <div className="flex flex-col items-end">
-                        <button
-                          onClick={handleCopyAddress}
-                          className="inline-flex items-center gap-2 px-2 py-1 rounded bg-white/5 hover:bg-white/8"
-                        >
-                          <Copy size={14} />
-                          {copied ? (
-                            <span className="text-xs text-green-300">
-                              Copied
-                            </span>
-                          ) : (
-                            <span className="text-xs">Copy</span>
-                          )}
-                        </button>
-                      </div>
-                    </div>
-
-                    <div className="mt-3 text-xs text-gray-300">
-                      <div>
-                        Send exactly:{" "}
-                        <strong>
-                          {cryptoAmount} {currency}
-                        </strong>
-                      </div>
-                      <div className="mt-1 text-gray-400 text-xs">
-                        Note: sending a different coin or network may result in
-                        loss of funds.
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex flex-col items-center">
-                  <div className="bg-[#071022] p-4 rounded-md border border-white/5">
-                    {/* <QRCode
-                      value={paymentURI}
-                      size={160}
-                      bgColor="transparent"
-                      fgColor="#00f6d6"
-                      level="M"
-                    /> */}
-                  </div>
-
-                  <div className="mt-3 text-sm text-gray-300 text-center">
-                    <div>Scan the QR code with your wallet to pay</div>
-                    <div className="mt-2 text-xs text-gray-400">
-                      Amount will be auto-calculated using latest market rates.
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex gap-2 mt-4">
-                <Button onClick={() => setStep(1)}>Back</Button>
-                <Button
-                  className="ml-auto bg-crypto-purple text-white"
-                  onClick={confirmPaid}
-                  disabled={isCreating}
-                >
-                  {isCreating ? "Creating..." : "I have paid (Mark as paid)"}
-                </Button>
-              </div>
-            </div>
+            <Step2
+              {...{
+                currency,
+                cryptoAmount,
+                addressFor,
+                confirmPaid,
+                setStep,
+                isCreating,
+              }}
+            />
           )}
 
           {step === 3 && pendingDeposit && (
-            <div className="space-y-4">
-              <div className="py-4 rounded-md bg-[#071022] border border-white/5">
-                <div className="text-sm text-gray-300">Deposit submitted</div>
-                <div className="mt-2 text-lg font-semibold">
-                  {formattedUsd(pendingDeposit.usdAmount)} →{" "}
-                  {pendingDeposit.cryptoAmount} {pendingDeposit.currency}
-                </div>
-                <div className="text-xs text-gray-400 mt-1">
-                  Status: <span className="text-amber-300">Pending</span>
-                </div>
-                <div className="mt-3 text-gray-400 text-sm">
-                  You account will be credited automatically once the funds
-                  arrive.
-                </div>
-              </div>
-
-              <div className="flex gap-2">
-                <Button
-                  onClick={() => {
-                    setStep(1);
-                    setPendingDeposit(null);
-                  }}
-                >
-                  Make another deposit
-                </Button>
-                <Link href="/transactions">
-                  <Button className="ml-auto">View deposit history</Button>
-                </Link>
-              </div>
-            </div>
+            <Step3
+              {...{
+                pendingDeposit,
+                setStep,
+                setPendingDeposit,
+              }}
+            />
           )}
         </CardContent>
       </Card>
@@ -447,7 +259,7 @@ export default function DepositFlow({
                     </div>
                   </div>
                   <div className="text-sm text-gray-200">
-                    {formattedUsd(d.usdAmount)}
+                    {formatPrice(d.usdAmount)}
                   </div>
                 </li>
               ))}
