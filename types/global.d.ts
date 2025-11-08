@@ -4,6 +4,17 @@ declare global {
     password: string;
   };
 
+  type DepositRecord = {
+    id: string;
+    currency: Currency;
+    usdAmount: number;
+    cryptoAmount: number;
+    address: string;
+    status: "pending" | "completed" | "failed";
+    createdAt: string;
+    txHash?: string | null;
+  };
+
   type SignUpFormData = {
     fullName: string;
     email: string;
