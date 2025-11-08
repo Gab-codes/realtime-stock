@@ -3,6 +3,7 @@
 import { headers } from "next/headers";
 import { auth } from "../better-auth/auth";
 import { inngest } from "../inngest/client";
+import userExtraModel from "@/models/userExtra.model";
 
 export const signUpWithEmail = async ({
   email,
@@ -23,6 +24,15 @@ export const signUpWithEmail = async ({
     });
 
     if (response) {
+      await userExtraModel.create({
+        userId: response.user.id,
+        depositedBalance: 0,
+        investmentBalance: 0,
+        totalProfit: 0,
+        kycVerified: false,
+      });
+
+      // send inngest event
       await inngest.send({
         name: "app/user.created",
         data: {

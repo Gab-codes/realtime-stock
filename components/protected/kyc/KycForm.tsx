@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import {
   upload,
   ImageKitAbortError,
@@ -19,21 +19,45 @@ import { toast } from "sonner";
 const KycForm = () => {
   const [progress, setProgress] = useState(0);
   const [status, setStatus] = useState<"idle" | "pending" | "success">("idle");
-  const [idFile, setIdFile] = useState<File | null>(null);
-  const [selfieFile, setSelfieFile] = useState<File | null>(null);
+  const [frontFile, setFrontFile] = useState<File | null>(null);
+  const [backFile, setBackFile] = useState<File | null>(null);
+  const [idType, setIdType] = useState<
+    "id-card" | "passport" | "driver-license"
+  >("id-card");
 
-  const abortController = new AbortController();
-
-  // Get signature from backend
   const authenticator = async () => {
     const res = await fetch("/api/imagekit-auth");
     if (!res.ok) throw new Error("Failed to get authentication params");
     return res.json();
   };
 
+  // Upload a single file and return the ImageKit response (must call authenticator per file)
+  const uploadSingleFile = async (
+    file: File,
+    onProgress: (p: number) => void
+  ) => {
+    const { signature, expire, token, publicKey } = await authenticator();
+
+    const resp = await upload({
+      file,
+      fileName: file.name,
+      signature,
+      expire,
+      token,
+      publicKey,
+      folder: "/kyc",
+      onProgress: (evt) => {
+        const pct = Math.round((evt.loaded / evt.total) * 100);
+        onProgress(pct);
+      },
+    });
+
+    return resp;
+  };
+
   const handleUpload = async () => {
-    if (!idFile || !selfieFile) {
-      toast.error("Please upload both ID and selfie before submitting.");
+    if (!frontFile || !backFile) {
+      toast.error("Please upload both front and back images.");
       return;
     }
 
@@ -41,45 +65,57 @@ const KycForm = () => {
       setStatus("pending");
       setProgress(0);
 
-      const uploadFile = async (file: File) => {
-        // ✅ fetch fresh credentials for every upload
-        const { signature, expire, token, publicKey } = await authenticator();
+      // Upload front first (so user sees progress and we can show meaningful messages)
+      toast.promise(
+        (async () => {
+          setProgress(5);
+          const frontResp = await uploadSingleFile(frontFile, (p) =>
+            setProgress(p / 2)
+          );
+          // after front uploaded, upload back (use second half of progress)
+          const backResp = await uploadSingleFile(backFile, (p) =>
+            setProgress(50 + p / 2)
+          );
 
-        return upload({
-          file,
-          fileName: file.name,
-          signature,
-          expire,
-          token,
-          publicKey,
-          folder: "/kyc",
-          onProgress: (evt) =>
-            setProgress(Math.round((evt.loaded / evt.total) * 100)),
-          abortSignal: abortController.signal,
-        });
-      };
+          // extract URLs (ImageKit response shape includes 'url')
+          const frontImageUrl = frontResp.url;
+          const backImageUrl = backResp.url;
 
-      // ✅ both uploads now have unique tokens
-      const [idResponse, selfieResponse] = await Promise.all([
-        uploadFile(idFile),
-        uploadFile(selfieFile),
-      ]);
+          // send to backend to create KYC record
+          const apiRes = await fetch("/api/kyc/submit", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              idType,
+              frontImageUrl,
+              backImageUrl,
+            }),
+          });
 
-      console.log("Uploaded:", {
-        idUrl: idResponse.url,
-        selfieUrl: selfieResponse.url,
-      });
+          if (!apiRes.ok) {
+            const text = await apiRes.text();
+            throw new Error(text || "Failed to submit KYC to server");
+          }
 
-      setStatus("success");
-      setIdFile(null);
-      setSelfieFile(null);
-    } catch (error) {
-      toast.error(
-        error instanceof Error
-          ? error.message
-          : "Unexpected error during upload."
+          setProgress(100);
+          setStatus("success");
+          // clear files after success
+          setFrontFile(null);
+          setBackFile(null);
+
+          return true;
+        })(),
+        {
+          loading: "Uploading and submitting KYC...",
+          success: "Document uploaded and submitted for verification 🎉",
+          error: (err) => `Upload failed: ${err?.message ?? "Unknown error"}`,
+        }
       );
+    } catch (err: any) {
+      console.error("KYC upload flow error:", err);
+      toast.error(err?.message ?? "Unexpected error during KYC upload");
       setStatus("idle");
+      setProgress(0);
     }
   };
 
@@ -93,51 +129,106 @@ const KycForm = () => {
 
       <CardContent className="space-y-5">
         <p className="text-gray-400">
-          Upload your valid ID and selfie for verification. Only verified users
-          can invest or withdraw.
+          Upload the front and back of your government ID. We will review and
+          verify manually.
         </p>
 
-        {/* Upload inputs */}
-        {[
-          { label: "Government ID (front)", setter: setIdFile, file: idFile },
-          {
-            label: "Government ID (bacl)",
-            setter: setSelfieFile,
-            file: selfieFile,
-          },
-        ].map(({ label, setter, file }, i) => (
-          <div key={i} className="flex flex-col gap-2">
-            <label className="text-sm text-gray-300 font-medium">{label}</label>
-            <Input
-              type="file"
-              accept="image/*"
-              onChange={(e) => setter(e.target.files?.[0] || null)}
-              className="bg-black/20 border-gray-700 text-white"
-            />
-            {file && (
-              <div className="relative w-full h-32 border border-gray-700 rounded-md overflow-hidden">
-                <Image
-                  src={URL.createObjectURL(file)}
-                  alt={`${label} preview`}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-            )}
+        <div>
+          <label className="text-sm text-gray-300 font-medium">
+            Document Type
+          </label>
+          <div className="mt-2 flex gap-2">
+            <button
+              className={`px-3 py-1 rounded ${
+                idType === "id-card" ? "bg-white/6" : "bg-transparent"
+              }`}
+              onClick={() => setIdType("id-card")}
+              type="button"
+            >
+              ID Card
+            </button>
+            <button
+              className={`px-3 py-1 rounded ${
+                idType === "passport" ? "bg-white/6" : "bg-transparent"
+              }`}
+              onClick={() => setIdType("passport")}
+              type="button"
+            >
+              Passport
+            </button>
+            <button
+              className={`px-3 py-1 rounded ${
+                idType === "driver-license" ? "bg-white/6" : "bg-transparent"
+              }`}
+              onClick={() => setIdType("driver-license")}
+              type="button"
+            >
+              Driver License
+            </button>
           </div>
-        ))}
+        </div>
+
+        {/* front */}
+        <div className="flex flex-col gap-2">
+          <label className="text-sm text-gray-300 font-medium">
+            Government ID (front)
+          </label>
+          <Input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setFrontFile(e.target.files?.[0] || null)}
+            className="bg-black/20 border-gray-700 text-white"
+            disabled={status === "pending"}
+          />
+          {frontFile && (
+            <div className="relative w-full h-32 border border-gray-700 rounded-md overflow-hidden">
+              <Image
+                src={URL.createObjectURL(frontFile)}
+                alt="front preview"
+                fill
+                className="object-cover"
+              />
+            </div>
+          )}
+        </div>
+
+        {/* back */}
+        <div className="flex flex-col gap-2">
+          <label className="text-sm text-gray-300 font-medium">
+            Government ID (back)
+          </label>
+          <Input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setBackFile(e.target.files?.[0] || null)}
+            className="bg-black/20 border-gray-700 text-white"
+            disabled={status === "pending"}
+          />
+          {backFile && (
+            <div className="relative w-full h-32 border border-gray-700 rounded-md overflow-hidden">
+              <Image
+                src={URL.createObjectURL(backFile)}
+                alt="back preview"
+                fill
+                className="object-cover"
+              />
+            </div>
+          )}
+        </div>
 
         {status === "pending" && (
           <>
             <Progress value={progress} className="h-2 bg-gray-700" />
-            <p className="text-xs text-gray-400 mt-1">{progress}% uploaded</p>
+            <p className="text-xs text-gray-400 mt-1">
+              {Math.round(progress)}% uploaded
+            </p>
           </>
         )}
 
         {status === "success" && (
           <Alert className="bg-green-500/20 border border-green-600 text-green-300">
             <AlertDescription className="text-center">
-              Document uploaded successfully 🎉, Awaiting verification.
+              Document uploaded successfully 🎉, awaiting verification.
             </AlertDescription>
           </Alert>
         )}
