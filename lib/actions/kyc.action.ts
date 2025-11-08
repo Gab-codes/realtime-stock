@@ -9,12 +9,12 @@ export const submitKYC = async ({
   frontImageUrl,
   backImageUrl,
 }: {
-  idType: string;
+  idType: "id-card" | "passport" | "driver-license";
   frontImageUrl: string;
   backImageUrl: string;
 }) => {
   try {
-    // Get current logged-in user
+    // Authenticate current user
     const session = await auth.api.getSession({ headers: await headers() });
     if (!session?.user) {
       return { success: false, error: "Not authenticated" };
@@ -22,20 +22,12 @@ export const submitKYC = async ({
 
     const userId = session.user.id;
 
-    // Check if KYC already exists
-    const existing = await kycModel.findOne({ userId });
-    if (existing) {
-      return { success: false, error: "KYC already submitted" };
-    }
-
-    // Create KYC record
-    await kycModel.create({
-      userId,
-      idType,
-      frontImageUrl,
-      backImageUrl,
-      status: "pending",
-    });
+    // Upsert the user KYC record
+    await kycModel.findOneAndUpdate(
+      { userId },
+      { userId, idType, frontImageUrl, backImageUrl, status: "pending" },
+      { upsert: true, new: true }
+    );
 
     return { success: true, message: "KYC submitted successfully" };
   } catch (error) {

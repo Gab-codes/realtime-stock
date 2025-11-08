@@ -9,6 +9,8 @@ import { Progress } from "@/components/ui/progress";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import Image from "next/image";
 import { toast } from "sonner";
+import { submitKYC } from "@/lib/actions/kyc.action";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 const KycForm = () => {
   const [progress, setProgress] = useState(0);
@@ -19,13 +21,14 @@ const KycForm = () => {
     "id-card" | "passport" | "driver-license"
   >("id-card");
 
+  //  Fetch fresh upload credentials from backend
   const authenticator = async () => {
     const res = await fetch("/api/imagekit-auth");
     if (!res.ok) throw new Error("Failed to get authentication params");
     return res.json();
   };
 
-  // Upload a single file and return the ImageKit response - we call authenticator per file
+  //  Upload a single file to ImageKit
   const uploadSingleFile = async (
     file: File,
     onProgress: (p: number) => void
@@ -49,6 +52,7 @@ const KycForm = () => {
     return resp;
   };
 
+  //  Main Upload + KYC Submission Flow
   const handleUpload = async () => {
     if (!frontFile || !backFile) {
       toast.error("Please upload both front and back images.");
@@ -59,41 +63,39 @@ const KycForm = () => {
       setStatus("pending");
       setProgress(0);
 
-      // Upload front first (so user sees progress and we can show meaningful messages)
       toast.promise(
         (async () => {
+          // Step 1: Upload front image (first half of progress)
           setProgress(5);
           const frontResp = await uploadSingleFile(frontFile, (p) =>
             setProgress(p / 2)
           );
-          // after front uploaded, upload back (use second half of progress)
+
+          // Step 2: Upload back image (second half of progress)
           const backResp = await uploadSingleFile(backFile, (p) =>
             setProgress(50 + p / 2)
           );
 
-          // extract URLs (ImageKit response shape includes 'url')
           const frontImageUrl = frontResp.url;
           const backImageUrl = backResp.url;
 
-          // send to backend to create KYC record
-          const apiRes = await fetch("/api/kyc/upload", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              idType,
-              frontImageUrl,
-              backImageUrl,
-            }),
+          if (!frontImageUrl || !backImageUrl) {
+            throw new Error("Failed to upload files");
+          }
+
+          // Step 3: Submit to backend
+          const response = await submitKYC({
+            idType,
+            frontImageUrl,
+            backImageUrl,
           });
 
-          if (!apiRes.ok) {
-            const text = await apiRes.text();
-            throw new Error(text || "Failed to submit KYC to server");
+          if (!response?.success) {
+            throw new Error(response?.error || "KYC submission failed");
           }
 
           setProgress(100);
           setStatus("success");
-          // clear files after success
           setFrontFile(null);
           setBackFile(null);
 
@@ -102,7 +104,11 @@ const KycForm = () => {
         {
           loading: "Uploading and submitting KYC...",
           success: "Document uploaded and submitted for verification 🎉",
-          error: (err) => `Upload failed: ${err?.message ?? "Unknown error"}`,
+          error: (err) => {
+            setStatus("idle");
+            setProgress(0);
+            return `Upload failed: ${err?.message ?? "Unknown error"}`;
+          },
         }
       );
     } catch (err: any) {
@@ -127,42 +133,35 @@ const KycForm = () => {
           verify manually.
         </p>
 
+        {/* Document type selection */}
         <div>
           <label className="text-sm text-gray-300 font-medium">
             Document Type
           </label>
-          <div className="mt-2 flex gap-2">
-            <button
-              className={`px-3 py-1 rounded ${
-                idType === "id-card" ? "bg-white/6" : "bg-transparent"
-              }`}
-              onClick={() => setIdType("id-card")}
-              type="button"
+          <div className="mt-2">
+            <ToggleGroup
+              type="single"
+              value={idType}
+              onValueChange={() =>
+                setIdType(
+                  idType === "id-card"
+                    ? "passport"
+                    : idType === "passport"
+                    ? "driver-license"
+                    : "id-card"
+                )
+              }
             >
-              ID Card
-            </button>
-            <button
-              className={`px-3 py-1 rounded ${
-                idType === "passport" ? "bg-white/6" : "bg-transparent"
-              }`}
-              onClick={() => setIdType("passport")}
-              type="button"
-            >
-              Passport
-            </button>
-            <button
-              className={`px-3 py-1 rounded ${
-                idType === "driver-license" ? "bg-white/6" : "bg-transparent"
-              }`}
-              onClick={() => setIdType("driver-license")}
-              type="button"
-            >
-              Driver License
-            </button>
+              <ToggleGroupItem value="id-card">ID Card</ToggleGroupItem>
+              <ToggleGroupItem value="passport">Passport</ToggleGroupItem>
+              <ToggleGroupItem value="driver-license">
+                Driver License
+              </ToggleGroupItem>
+            </ToggleGroup>
           </div>
         </div>
 
-        {/* front */}
+        {/* Front image upload */}
         <div className="flex flex-col gap-2">
           <label className="text-sm text-gray-300 font-medium">
             Government ID (front)
@@ -186,7 +185,7 @@ const KycForm = () => {
           )}
         </div>
 
-        {/* back */}
+        {/* Back image upload */}
         <div className="flex flex-col gap-2">
           <label className="text-sm text-gray-300 font-medium">
             Government ID (back)
@@ -210,6 +209,7 @@ const KycForm = () => {
           )}
         </div>
 
+        {/* Progress */}
         {status === "pending" && (
           <>
             <Progress value={progress} className="h-2 bg-gray-700" />
@@ -219,6 +219,7 @@ const KycForm = () => {
           </>
         )}
 
+        {/* Success Message */}
         {status === "success" && (
           <Alert className="bg-green-500/20 border border-green-600 text-green-300">
             <AlertDescription className="text-center">
@@ -227,8 +228,9 @@ const KycForm = () => {
           </Alert>
         )}
 
+        {/* Submit Button */}
         <Button
-          onClick={handleUpload}
+          onClick={status === "idle" ? handleUpload : undefined}
           disabled={status === "pending"}
           className="bg-crypto-purple hover:bg-crypto-dark-purple w-full text-white"
         >
