@@ -8,7 +8,6 @@ import {
   ArrowDownToLine,
   ArrowUpToLine,
   Briefcase,
-  LineChart,
   Settings,
   HelpCircle,
   Biohazard,
@@ -19,7 +18,6 @@ import { Button } from "@/components/ui/button";
 const navItems = [
   { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { label: "Portfolio", href: "/portfolio", icon: Briefcase },
-  { label: "Market", href: "/market", icon: LineChart },
   { label: "Transactions", href: "/transactions", icon: History },
   { label: "Deposit", href: "/deposit", icon: ArrowDownToLine },
   { label: "Withdraw", href: "/withdraw", icon: ArrowUpToLine },
