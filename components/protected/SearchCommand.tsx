@@ -10,7 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Loader2, Search, TrendingUp } from "lucide-react";
 import Link from "next/link";
-import { searchStocks } from "@/lib/actions/finnhub.actions";
+import { searchStocks } from "@/lib/actions/finnhub.action";
 import { useDebounce } from "@/hooks/useDebounce";
 
 export default function SearchCommand({

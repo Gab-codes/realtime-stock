@@ -1,4 +1,3 @@
-import { Currency } from "@/app/(protected)/deposit/page";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -11,8 +10,8 @@ import {
 import { Dispatch, SetStateAction } from "react";
 
 type Step1Props = {
-  currency: Currency;
-  setCurrency: Dispatch<SetStateAction<Currency>>;
+  currency: "BTC" | "USDT";
+  setCurrency: Dispatch<SetStateAction<"BTC" | "USDT">>;
   usdAmount: number | "";
   setUsdAmount: (usdAmount: number | "") => void;
   loadingPrices: boolean;
@@ -38,7 +37,7 @@ const Step1 = ({
           <label className="text-sm text-gray-400">Currency</label>
           <Select
             value={currency}
-            onValueChange={(v) => setCurrency(v as Currency)}
+            onValueChange={(v) => setCurrency(v as "BTC" | "USDT")}
           >
             <SelectTrigger className="w-full">
               <SelectValue />

@@ -7,6 +7,7 @@ import Step1 from "@/components/protected/deposit/step1";
 import Step2 from "@/components/protected/deposit/step2";
 import Step3 from "@/components/protected/deposit/step3";
 import { formatPrice } from "@/lib/utils";
+import { createDeposit } from "@/lib/actions/deposit.action";
 
 // Merchant deposit addresses (replace with your real addresses)
 const MERCHANT_ADDRESSES = {
@@ -92,7 +93,7 @@ export default function DepositFlow({
     }
     if (currency === "USDT") {
       // USDT stable; use 2 or 6 decimals depending on chain — keep 6
-      return +(usdAmount / prices.USDT).toFixed(6);
+      return +(usdAmount / prices.USDT).toFixed(2);
     }
     return 0;
   }, [usdAmount, prices, currency]);
@@ -135,20 +136,21 @@ export default function DepositFlow({
 
     setIsCreating(true);
     try {
-      // optional server call
-      if (onCreateDeposit) {
-        await onCreateDeposit(record);
-      } else {
-        // local demo: store in local deposits array
-        setDeposits((d) => [record, ...d]);
-      }
+      const res = await createDeposit({
+        currency: record.currency,
+        usdAmount: record.usdAmount,
+        cryptoAmount: record.cryptoAmount,
+        address: record.address,
+      });
+
+      if (!res.success) throw new Error(res.error);
+
       setPendingDeposit(record);
       setStep(3);
+      toast.success("Deposit recorded successfully. Awaiting confirmation.");
     } catch (err) {
       console.error(err);
-      try {
-        toast.error("Could not create deposit. Try again.");
-      } catch {}
+      toast.error("Could not create deposit. Try again.");
     } finally {
       setIsCreating(false);
     }

@@ -1,12 +1,11 @@
-import { Currency } from "@/app/(protected)/deposit/page";
 import { Button } from "@/components/ui/button";
 import { Copy } from "lucide-react";
 import { useState } from "react";
 
 type Step2Props = {
-  currency: Currency;
+  currency: "BTC" | "USDT";
   cryptoAmount: number;
-  addressFor: (currency: Currency) => string;
+  addressFor: (currency: "BTC" | "USDT") => string;
   confirmPaid: () => void;
   setStep: (step: number) => void;
   isCreating: boolean;
