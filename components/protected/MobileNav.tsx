@@ -72,7 +72,6 @@ export default function MobileNav() {
 
           <div className="px-6 pb-6 space-y-3">
             <DrawerLink href="/portfolio" icon={Briefcase} label="Portfolio" />
-            <DrawerLink href="/market" icon={LineChart} label="Market" />
             <DrawerLink href="/settings" icon={Settings} label="Settings" />
             <DrawerLink
               href="/kyc"
