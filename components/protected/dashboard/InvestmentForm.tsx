@@ -145,9 +145,6 @@ const InvestmentForm = ({ depositedBalance }: Props) => {
       if (!response?.success) {
         throw new Error(response?.error || "Failed to create investment.");
       }
-
-      // ✅ If successful: continue normal AI sequence
-      toast.success(response.message || "Investment created successfully.");
     } catch (error) {
       console.error("Error creating investment:", error);
       toast.error("Investment failed. Please try again.");
