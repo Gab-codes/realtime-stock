@@ -20,6 +20,7 @@ import {
 import { CheckCircle2, Lightbulb, Brain } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { createInvestment } from "@/lib/actions/createInvestment.action";
 
 type Props = { depositedBalance: number };
 
@@ -40,7 +41,7 @@ const InvestmentForm = ({ depositedBalance }: Props) => {
   const [currentMessage, setCurrentMessage] = useState("");
   const [stepIndex, setStepIndex] = useState(0);
   const [confidence, setConfidence] = useState(98); // 97-99
-  const [animState, setAnimState] = useState<"bulb" | "brain">("bulb");
+  const [animState, setAnimState] = useState<"bulb" | "brain" | null>("bulb");
 
   const timerRef = useRef<number | null>(null);
 
@@ -111,7 +112,7 @@ const InvestmentForm = ({ depositedBalance }: Props) => {
     setCurrentMessage("");
   };
 
-  const handleInvest = () => {
+  const handleInvest = async () => {
     if (!amount || amount <= 0) {
       toast.error("Please enter a valid investment amount.");
       return;
@@ -124,14 +125,39 @@ const InvestmentForm = ({ depositedBalance }: Props) => {
       return;
     }
 
-    const seq = buildSequence();
+    // Start AI modal immediately
+    const seq = buildSequence(); // builds your randomized messages
     setSequenceMessages(seq);
-    setOpen(true);
-
-    // initial display: show first message immediately (user liked 4s for next)
     setCurrentMessage(seq[0]);
     setStepIndex(1);
-    setAnimState("bulb"); // start with bulb
+    setAnimState("bulb");
+    setOpen(true);
+
+    try {
+      // Trigger the server action (while animation is running)
+      const response = await createInvestment({
+        amount,
+        days,
+        profitRates,
+      });
+
+      // If backend failed
+      if (!response?.success) {
+        throw new Error(response?.error || "Failed to create investment.");
+      }
+
+      // ✅ If successful: continue normal AI sequence
+      toast.success(response.message || "Investment created successfully.");
+    } catch (error) {
+      console.error("Error creating investment:", error);
+      toast.error("Investment failed. Please try again.");
+
+      // ❌ Stop animation and close modal
+      setOpen(false);
+      setAnimState(null);
+      setCurrentMessage("");
+      setStepIndex(0);
+    }
   };
 
   // Manage step transitions
@@ -142,7 +168,7 @@ const InvestmentForm = ({ depositedBalance }: Props) => {
     if (!sequenceMessages.length) return;
 
     // finished all steps -> show success after randomized delay
-    if (stepIndex > sequenceMessages.length) {
+    if (stepIndex >= sequenceMessages.length) {
       // show success after a random delay (4-5s)
       timerRef.current = window.setTimeout(() => {
         setCurrentMessage("Investment plan successfully created.");
@@ -335,7 +361,7 @@ const InvestmentForm = ({ depositedBalance }: Props) => {
             {currentMessage &&
               currentMessage.toLowerCase().includes("successfully") && (
                 <div className="flex items-center justify-center gap-2">
-                  <CheckCircle2 className="w-8 h-8 text-green-400" />
+                  <CheckCircle2 className="w-8 h-8 animate-bounce text-green-400" />
                   <span className="text-green-300 font-medium">Success</span>
                 </div>
               )}
