@@ -21,7 +21,7 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
   return (
     <main className="min-h-screen text-gray-400 flex">
       <Sidebar />
-      <div className="flex-col w-full max-sm:mb-15">
+      <div className="flex-col w-full max-md:mb-15">
         <Header user={user} />
         <div className="container py-5">{children}</div>
       </div>

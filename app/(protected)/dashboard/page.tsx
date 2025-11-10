@@ -46,7 +46,7 @@ const DashboardOverview = async () => {
       </div>
 
       {/* AI Investment Form */}
-      <InvestmentForm />
+      <InvestmentForm depositedBalance={depositedBalance} />
     </div>
   );
 };
