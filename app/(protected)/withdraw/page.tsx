@@ -75,7 +75,7 @@ export default function WithdrawalForm() {
   }
 
   return (
-    <Card className="bg-crypto-blue/80 border border-crypto-blue/20 text-white max-w-2xl mx-auto mt-6">
+    <Card className="bg-crypto-blue/80 border border-crypto-blue/20 text-white max-w-2xl mx-auto md:mt-4">
       <CardHeader>
         <CardTitle className="text-xl font-semibold">
           Withdraw Funds 💸

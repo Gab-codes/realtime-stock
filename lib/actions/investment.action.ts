@@ -80,3 +80,57 @@ export const createInvestment = async (payload: InvestmentPayload) => {
     return { success: false, error: error?.message || "Internal server error" };
   }
 };
+
+export const getPortfolio = async () => {
+  try {
+    const session = await auth.api.getSession({ headers: await headers() });
+    if (!session?.user) {
+      return { success: false, error: "Not authenticated" };
+    }
+
+    const userId = session.user.id;
+
+    const [investments] = await Promise.all([
+      Investment.find({ userId }).sort({ createdAt: -1 }),
+    ]);
+
+    const totalInvested = investments.reduce(
+      (sum, i) => sum + (i.status === "cancelled" ? 0 : i.principal),
+      0
+    );
+
+    const totalProfit = investments.reduce(
+      (sum, i) => sum + (i.status === "cancelled" ? 0 : i.profitAccrued ?? 0),
+      0
+    );
+
+    const active = investments
+      .filter((i) => i.status === "active")
+      .reduce((sum, i) => sum + i.principal, 0);
+
+    return {
+      success: true,
+      data: {
+        investments: investments.map((i) => ({
+          id: i._id.toString(),
+          planLabel: i.planLabel,
+          principal: i.principal,
+          days: i.days,
+          dailyRate: i.dailyRate,
+          startedAt: i.startedAt,
+          maturityDate: i.maturityDate,
+          status: i.status,
+          profitAccrued: i.profitAccrued ?? 0,
+        })),
+        totals: {
+          totalInvested,
+          profitEarned: totalProfit,
+          active,
+        },
+      },
+    };
+  } catch (error: any) {
+    console.error("Error fetching portfolio:", error);
+    return { success: false, error: "Internal server error" };
+  }
+};

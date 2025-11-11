@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
   ArrowDownToLine,
@@ -24,9 +24,12 @@ import {
   DrawerClose,
 } from "@/components/ui/drawer";
 import { cn } from "@/lib/utils";
+import { Button } from "../ui/button";
+import { signOut } from "@/lib/actions/auth.action";
 
 export default function MobileNav() {
   const pathname = usePathname();
+  const router = useRouter();
 
   const tabs = [
     { label: "Home", href: "/dashboard", icon: LayoutDashboard },
@@ -34,6 +37,12 @@ export default function MobileNav() {
     { label: "Withdraw", href: "/withdraw", icon: ArrowUpToLine },
     { label: "History", href: "/transactions", icon: History },
   ];
+
+  const handleSignOut = async () => {
+    console.log("signing out");
+    await signOut();
+    router.push("/sign-in");
+  };
 
   return (
     <div className="fixed bottom-0 left-0 w-full bg-[#0a0a0a]/95 backdrop-blur-md border-t border-white/10 flex py-3 px-7 md:hidden z-50">
@@ -78,6 +87,15 @@ export default function MobileNav() {
               icon={HelpCircle}
               label="Verification Center"
             />
+          </div>
+          <div
+            onClick={handleSignOut}
+            className="absolute bottom-5 w-full px-10 mb-5 left-0 "
+          >
+            <Button variant="destructive" className="w-full text-gray-100">
+              <LogOut size={20} />
+              Logout
+            </Button>
           </div>
         </DrawerContent>
       </Drawer>

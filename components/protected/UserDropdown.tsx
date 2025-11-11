@@ -12,12 +12,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { LogOut } from "lucide-react";
-import NavItems from "@/components/protected/NavItems";
 import { signOut } from "@/lib/actions/auth.action";
 
 const UserDropdown = ({
   user,
-  initialStocks,
 }: {
   user: User;
   initialStocks: StockWithWatchlistStatus[];
@@ -70,7 +68,7 @@ const UserDropdown = ({
         <DropdownMenuSeparator className="bg-gray-600" />
         <DropdownMenuItem
           onClick={handleSignOut}
-          className="text-gray-100 text-md font-medium focus:bg-transparent focus:text-yellow-500 transition-colors cursor-pointer"
+          className="text-red-400 text-md font-medium focus:bg-transparent focus:text-red-500 transition-colors cursor-pointer"
         >
           <LogOut className="h-4 w-4 mr-2 block" />
           Logout

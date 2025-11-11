@@ -20,7 +20,7 @@ import {
 import { CheckCircle2, Lightbulb, Brain } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
-import { createInvestment } from "@/lib/actions/createInvestment.action";
+import { createInvestment } from "@/lib/actions/investment.action";
 
 type Props = { depositedBalance: number };
 
