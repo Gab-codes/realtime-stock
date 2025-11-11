@@ -7,6 +7,7 @@ import {
   ArrowUpToLine,
   Cpu,
   Clock,
+  Sparkle,
 } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -20,10 +21,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Summary from "./summary";
+import { formatDate } from "@/lib/utils";
 
 interface Transaction {
   _id: string;
-  type: "deposit" | "withdrawal" | "ai-return";
+  type: "deposit" | "withdrawal" | "ai-return" | "investment";
   amount: number;
   currency: "USDT" | "BTC";
   status: "pending" | "completed" | "failed";
@@ -50,7 +52,7 @@ const TransactionHistory = ({
     .reduce((a, b) => a + b.amount, 0);
 
   return (
-    <div className="p-4 md:p-8 space-y-6 text-white">
+    <div className="pt-4 px-1 md:p-4 space-y-6 text-white">
       {/* Summary header */}
       <Summary {...{ totalDeposits, totalWithdrawals, totalReturns, format }} />
 
@@ -76,10 +78,7 @@ const TransactionHistory = ({
 
             <TableBody>
               {transactions.map((t) => (
-                <TableRow
-                  key={t._id}
-                  className="border-b border-white/5 hover:bg-white/5 transition"
-                >
+                <TableRow key={t._id} className="space-y-3">
                   <TableCell className="capitalize flex items-center gap-2">
                     {t.type === "deposit" && (
                       <ArrowDownToLine size={18} className="text-green-400" />
@@ -89,6 +88,9 @@ const TransactionHistory = ({
                     )}
                     {t.type === "ai-return" && (
                       <Cpu size={18} className="text-cyan-400" />
+                    )}
+                    {t.type === "investment" && (
+                      <Sparkle size={18} className="text-purple-400" />
                     )}
                     {t.type.replace("_", " ")}
                   </TableCell>
@@ -128,7 +130,7 @@ const TransactionHistory = ({
                   </TableCell>
 
                   <TableCell className="text-sm text-gray-300">
-                    {new Date(t.createdAt).toLocaleDateString()}
+                    {formatDate(t.createdAt)}
                   </TableCell>
                 </TableRow>
               ))}

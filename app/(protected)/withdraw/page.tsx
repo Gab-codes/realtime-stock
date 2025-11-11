@@ -102,7 +102,7 @@ export default function WithdrawalForm() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent className="bg-[#0a0a0a] text-gray-200 border border-gray-800">
-                <SelectItem value="USDT">USDT (stablecoin)</SelectItem>
+                <SelectItem value="USDT">USDT (TRON)</SelectItem>
                 <SelectItem value="BTC">BTC (Bitcoin)</SelectItem>
               </SelectContent>
             </Select>

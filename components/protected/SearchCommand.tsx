@@ -67,13 +67,13 @@ export default function SearchCommand({
   return (
     <>
       {renderAs === "text" ? (
-        <span
+        <div
           onClick={() => setOpen(true)}
-          className="search-text flex items-center gap-2"
+          className=" hover:text-crypto-purple flex items-center cursor-pointer gap-2"
         >
           {label}
           <Search className="size-5" />
-        </span>
+        </div>
       ) : (
         <Button onClick={() => setOpen(true)} className="search-btn">
           {label}

@@ -23,7 +23,7 @@ const DepositWithdrawActions = () => {
         </Button>
       </Link>
       <Link href="#invest">
-        <Button className="bg-green-500 text-white hover:text-white border-gray-600">
+        <Button className="bg-green-500 hover:bg-green-600 text-white hover:text-white border-gray-600">
           <HandCoins size={18} />
           Invest
         </Button>
