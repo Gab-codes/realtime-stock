@@ -12,12 +12,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { LogOut } from "lucide-react";
-import NavItems from "@/components/protected/NavItems";
 import { signOut } from "@/lib/actions/auth.action";
 
 const UserDropdown = ({
   user,
-  initialStocks,
 }: {
   user: User;
   initialStocks: StockWithWatchlistStatus[];

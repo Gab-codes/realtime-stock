@@ -1,4 +1,4 @@
-import { formatPrice } from "@/lib/utils";
+import { formatDate, formatPrice } from "@/lib/utils";
 import { Clock, CheckCircle, XCircle, Trash } from "lucide-react";
 
 export default function InvestmentMobileList({
@@ -46,11 +46,12 @@ export default function InvestmentMobileList({
               </span>
             </p>
             <p>
-              <span className="text-gray-400">Duration:</span> {inv.days} days
+              <span className="text-gray-400">Started:</span>{" "}
+              {formatDate(inv.startedAt)}
             </p>
             <p>
-              <span className="text-gray-400">Started:</span>{" "}
-              {new Date(inv.startedAt).toLocaleDateString()}
+              <span className="text-gray-400">End Date:</span>{" "}
+              {formatDate(inv.maturityDate)}
             </p>
           </div>
         </div>
