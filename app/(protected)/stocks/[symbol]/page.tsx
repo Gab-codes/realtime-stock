@@ -1,5 +1,6 @@
 import TradingViewWidget from "@/components/protected/TradingViewWidget";
 import WatchlistButton from "@/components/protected/WatchlistButton";
+import { Button } from "@/components/ui/button";
 import {
   SYMBOL_INFO_WIDGET_CONFIG,
   CANDLE_CHART_WIDGET_CONFIG,
@@ -8,6 +9,7 @@ import {
   COMPANY_PROFILE_WIDGET_CONFIG,
   COMPANY_FINANCIALS_WIDGET_CONFIG,
 } from "@/lib/constants";
+import Link from "next/link";
 
 export default async function StockDetails({ params }: StockDetailsPageProps) {
   const { symbol } = await params;
@@ -42,11 +44,17 @@ export default async function StockDetails({ params }: StockDetailsPageProps) {
         {/* Right column */}
         <div className="flex flex-col gap-6">
           <div className="flex items-center justify-between">
-            <WatchlistButton
+            {/* <WatchlistButton
               symbol={symbol.toUpperCase()}
               company={symbol.toUpperCase()}
               isInWatchlist={false}
-            />
+            /> */}
+
+            <Link href={"/dashboard#invest"} className="w-full">
+              <Button className="w-full rounded-[3px] text-lg font-medium text-white py-6 bg-crypto-purple hover:bg-crypto-dark-purple">
+                Invest this Stock
+              </Button>
+            </Link>
           </div>
 
           <TradingViewWidget

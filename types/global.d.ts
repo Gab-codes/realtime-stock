@@ -4,6 +4,18 @@ declare global {
     password: string;
   };
 
+  type Investment = {
+    id: string;
+    planLabel: string;
+    principal: number;
+    days: number;
+    dailyRate: number;
+    startedAt: string;
+    status: "active" | "completed" | "cancelled";
+    profitAccrued: number;
+    maturityDate: string;
+  };
+
   type DepositRecord = {
     id: string;
     currency: Currency;
