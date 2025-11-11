@@ -43,7 +43,7 @@ const Step1 = ({
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="USDT">USDT (stablecoin)</SelectItem>
+              <SelectItem value="USDT">USDT (TRON)</SelectItem>
               <SelectItem value="BTC">BTC (Bitcoin)</SelectItem>
             </SelectContent>
           </Select>

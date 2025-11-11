@@ -16,7 +16,7 @@ const NavItems = ({
             <li key="search-trigger">
               <SearchCommand
                 renderAs="text"
-                label="Search"
+                label="Search Stocks"
                 initialStocks={initialStocks}
               />
             </li>

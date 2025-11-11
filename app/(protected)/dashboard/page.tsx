@@ -2,6 +2,7 @@ import BalanceCard from "@/components/protected/dashboard/BalanceCard";
 import DepositWithdrawActions from "@/components/protected/dashboard/DepositWithAction";
 import InvestmentForm from "@/components/protected/dashboard/InvestmentForm";
 import { getUserData } from "@/lib/actions/user.action";
+import { formatPrice } from "@/lib/utils";
 
 interface UserBalanceData {
   depositedBalance: number;
@@ -26,7 +27,7 @@ const DashboardOverview = async () => {
       <div className="bg-crypto-blue/60 border border-crypto-blue rounded-lg p-6 text-center">
         <h3 className="text-gray-400 text-sm">Total Balance</h3>
         <p className="text-3xl font-extrabold text-white mt-2">
-          ${totalBalance}
+          {formatPrice(totalBalance)}
         </p>
         <DepositWithdrawActions />
       </div>

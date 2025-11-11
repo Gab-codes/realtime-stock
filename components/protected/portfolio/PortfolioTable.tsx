@@ -1,7 +1,15 @@
 "use client";
 
 import { formatDate, formatPrice } from "@/lib/utils";
-import { Clock, CheckCircle, XCircle, Trash } from "lucide-react";
+import { Clock, CheckCircle, XCircle } from "lucide-react";
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell,
+} from "@/components/ui/table";
 
 export default function PortfolioTable({
   investments,
@@ -9,33 +17,34 @@ export default function PortfolioTable({
   investments: Investment[];
 }) {
   return (
-    <div className="overflow-x-auto hidden sm:table w-full text-left">
-      <table className="w-full text-left">
-        <thead className="text-sm text-gray-400 border-b border-white/5">
-          <tr>
-            <th className="py-3">Plan</th>
-            <th>Principal</th>
-            <th>Profit Made</th>
-            <th>End Date</th>
-            <th>Started</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
+    <div className="hidden sm:block overflow-x-auto w-full">
+      <Table>
+        <TableHeader>
+          <TableRow className="text-sm text-gray-400 border-b border-white/5">
+            <TableHead className="py-3">Plan</TableHead>
+            <TableHead>Principal</TableHead>
+            <TableHead>Profit Made</TableHead>
+            <TableHead>End Date</TableHead>
+            <TableHead>Started</TableHead>
+            <TableHead>Status</TableHead>
+          </TableRow>
+        </TableHeader>
+
+        <TableBody>
           {investments.map((inv) => (
-            <tr key={inv.id} className="border-b border-white/5">
-              <td className="py-3">{inv.planLabel}</td>
-              <td>{formatPrice(inv.principal)}</td>
-              <td className="text-green-300">
+            <TableRow key={inv.id} className="border-b border-white/5">
+              <TableCell className="py-3">{inv.planLabel}</TableCell>
+              <TableCell>{formatPrice(inv.principal)}</TableCell>
+              <TableCell className="text-green-300">
                 {formatPrice(inv.profitAccrued)}
-              </td>
-              <td className="text-sm text-gray-300">
-                {formatDate(inv.startedAt)}
-              </td>
-              <td className="text-sm text-gray-300">
+              </TableCell>
+              <TableCell className="text-sm text-gray-300">
                 {formatDate(inv.maturityDate)}
-              </td>
-              <td>
+              </TableCell>
+              <TableCell className="text-sm text-gray-300">
+                {formatDate(inv.startedAt)}
+              </TableCell>
+              <TableCell>
                 {inv.status === "active" && (
                   <span className="inline-flex items-center gap-2 text-xs text-amber-300">
                     <Clock size={14} /> Active
@@ -51,11 +60,11 @@ export default function PortfolioTable({
                     <XCircle size={14} /> Cancelled
                   </span>
                 )}
-              </td>
-            </tr>
+              </TableCell>
+            </TableRow>
           ))}
-        </tbody>
-      </table>
+        </TableBody>
+      </Table>
     </div>
   );
 }

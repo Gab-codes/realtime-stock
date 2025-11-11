@@ -1,6 +1,7 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { formatPrice } from "@/lib/utils";
 
 interface BalanceCardProps {
   title: string;
@@ -15,7 +16,7 @@ const BalanceCard = ({ title, amount, subtitle }: BalanceCardProps) => {
         <CardTitle className="text-gray-300 text-sm">{title}</CardTitle>
       </CardHeader>
       <CardContent>
-        <p className="text-2xl font-bold">{`$${amount.toLocaleString()}`}</p>
+        <p className="text-2xl font-bold">{`${formatPrice(amount)}`}</p>
         {subtitle && <p className="text-xs text-gray-400 mt-1">{subtitle}</p>}
       </CardContent>
     </Card>
