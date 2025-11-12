@@ -11,7 +11,6 @@ export const getAuth = async () => {
 
   const mongoose = await connectToDatabase();
   const db = mongoose.connection.db;
-
   if (!db) throw new Error("Database not connected, check your connection.");
 
   authInstance = betterAuth({
