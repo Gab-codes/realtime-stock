@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import {
   Table,
   TableBody,
@@ -51,11 +52,6 @@ const users = [
 ];
 
 const UserTable = () => {
-  const handleViewUser = (id: string) => {
-    console.log("View user:", id);
-    // router.push(`/admin/users/${id}`);
-  };
-
   const handleDeleteUser = (id: string) => {
     console.log("Delete user:", id);
     // confirmation + API call
@@ -137,8 +133,10 @@ const UserTable = () => {
                     className="bg-muted-foreground"
                     align="end"
                   >
-                    <DropdownMenuItem onClick={() => handleViewUser(user.id)}>
-                      View User
+                    <DropdownMenuItem asChild>
+                      <Link href={`/admin/user-management/${user.id}`}>
+                        View User
+                      </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       className="text-red-600"
