@@ -25,8 +25,13 @@ const SignIn = () => {
   const onSubmit = async (data: SignInFormData) => {
     try {
       const result = await signInWithEmail(data);
+
       if (result.success) {
-        router.push("/dashboard");
+        const res = await fetch("/api/me");
+        const user = await res.json();
+
+        if (user.role === "admin") router.push("/admin/dashboard");
+        else router.push("/dashboard");
       }
     } catch (error) {
       console.error(error);
@@ -65,7 +70,7 @@ const SignIn = () => {
         <InputField
           name="password"
           label="Password"
-          placeholder="Enter a strong passowrd"
+          placeholder="Enter a strong password"
           register={register}
           type="password"
           error={errors.password}

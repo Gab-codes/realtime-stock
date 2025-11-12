@@ -9,7 +9,10 @@ import { redirect } from "next/navigation";
 const Layout = async ({ children }: { children: React.ReactNode }) => {
   const session = await auth.api.getSession({ headers: await headers() });
 
-  if (session?.user) redirect("/dashboard");
+  const sessionUser = session?.user as User | undefined;
+
+  if (sessionUser?.role === "admin") redirect("/admin/dashboard");
+  if (sessionUser?.role === "user") redirect("/dashboard");
 
   return (
     <main className="auth-layout bg-gradient-to-b from-[#12141C] to-crypto-blue">
