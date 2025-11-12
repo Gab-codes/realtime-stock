@@ -3,7 +3,6 @@
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -13,13 +12,12 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal, CheckCircle, Clock } from "lucide-react";
+import { formatDate } from "@/lib/utils";
 
 // Mock data
 const users = [
@@ -126,9 +124,7 @@ const UserTable = () => {
                 )}
               </TableCell>
 
-              <TableCell>
-                {new Date(user.joinedAt).toLocaleDateString()}
-              </TableCell>
+              <TableCell>{formatDate(user.joinedAt)}</TableCell>
 
               <TableCell className="text-right">
                 <DropdownMenu>
