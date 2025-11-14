@@ -3,7 +3,6 @@
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -19,11 +18,12 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
-import { Eye } from "lucide-react";
+import { Eye, Loader2 } from "lucide-react";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { formatDate } from "@/lib/utils";
 import { getAdminKycSubmissions } from "@/lib/actions/adminKyc.action";
+import { toast } from "sonner";
 
 interface KycUser {
   id: string;
@@ -65,13 +65,66 @@ const AdminKycTable = () => {
   }, []);
 
   const handleApprove = (id: string) => {
-    console.log("Approve KYC:", id);
-    // TODO: Implement API call to approve
+    // Will be handled by performKycAction
+    performKycAction(id, "approve");
   };
 
   const handleReject = (id: string) => {
-    console.log("Reject KYC:", id);
-    // TODO: Implement API call to reject
+    // Will be handled by performKycAction
+    performKycAction(id, "reject");
+  };
+
+  const [processingId, setProcessingId] = useState<string | null>(null);
+  const [processingAction, setProcessingAction] = useState<
+    "approve" | "reject" | null
+  >(null);
+
+  const performKycAction = async (id: string, action: "approve" | "reject") => {
+    if (!id) return;
+    try {
+      setProcessingId(id);
+      setProcessingAction(action);
+
+      const endpoint =
+        action === "approve"
+          ? "/api/admin/kyc/approve"
+          : "/api/admin/kyc/reject";
+
+      const res = await fetch(endpoint, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id, remarks: "" }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data?.success) {
+        // update local state
+        setKycUsers((prev) =>
+          prev.map((u) =>
+            u.id === id
+              ? { ...u, status: action === "approve" ? "approved" : "rejected" }
+              : u
+          )
+        );
+        toast.success(
+          data.message ||
+            `KYC ${action === "approve" ? "approved" : "rejected"} successfully`
+        );
+      } else {
+        toast.error(data?.error || `Failed to ${action} KYC`);
+      }
+    } catch (err) {
+      console.error(`Error performing ${action} on KYC:`, err);
+      toast.error(`Failed to ${action} KYC`);
+    } finally {
+      setProcessingId(null);
+      setProcessingAction(null);
+      // close dialog
+      setSelectedUser(null);
+    }
   };
 
   if (loading) {
@@ -222,14 +275,42 @@ const AdminKycTable = () => {
                           <Button
                             variant="destructive"
                             onClick={() => handleReject(selectedUser?.id!)}
+                            disabled={processingId !== null}
+                            className={
+                              processingId !== null
+                                ? "opacity-60 cursor-not-allowed"
+                                : ""
+                            }
                           >
-                            Reject
+                            {processingId === selectedUser?.id &&
+                            processingAction === "reject" ? (
+                              <span className="flex items-center gap-2">
+                                <Loader2 className="h-4 w-4 animate-spin" />{" "}
+                                Rejecting...
+                              </span>
+                            ) : (
+                              "Reject"
+                            )}
                           </Button>
                           <Button
                             variant="default"
                             onClick={() => handleApprove(selectedUser?.id!)}
+                            disabled={processingId !== null}
+                            className={
+                              processingId !== null
+                                ? "opacity-60 cursor-not-allowed"
+                                : ""
+                            }
                           >
-                            Approve
+                            {processingId === selectedUser?.id &&
+                            processingAction === "approve" ? (
+                              <span className="flex items-center gap-2">
+                                <Loader2 className="h-4 w-4 animate-spin" />{" "}
+                                Approving...
+                              </span>
+                            ) : (
+                              "Approve"
+                            )}
                           </Button>
                         </DialogFooter>
                       </DialogContent>
