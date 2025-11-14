@@ -1,4 +1,4 @@
-import { Schema, Document, model, models } from "mongoose";
+import { Schema, model, models } from "mongoose";
 
 const TransactionSchema = new Schema<ITransaction>(
   {
