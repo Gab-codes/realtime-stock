@@ -25,6 +25,8 @@ export const signUpWithEmail = async ({
 
     if (response) {
       await userExtraModel.create({
+        name: fullName,
+        email: email,
         userId: response.user.id,
         depositedBalance: 0,
         investmentBalance: 0,

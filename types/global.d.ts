@@ -27,6 +27,19 @@ declare global {
     txHash?: string | null;
   };
 
+  interface ITransaction extends Document {
+    userId: string;
+    type: "deposit" | "withdrawal" | "ai-return" | "investment";
+    amount: number;
+    currency: "USDT" | "BTC" | "USD";
+    status: "pending" | "completed" | "failed";
+    txHash?: string;
+    network?: string;
+    investmentId?: string;
+    createdAt: Date;
+    updatedAt: Date;
+  }
+
   type SignUpFormData = {
     fullName: string;
     email: string;

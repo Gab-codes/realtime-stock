@@ -1,4 +1,4 @@
-import { Calendar, Home, Inbox } from "lucide-react";
+import { Calendar, Home, Inbox, CreditCard } from "lucide-react";
 
 import {
   Sidebar,
@@ -10,6 +10,8 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import Link from "next/link";
+import { APP_NAME } from "@/lib/utils";
 
 // Menu items.
 const items = [
@@ -28,6 +30,11 @@ const items = [
     url: "/admin/kyc-management",
     icon: Calendar,
   },
+  {
+    title: "Transactions",
+    url: "/admin/transactions",
+    icon: CreditCard,
+  },
 ];
 
 export function AppSidebar() {
@@ -35,16 +42,16 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>SIGNABITE</SidebarGroupLabel>
+          <SidebarGroupLabel>{APP_NAME}</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
+                    <Link href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
