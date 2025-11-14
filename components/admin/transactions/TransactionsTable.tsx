@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -26,7 +27,10 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { formatDate } from "@/lib/utils";
-import { getAdminTransactions } from "@/lib/actions/adminTransactions.action";
+import {
+  getAdminTransactions,
+  updateTransactionStatus,
+} from "@/lib/actions/adminTransactions.action";
 
 interface Transaction {
   amount: number;
@@ -43,6 +47,7 @@ interface Transaction {
 
 const TransactionsTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const queryClient = useQueryClient();
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["admin-transactions", currentPage],
@@ -50,21 +55,47 @@ const TransactionsTable = () => {
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
-  console.log("Admin Transactions Data:", data);
-
   const transactions = data?.success ? data.data : [];
   const pagination = data?.success
     ? data.pagination
     : { page: 1, totalPages: 1 };
 
-  const handleApprove = (id: string) => {
-    // TODO: Implement approve API call
-    console.log("Transaction approved:", id);
+  const handleApprove = async (id: string) => {
+    toast.promise(updateTransactionStatus(id, "approve"), {
+      loading: "Approving transaction...",
+      success: (result) => {
+        if (result.success) {
+          // Invalidate and refetch all admin-transactions queries
+          queryClient.invalidateQueries({ queryKey: ["admin-transactions"] });
+          return "Transaction approved successfully!";
+        } else {
+          throw new Error(result.error || "Failed to approve transaction");
+        }
+      },
+      error: (error) => {
+        console.error("Error approving transaction:", error);
+        return error.message || "Failed to approve transaction";
+      },
+    });
   };
 
-  const handleReject = (id: string) => {
-    // TODO: Implement reject API call
-    console.log("Transaction rejected:", id);
+  const handleReject = async (id: string) => {
+    toast.promise(updateTransactionStatus(id, "decline"), {
+      loading: "Rejecting transaction...",
+      success: (result) => {
+        if (result.success) {
+          // Invalidate and refetch all admin-transactions queries
+          queryClient.invalidateQueries({ queryKey: ["admin-transactions"] });
+          return "Transaction rejected successfully!";
+        } else {
+          throw new Error(result.error || "Failed to reject transaction");
+        }
+      },
+      error: (error) => {
+        console.error("Error rejecting transaction:", error);
+        return error.message || "Failed to reject transaction";
+      },
+    });
   };
 
   const getStatusColor = (status: string) => {
