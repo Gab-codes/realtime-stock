@@ -18,6 +18,7 @@ import {
   CheckCircle,
   XCircle,
 } from "lucide-react";
+import AdminKycTable from "@/components/admin/kyc/KycTable";
 
 const Dashboard = () => {
   // Dummy data for development
@@ -255,96 +256,51 @@ const Dashboard = () => {
         </Card>
       </div>
 
-      {/* Recent Activities */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Recent Transactions */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Recent Transactions</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>User</TableHead>
-                  <TableHead>Type</TableHead>
-                  <TableHead>Amount</TableHead>
-                  <TableHead>Status</TableHead>
+      {/* Recent Transactions */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Recent Transactions</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>User</TableHead>
+                <TableHead>Type</TableHead>
+                <TableHead>Amount</TableHead>
+                <TableHead>Status</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {recentActivities.transactions.slice(0, 5).map((txn) => (
+                <TableRow key={txn.id}>
+                  <TableCell className="font-medium">{txn.user}</TableCell>
+                  <TableCell>
+                    <Badge variant="outline" className="capitalize">
+                      {txn.type}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>{formatPrice(txn.amount)}</TableCell>
+                  <TableCell>
+                    <Badge
+                      variant={
+                        txn.status === "completed" ? "default" : "secondary"
+                      }
+                      className={
+                        txn.status === "completed"
+                          ? "bg-green-500/10 text-green-600 border-green-500/20"
+                          : "bg-yellow-500/10 text-yellow-600 border-yellow-500/20"
+                      }
+                    >
+                      {txn.status}
+                    </Badge>
+                  </TableCell>
                 </TableRow>
-              </TableHeader>
-              <TableBody>
-                {recentActivities.transactions.slice(0, 5).map((txn) => (
-                  <TableRow key={txn.id}>
-                    <TableCell className="font-medium">{txn.user}</TableCell>
-                    <TableCell>
-                      <Badge variant="outline" className="capitalize">
-                        {txn.type}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>{formatPrice(txn.amount)}</TableCell>
-                    <TableCell>
-                      <Badge
-                        variant={
-                          txn.status === "completed" ? "default" : "secondary"
-                        }
-                        className={
-                          txn.status === "completed"
-                            ? "bg-green-500/10 text-green-600 border-green-500/20"
-                            : "bg-yellow-500/10 text-yellow-600 border-yellow-500/20"
-                        }
-                      >
-                        {txn.status}
-                      </Badge>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
-
-        {/* Recent Investments */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Recent Investments</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>User</TableHead>
-                  <TableHead>Plan</TableHead>
-                  <TableHead>Amount</TableHead>
-                  <TableHead>Status</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {recentActivities.investments.slice(0, 5).map((inv) => (
-                  <TableRow key={inv.id}>
-                    <TableCell className="font-medium">{inv.user}</TableCell>
-                    <TableCell>{inv.planLabel}</TableCell>
-                    <TableCell>{formatPrice(inv.principal)}</TableCell>
-                    <TableCell>
-                      <Badge
-                        variant={
-                          inv.status === "active" ? "default" : "secondary"
-                        }
-                        className={
-                          inv.status === "active"
-                            ? "bg-green-500/10 text-green-600 border-green-500/20"
-                            : "bg-gray-500/10 text-gray-600 border-gray-500/20"
-                        }
-                      >
-                        {inv.status}
-                      </Badge>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
-      </div>
+              ))}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
 
       {/* Recent KYC Submissions */}
       <Card>
@@ -352,39 +308,7 @@ const Dashboard = () => {
           <CardTitle>Recent KYC Submissions</CardTitle>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>User</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Submitted</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {recentActivities.kyc.slice(0, 5).map((kyc) => (
-                <TableRow key={kyc.id}>
-                  <TableCell className="font-medium">{kyc.user}</TableCell>
-                  <TableCell>
-                    <Badge
-                      variant="outline"
-                      className={
-                        kyc.status === "approved"
-                          ? "border-green-500/20 text-green-600"
-                          : kyc.status === "rejected"
-                          ? "border-red-500/20 text-red-600"
-                          : "border-yellow-500/20 text-yellow-600"
-                      }
-                    >
-                      {kyc.status}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                    {new Date(kyc.createdAt).toLocaleDateString()}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+          <AdminKycTable />
         </CardContent>
       </Card>
     </div>
