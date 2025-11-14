@@ -2,6 +2,7 @@ import { auth } from "@/lib/better-auth/auth";
 import { headers } from "next/headers";
 import Transaction from "@/models/transaction.model";
 import { NextRequest } from "next/server";
+import userExtraModel from "@/models/userExtra.model";
 
 export async function GET(request: NextRequest) {
   try {
@@ -26,36 +27,55 @@ export async function GET(request: NextRequest) {
     const limit = 15;
     const skip = (page - 1) * limit;
 
-    // Get total count for pagination
+    // Count for pagination
     const totalTransactions = await Transaction.countDocuments();
 
-    // Get transactions
+    // Paginated transactions
     const transactions = await Transaction.find({})
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit)
       .lean();
 
-    // Transform data to match component interface
-    const transformedTransactions = transactions.map((txn) => ({
-      id: txn._id,
-      type: txn.type,
-      amount: txn.amount,
-      currency: txn.currency,
-      status:
-        txn.status === "completed"
-          ? "approved"
-          : txn.status === "failed"
-          ? "rejected"
-          : "pending",
-      date: txn.createdAt.toISOString().split("T")[0],
-      description: `${txn.type} via ${txn.network || "system"}`,
-      user: txn.userId, // For now, just use userId as placeholder
-    }));
+    // Fetch user info (fullname + email)
+    const users = await userExtraModel.find({}).lean();
+
+    // Create fast lookup table
+    const userMap: Record<string, any> = {};
+    users.forEach((user) => {
+      userMap[user.userId] = user;
+    });
+
+    // Attach user info to each transaction
+    const enrichedTransactions = transactions.map((txn) => {
+      const userInfo = userMap[txn.userId] || {};
+
+      return {
+        id: txn._id,
+        type: txn.type,
+        amount: txn.amount,
+        currency: txn.currency,
+        userId: txn.userId,
+
+        // Injected fields
+        fullName: userInfo.name || userInfo.fullName || "N/A",
+        email: userInfo.email || "N/A",
+
+        status:
+          txn.status === "completed"
+            ? "approved"
+            : txn.status === "failed"
+            ? "rejected"
+            : "pending",
+
+        date: txn.createdAt.toISOString().split("T")[0],
+        description: `${txn.type} via ${txn.network || "system"}`,
+      };
+    });
 
     return Response.json({
       success: true,
-      data: transformedTransactions,
+      data: enrichedTransactions,
       pagination: {
         page,
         limit,

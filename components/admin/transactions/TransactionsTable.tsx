@@ -29,72 +29,17 @@ import { formatDate } from "@/lib/utils";
 import { getAdminTransactions } from "@/lib/actions/adminTransactions.action";
 
 interface Transaction {
-  id: string;
-  type: "deposit" | "withdrawal";
   amount: number;
   currency: string;
-  status: "pending" | "approved" | "rejected";
   date: string;
-  user: string; // Added user field for admin view
+  description: string;
+  email: string;
+  fullName: string;
+  id: string;
+  status: string;
+  type: string;
+  userId: string;
 }
-
-// Mock transaction data for admin (all users)
-const mockTransactions: Transaction[] = [
-  {
-    id: "txn1",
-    type: "deposit",
-    amount: 5000,
-    currency: "USD",
-    status: "approved",
-    date: "2025-11-10",
-    user: "John Doe",
-  },
-  {
-    id: "txn2",
-    type: "deposit",
-    amount: 2500,
-    currency: "USD",
-    status: "pending",
-    date: "2025-11-09",
-    user: "Jane Smith",
-  },
-  {
-    id: "txn3",
-    type: "withdrawal",
-    amount: 1000,
-    currency: "USD",
-    status: "pending",
-    date: "2025-11-08",
-    user: "Alice Johnson",
-  },
-  {
-    id: "txn4",
-    type: "deposit",
-    amount: 8000,
-    currency: "USD",
-    status: "approved",
-    date: "2025-11-05",
-    user: "Bob Wilson",
-  },
-  {
-    id: "txn5",
-    type: "withdrawal",
-    amount: 2000,
-    currency: "USD",
-    status: "approved",
-    date: "2025-11-03",
-    user: "Charlie Brown",
-  },
-  {
-    id: "txn6",
-    type: "deposit",
-    amount: 3000,
-    currency: "USD",
-    status: "pending",
-    date: "2025-11-02",
-    user: "Diana Prince",
-  },
-];
 
 const TransactionsTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -105,7 +50,9 @@ const TransactionsTable = () => {
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
-  const transactions = data?.success ? data.data : mockTransactions;
+  console.log("Admin Transactions Data:", data);
+
+  const transactions = data?.success ? data.data : [];
   const pagination = data?.success
     ? data.pagination
     : { page: 1, totalPages: 1 };
@@ -153,7 +100,8 @@ const TransactionsTable = () => {
         <Table>
           <TableHeader>
             <TableRow className="border-gray-600 hover:bg-transparent">
-              <TableHead className="text-gray-300">User</TableHead>
+              <TableHead className="text-gray-300">Full Name</TableHead>
+              <TableHead className="text-gray-300">Email</TableHead>
               <TableHead className="text-gray-300">Type</TableHead>
               <TableHead className="text-gray-300">Amount</TableHead>
               <TableHead className="text-gray-300">Date</TableHead>
@@ -193,13 +141,15 @@ const TransactionsTable = () => {
                 </TableCell>
               </TableRow>
             ) : (
-              // TODO: coming back to remove the type any
-              transactions.map((txn: any) => (
+              transactions.map((txn: Transaction) => (
                 <TableRow
                   key={txn.id}
                   className="border-gray-600 hover:bg-gray-700/50 transition"
                 >
-                  <TableCell className="text-gray-300">{txn.user}</TableCell>
+                  <TableCell className="text-gray-300">
+                    {txn.fullName}
+                  </TableCell>
+                  <TableCell className="text-gray-300">{txn.email}</TableCell>
                   <TableCell>
                     <span className={`font-medium ${getTypeColor(txn.type)}`}>
                       {txn.type === "deposit" ? "+" : "-"} {txn.type}
