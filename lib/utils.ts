@@ -5,7 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? "Deewhy";
+export const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? "SignalBite";
 
 export const formatTimeAgo = (timestamp: number) => {
   const now = Date.now();
