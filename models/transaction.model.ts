@@ -1,18 +1,5 @@
 import { Schema, Document, model, models } from "mongoose";
 
-export interface ITransaction extends Document {
-  userId: string;
-  type: "deposit" | "withdrawal" | "ai-return" | "investment";
-  amount: number;
-  currency: "USDT" | "BTC" | "USD";
-  status: "pending" | "completed" | "failed";
-  txHash?: string;
-  network?: string;
-  investmentId?: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
 const TransactionSchema = new Schema<ITransaction>(
   {
     userId: { type: String, required: true },
