@@ -115,7 +115,7 @@ const TransactionsTable = () => {
   };
 
   return (
-    <div className="bg-gray-800 border border-gray-600 rounded-xl p-6">
+    <div className="bg-card border border-gray-600 rounded-xl p-6">
       {/* Header */}
       <div className="mb-6">
         <h2 className="text-xl font-semibold text-white mb-1">
