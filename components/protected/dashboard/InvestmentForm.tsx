@@ -21,20 +21,22 @@ import { CheckCircle2, Lightbulb, Brain } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { createInvestment } from "@/lib/actions/investment.action";
+import { useRouter } from "next/navigation";
 
-type Props = { depositedBalance: number };
+type Props = { depositedBalance: number; kycVerified: boolean };
 
 const randInt = (min: number, max: number) =>
   Math.floor(Math.random() * (max - min + 1)) + min;
 
-const randDelay = () => 4000 + Math.floor(Math.random() * 1001); // 4000 - 5000 ms
+const randDelay = () => 4000 + Math.floor(Math.random() * 1001);
 
 const pick = <T,>(arr: T[]) => arr[Math.floor(Math.random() * arr.length)];
 
-const InvestmentForm = ({ depositedBalance }: Props) => {
+const InvestmentForm = ({ depositedBalance, kycVerified }: Props) => {
   const [amount, setAmount] = useState<number | "">("");
   const [days, setDays] = useState(30);
   const [open, setOpen] = useState(false);
+  const router = useRouter();
 
   // AI modal states
   const [sequenceMessages, setSequenceMessages] = useState<string[]>([]);
@@ -44,6 +46,8 @@ const InvestmentForm = ({ depositedBalance }: Props) => {
   const [animState, setAnimState] = useState<"bulb" | "brain" | null>("bulb");
 
   const timerRef = useRef<number | null>(null);
+
+  console.log("KYC Verified:", kycVerified);
 
   // Profit configuration
   const profitRates: Record<number, number> = {
@@ -124,6 +128,12 @@ const InvestmentForm = ({ depositedBalance }: Props) => {
       );
       return;
     }
+    // KYC check
+    if (!kycVerified) {
+      toast.error("KYC Verification Required, please complete your KYC first.");
+      router.push("/kyc");
+      return;
+    }
 
     // Start AI modal immediately
     const seq = buildSequence(); // builds your randomized messages
@@ -149,7 +159,7 @@ const InvestmentForm = ({ depositedBalance }: Props) => {
       console.error("Error creating investment:", error);
       toast.error("Investment failed. Please try again.");
 
-      // ❌ Stop animation and close modal
+      // stop animation and close modal
       setOpen(false);
       setAnimState(null);
       setCurrentMessage("");

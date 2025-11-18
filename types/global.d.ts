@@ -27,6 +27,13 @@ declare global {
     txHash?: string | null;
   };
 
+  interface UserBalanceData {
+    depositedBalance: number;
+    investmentBalance: number;
+    totalProfit: number;
+    kycVerified: boolean;
+  }
+
   interface ITransaction extends Document {
     userId: string;
     type: "deposit" | "withdrawal" | "ai-return" | "investment";
