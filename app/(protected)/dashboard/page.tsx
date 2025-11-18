@@ -4,18 +4,13 @@ import InvestmentForm from "@/components/protected/dashboard/InvestmentForm";
 import { getUserData } from "@/lib/actions/user.action";
 import { formatPrice } from "@/lib/utils";
 
-interface UserBalanceData {
-  depositedBalance: number;
-  investmentBalance: number;
-  totalProfit: number;
-  kycVerified: boolean;
-}
 const DashboardOverview = async () => {
   const { data } = await getUserData();
 
   if (!data) return null;
 
-  const { depositedBalance, investmentBalance } = data as UserBalanceData;
+  const { depositedBalance, investmentBalance, kycVerified } =
+    data as UserBalanceData;
 
   const totalBalance = depositedBalance + investmentBalance;
 
@@ -47,7 +42,10 @@ const DashboardOverview = async () => {
       </div>
 
       {/* AI Investment Form */}
-      <InvestmentForm depositedBalance={depositedBalance} />
+      <InvestmentForm
+        depositedBalance={depositedBalance}
+        kycVerified={kycVerified}
+      />
     </div>
   );
 };
