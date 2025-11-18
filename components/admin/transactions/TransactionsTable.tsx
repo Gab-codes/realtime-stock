@@ -52,7 +52,7 @@ const TransactionsTable = () => {
   const { data, isLoading, error } = useQuery({
     queryKey: ["admin-transactions", currentPage],
     queryFn: () => getAdminTransactions(currentPage),
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 5 * 60 * 1000,
   });
 
   const transactions = data?.success ? data.data : [];

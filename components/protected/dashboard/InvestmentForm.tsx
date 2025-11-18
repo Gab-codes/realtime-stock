@@ -23,7 +23,10 @@ import { cn } from "@/lib/utils";
 import { createInvestment } from "@/lib/actions/investment.action";
 import { useRouter } from "next/navigation";
 
-type Props = { depositedBalance: number; kycVerified: boolean };
+type Props = {
+  depositedBalance: number;
+  kycStatus: "verified" | "pending" | "rejected" | "unverified";
+};
 
 const randInt = (min: number, max: number) =>
   Math.floor(Math.random() * (max - min + 1)) + min;
@@ -32,7 +35,7 @@ const randDelay = () => 4000 + Math.floor(Math.random() * 1001);
 
 const pick = <T,>(arr: T[]) => arr[Math.floor(Math.random() * arr.length)];
 
-const InvestmentForm = ({ depositedBalance, kycVerified }: Props) => {
+const InvestmentForm = ({ depositedBalance, kycStatus }: Props) => {
   const [amount, setAmount] = useState<number | "">("");
   const [days, setDays] = useState(30);
   const [open, setOpen] = useState(false);
@@ -46,8 +49,6 @@ const InvestmentForm = ({ depositedBalance, kycVerified }: Props) => {
   const [animState, setAnimState] = useState<"bulb" | "brain" | null>("bulb");
 
   const timerRef = useRef<number | null>(null);
-
-  console.log("KYC Verified:", kycVerified);
 
   // Profit configuration
   const profitRates: Record<number, number> = {
@@ -129,7 +130,12 @@ const InvestmentForm = ({ depositedBalance, kycVerified }: Props) => {
       return;
     }
     // KYC check
-    if (!kycVerified) {
+    if (kycStatus === "pending") {
+      toast.error("KYC Verification Pending, please wait for approval.");
+      return;
+    }
+
+    if (kycStatus !== "verified") {
       toast.error("KYC Verification Required, please complete your KYC first.");
       router.push("/kyc");
       return;

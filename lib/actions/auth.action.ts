@@ -31,7 +31,7 @@ export const signUpWithEmail = async ({
         depositedBalance: 0,
         investmentBalance: 0,
         totalProfit: 0,
-        kycVerified: false,
+        kycVerified: "unverified",
       });
 
       // send inngest event

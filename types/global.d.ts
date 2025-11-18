@@ -31,8 +31,22 @@ declare global {
     depositedBalance: number;
     investmentBalance: number;
     totalProfit: number;
-    kycVerified: boolean;
+    kycStatus: "verified" | "pending" | "rejected" | "unverified";
   }
+
+  export type UserExtra = {
+    _id: string;
+    userId: string;
+    fullName: string;
+    email: string;
+    depositedBalance: number;
+    investmentBalance: number;
+    totalProfit: number;
+    kycStatus: "verified" | "pending" | "rejected" | "unverified";
+    createdAt: Data;
+    updatedAt: Data;
+    __v: number;
+  };
 
   interface ITransaction extends Document {
     userId: string;

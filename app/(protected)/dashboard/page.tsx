@@ -9,7 +9,7 @@ const DashboardOverview = async () => {
 
   if (!data) return null;
 
-  const { depositedBalance, investmentBalance, kycVerified } =
+  const { depositedBalance, investmentBalance, kycStatus } =
     data as UserBalanceData;
 
   const totalBalance = depositedBalance + investmentBalance;
@@ -44,7 +44,7 @@ const DashboardOverview = async () => {
       {/* AI Investment Form */}
       <InvestmentForm
         depositedBalance={depositedBalance}
-        kycVerified={kycVerified}
+        kycStatus={kycStatus}
       />
     </div>
   );
