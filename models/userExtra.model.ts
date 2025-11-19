@@ -7,7 +7,7 @@ export interface IUserExtra extends Document {
   depositedBalance: number;
   investmentBalance: number;
   totalProfit: number;
-  kycVerified: boolean;
+  kycStatus: "verified" | "pending" | "rejected" | "unverified";
 }
 
 const UserExtraSchema = new Schema<IUserExtra>(
@@ -18,7 +18,7 @@ const UserExtraSchema = new Schema<IUserExtra>(
     depositedBalance: { type: Number, default: 0 },
     investmentBalance: { type: Number, default: 0 },
     totalProfit: { type: Number, default: 0 },
-    kycVerified: { type: Boolean, default: false },
+    kycStatus: { type: String, default: "unverified" },
   },
   { timestamps: true }
 );

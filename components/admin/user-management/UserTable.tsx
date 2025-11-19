@@ -31,27 +31,9 @@ const users = [
     joinedAt: "2024-12-01",
     kycVerified: true,
   },
-  {
-    id: "u2",
-    name: "Jane Doe",
-    email: "jane.doe@example.com",
-    totalDeposited: 8000,
-    isInvesting: false,
-    joinedAt: "2025-02-10",
-    kycVerified: false,
-  },
-  {
-    id: "u3",
-    name: "John Smith",
-    email: "john.smith@example.com",
-    totalDeposited: 13000,
-    isInvesting: true,
-    joinedAt: "2025-03-21",
-    kycVerified: true,
-  },
 ];
 
-const UserTable = () => {
+const UserTable = (usersData: any) => {
   const handleDeleteUser = (id: string) => {
     console.log("Delete user:", id);
     // confirmation + API call
