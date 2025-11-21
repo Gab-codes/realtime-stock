@@ -17,26 +17,19 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { MoreHorizontal, CheckCircle, Clock } from "lucide-react";
+import { MoreHorizontal, CheckCircle, Clock, XCircle } from "lucide-react";
 import { formatDate } from "@/lib/utils";
+import { approveKycSubmission } from "@/lib/actions/adminKyc.action";
 
-// Mock data
-const users = [
-  {
-    id: "u1",
-    name: "Gab Admin",
-    email: "gab@example.com",
-    totalDeposited: 25000,
-    isInvesting: true,
-    joinedAt: "2024-12-01",
-    kycVerified: true,
-  },
-];
-
-const UserTable = (usersData: any) => {
+const UserTable = ({ usersData }: { usersData: UserExtra[] }) => {
+  console.log("Users Data in UserTable:", usersData);
   const handleDeleteUser = (id: string) => {
     console.log("Delete user:", id);
     // confirmation + API call
+  };
+
+  const handleApproveKyc = (id: string) => {
+    approveKycSubmission(id, "approve");
   };
 
   return (
@@ -58,7 +51,6 @@ const UserTable = (usersData: any) => {
             <TableHead className="w-[200px]">Full Name</TableHead>
             <TableHead>Email Address</TableHead>
             <TableHead>Total Deposited</TableHead>
-            <TableHead>Investing</TableHead>
             <TableHead>KYC Status</TableHead>
             <TableHead>Date Joined</TableHead>
             <TableHead className="text-right">Actions</TableHead>
@@ -66,43 +58,37 @@ const UserTable = (usersData: any) => {
         </TableHeader>
 
         <TableBody>
-          {users.map((user) => (
-            <TableRow key={user.id} className="hover:bg-muted/30 transition">
-              <TableCell className="font-medium">{user.name}</TableCell>
+          {usersData.map((user) => (
+            <TableRow
+              key={user.userId}
+              className="hover:bg-muted/30 transition"
+            >
+              <TableCell className="font-medium">{user.fullName}</TableCell>
               <TableCell>{user.email}</TableCell>
               <TableCell>
                 $
-                {user.totalDeposited.toLocaleString(undefined, {
+                {user.depositedBalance.toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                 })}
               </TableCell>
 
               <TableCell>
-                <Badge
-                  variant={user.isInvesting ? "default" : "secondary"}
-                  className={`${
-                    user.isInvesting
-                      ? "bg-green-500/10 text-green-600 border-green-500/20"
-                      : "bg-red-500/10 text-red-600 border-red-500/20"
-                  }`}
-                >
-                  {user.isInvesting ? "Investing" : "Not Investing"}
-                </Badge>
-              </TableCell>
-
-              <TableCell>
-                {user.kycVerified ? (
+                {user.kycStatus === "verified" ? (
                   <span className="flex items-center gap-1 text-green-600 font-medium">
-                    <CheckCircle className="h-4 w-4" /> Verified
+                    <CheckCircle className="h-4 w-4" /> {user.kycStatus}
+                  </span>
+                ) : user.kycStatus === "pending" ? (
+                  <span className="flex items-center gap-1 text-amber-500 font-medium">
+                    <Clock className="h-4 w-4" /> {user.kycStatus}
                   </span>
                 ) : (
-                  <span className="flex items-center gap-1 text-amber-500 font-medium">
-                    <Clock className="h-4 w-4" /> Pending
+                  <span className="flex items-center gap-1 text-red-500 font-medium">
+                    <XCircle className="h-4 w-4" /> {user.kycStatus}
                   </span>
                 )}
               </TableCell>
 
-              <TableCell>{formatDate(user.joinedAt)}</TableCell>
+              <TableCell>{formatDate(user.createdAt)}</TableCell>
 
               <TableCell className="text-right">
                 <DropdownMenu>
@@ -116,13 +102,18 @@ const UserTable = (usersData: any) => {
                     align="end"
                   >
                     <DropdownMenuItem asChild>
-                      <Link href={`/admin/user-management/${user.id}`}>
+                      <Link href={`/admin/user-management/${user.userId}`}>
                         View User
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem
+                      onClick={() => handleApproveKyc(user.userId)}
+                    >
+                      Approve Kyc
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
                       className="text-red-600"
-                      onClick={() => handleDeleteUser(user.id)}
+                      onClick={() => handleDeleteUser(user.userId)}
                     >
                       Delete User
                     </DropdownMenuItem>

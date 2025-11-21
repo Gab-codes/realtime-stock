@@ -63,14 +63,10 @@ export async function PATCH(
         userExtra.depositedBalance += transaction.amount;
         await userExtra.save();
       } else {
-        // Create userExtra if it doesn't exist
-        await UserExtra.create({
-          userId: transaction.userId,
-          depositedBalance: transaction.amount,
-          investmentBalance: 0,
-          totalProfit: 0,
-          kycVerified: false,
-        });
+        return Response.json(
+          { success: false, error: "User not found" },
+          { status: 404 }
+        );
       }
     } else if (action === "decline") {
       // Update transaction status to failed
