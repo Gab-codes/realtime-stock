@@ -22,7 +22,7 @@ export async function PATCH(request: NextRequest) {
       );
     }
 
-    const { id, remarks } = await request.json();
+    const { id } = await request.json();
 
     if (!id) {
       return Response.json(
@@ -35,8 +35,7 @@ export async function PATCH(request: NextRequest) {
     const updatedKyc = await kycModel.findByIdAndUpdate(
       id,
       {
-        status: "approved",
-        remarks: remarks || undefined,
+        status: "verified",
         updatedAt: new Date(),
       },
       { new: true }
@@ -52,7 +51,7 @@ export async function PATCH(request: NextRequest) {
     // Update user verification status
     await UserExtra.findOneAndUpdate(
       { userId: updatedKyc.userId },
-      { kycVerified: true },
+      { kycStatus: "verified" },
       { upsert: true }
     );
 
@@ -62,7 +61,6 @@ export async function PATCH(request: NextRequest) {
       data: {
         id: updatedKyc._id,
         status: updatedKyc.status,
-        remarks: updatedKyc.remarks,
       },
     });
   } catch (error) {
