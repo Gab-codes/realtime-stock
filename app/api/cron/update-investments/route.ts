@@ -1,42 +1,86 @@
-import { NextResponse } from "next/server";
+import mongoose from "mongoose";
 import Investment from "@/models/investment.model";
 import userExtraModel from "@/models/userExtra.model";
-import { connectToDatabase } from "@/database/mongoose";
+import Transaction from "@/models/transaction.model";
 
-export const dynamic = "force-dynamic"; // ensure route isn't cached
-
-export async function GET() {
-  await connectToDatabase();
-
+export const runDailyInvestmentCron = async () => {
   try {
-    const now = new Date();
-    const investments = await Investment.find({ status: "active" });
+    // Connect to DB if not already connected (Vercel serverless)
+    if (!mongoose.connection.readyState) {
+      await mongoose.connect(process.env.MONGODB_URL!);
+    }
 
-    for (const inv of investments) {
-      if (now >= inv.maturityDate) {
-        // mark as completed and pay user
-        const userExtra = await userExtraModel.findOne({ userId: inv.userId });
-        if (userExtra) {
-          const profit = inv.principal * inv.totalRate;
-          userExtra.depositedBalance += inv.principal + profit;
-          userExtra.investmentBalance -= inv.principal;
-          await userExtra.save();
+    // Find all active investments whose maturity date is today or later
+    const activeInvestments = await Investment.find({
+      status: "active",
+      maturityDate: { $gte: new Date() },
+    }).lean();
+
+    if (!activeInvestments.length) {
+      console.log("No active investments to process today.");
+      return;
+    }
+
+    console.log(`Processing ${activeInvestments.length} active investments...`);
+
+    for (const investment of activeInvestments) {
+      const dailyProfit = investment.principal * investment.dailyRate;
+
+      const session = await mongoose.startSession();
+      session.startTransaction();
+
+      try {
+        // Fetch user within transaction
+        const user = await userExtraModel
+          .findOne({ userId: investment.userId })
+          .session(session);
+        if (!user)
+          throw new Error(`User not found for userId ${investment.userId}`);
+
+        // Credit user's investment balance and total profit
+        user.investmentBalance += dailyProfit;
+        user.totalProfit += dailyProfit;
+        await user.save({ session });
+
+        // Record the transaction
+        await Transaction.create(
+          [
+            {
+              userId: investment.userId,
+              type: "ai-return",
+              amount: dailyProfit,
+              currency: "USD",
+              status: "completed",
+              investmentId: String(investment._id),
+              description: `Daily profit for ${investment.planLabel} plan.`,
+            },
+          ],
+          { session }
+        );
+
+        // Mark investment as completed if matured
+        if (new Date() >= investment.maturityDate) {
+          await Investment.updateOne(
+            { _id: investment._id },
+            { status: "completed" },
+            { session }
+          );
         }
 
-        inv.status = "completed";
-        await inv.save();
+        await session.commitTransaction();
+      } catch (err) {
+        await session.abortTransaction();
+        console.error(`Failed to process investment ${investment._id}:`, err);
+      } finally {
+        session.endSession();
       }
     }
 
-    return NextResponse.json({
-      success: true,
-      message: "Investments updated.",
-    });
-  } catch (err) {
-    console.error("Cron job error:", err);
-    return NextResponse.json(
-      { success: false, error: "Failed to update investments." },
-      { status: 500 }
-    );
+    console.log("Daily investment cron job completed successfully.");
+  } catch (error) {
+    console.error("Error in daily investment cron:", error);
+  } finally {
+    // disconnect from DB in serverless environments
+    if (mongoose.connection.readyState) await mongoose.disconnect();
   }
-}
+};
