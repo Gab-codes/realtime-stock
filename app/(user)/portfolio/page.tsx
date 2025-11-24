@@ -1,7 +1,7 @@
 // import CancelDialog from "@/components/protected/portfolio/CancelDialog";
-import InvestmentMobileList from "@/components/protected/portfolio/InvestmentMobileList";
-import PortfolioTable from "@/components/protected/portfolio/PortfolioTable";
-import PortfolioSummary from "@/components/protected/portfolio/Summary";
+import InvestmentMobileList from "@/components/user/portfolio/InvestmentMobileList";
+import PortfolioTable from "@/components/user/portfolio/PortfolioTable";
+import PortfolioSummary from "@/components/user/portfolio/Summary";
 import { getPortfolio } from "@/lib/actions/investment.action";
 
 export default async function PortfolioPage() {
