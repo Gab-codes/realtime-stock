@@ -31,7 +31,9 @@ export async function GET(request: NextRequest) {
     const totalTransactions = await Transaction.countDocuments();
 
     // Paginated transactions
-    const transactions = await Transaction.find({})
+    const transactions = await Transaction.find({
+      type: { $in: ["deposit", "withdrawal", "investment"] },
+    })
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit)

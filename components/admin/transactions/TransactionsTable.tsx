@@ -25,6 +25,9 @@ import {
   XCircle,
   ChevronLeft,
   ChevronRight,
+  ArrowDownToLine,
+  ArrowUpToLine,
+  Sparkle,
 } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 import {
@@ -33,19 +36,23 @@ import {
 } from "@/lib/actions/adminTransactions.action";
 
 interface Transaction {
+  id: string;
+  userId: string;
+  fullName: string;
+  email: string;
+  type: "deposit" | "withdrawal" | "investment";
   amount: number;
-  currency: string;
+  currency: "USDT" | "BTC" | "USD";
+  status: string;
   date: string;
   description: string;
-  email: string;
-  fullName: string;
-  id: string;
-  status: string;
-  type: string;
-  userId: string;
 }
 
-const TransactionsTable = () => {
+interface TransactionsTableProps {
+  preview?: boolean;
+}
+
+const TransactionsTable = ({ preview = false }: TransactionsTableProps) => {
   const [currentPage, setCurrentPage] = useState(1);
   const queryClient = useQueryClient();
 
@@ -55,27 +62,25 @@ const TransactionsTable = () => {
     staleTime: 5 * 60 * 1000,
   });
 
-  const transactions = data?.success ? data.data : [];
+  let transactions: Transaction[] = data?.success ? data.data : [];
   const pagination = data?.success
     ? data.pagination
     : { page: 1, totalPages: 1 };
+
+  if (preview) transactions = transactions.slice(0, 5);
 
   const handleApprove = async (id: string) => {
     toast.promise(updateTransactionStatus(id, "approve"), {
       loading: "Approving transaction...",
       success: (result) => {
         if (result.success) {
-          // Invalidate and refetch all admin-transactions queries
           queryClient.invalidateQueries({ queryKey: ["admin-transactions"] });
           return "Transaction approved successfully!";
         } else {
           throw new Error(result.error || "Failed to approve transaction");
         }
       },
-      error: (error) => {
-        console.error("Error approving transaction:", error);
-        return error.message || "Failed to approve transaction";
-      },
+      error: (error) => error.message || "Failed to approve transaction",
     });
   };
 
@@ -84,17 +89,13 @@ const TransactionsTable = () => {
       loading: "Rejecting transaction...",
       success: (result) => {
         if (result.success) {
-          // Invalidate and refetch all admin-transactions queries
           queryClient.invalidateQueries({ queryKey: ["admin-transactions"] });
           return "Transaction rejected successfully!";
         } else {
           throw new Error(result.error || "Failed to reject transaction");
         }
       },
-      error: (error) => {
-        console.error("Error rejecting transaction:", error);
-        return error.message || "Failed to reject transaction";
-      },
+      error: (error) => error.message || "Failed to reject transaction",
     });
   };
 
@@ -110,23 +111,32 @@ const TransactionsTable = () => {
     }
   };
 
-  const getTypeColor = (type: string) => {
-    return type === "deposit" ? "text-green-400" : "text-red-400";
+  const getTypeIcon = (type: string) => {
+    switch (type) {
+      case "deposit":
+        return <ArrowDownToLine size={18} className="text-green-400" />;
+      case "withdrawal":
+        return <ArrowUpToLine size={18} className="text-rose-400" />;
+      case "investment":
+        return <Sparkle size={18} className="text-purple-400" />;
+      default:
+        return null;
+    }
   };
 
   return (
     <div className="bg-card border border-gray-600 rounded-xl p-6">
-      {/* Header */}
       <div className="mb-6">
         <h2 className="text-xl font-semibold text-white mb-1">
-          All Transactions
+          {preview ? "Recent Transactions" : "All Transactions"}
         </h2>
         <p className="text-sm text-gray-400">
-          Manage and review all transactions across users
+          {preview
+            ? "Showing latest transactions"
+            : "Manage and review all transactions across users"}
         </p>
       </div>
 
-      {/* Table */}
       <div className="overflow-x-auto">
         <Table>
           <TableHeader>
@@ -137,9 +147,11 @@ const TransactionsTable = () => {
               <TableHead className="text-gray-300">Amount</TableHead>
               <TableHead className="text-gray-300">Date</TableHead>
               <TableHead className="text-gray-300">Status</TableHead>
-              <TableHead className="text-right text-gray-300">
-                Actions
-              </TableHead>
+              {!preview && (
+                <TableHead className="text-right text-gray-300">
+                  Actions
+                </TableHead>
+              )}
             </TableRow>
           </TableHeader>
 
@@ -147,7 +159,7 @@ const TransactionsTable = () => {
             {isLoading ? (
               <TableRow>
                 <TableCell
-                  colSpan={6}
+                  colSpan={7}
                   className="text-center text-gray-400 py-8"
                 >
                   Loading transactions...
@@ -156,7 +168,7 @@ const TransactionsTable = () => {
             ) : error ? (
               <TableRow>
                 <TableCell
-                  colSpan={6}
+                  colSpan={7}
                   className="text-center text-red-400 py-8"
                 >
                   Error loading transactions
@@ -165,14 +177,14 @@ const TransactionsTable = () => {
             ) : transactions.length === 0 ? (
               <TableRow>
                 <TableCell
-                  colSpan={6}
+                  colSpan={7}
                   className="text-center text-gray-400 py-8"
                 >
                   No transactions found
                 </TableCell>
               </TableRow>
             ) : (
-              transactions.map((txn: Transaction) => (
+              transactions.map((txn) => (
                 <TableRow
                   key={txn.id}
                   className="border-gray-600 hover:bg-gray-700/50 transition"
@@ -181,10 +193,9 @@ const TransactionsTable = () => {
                     {txn.fullName}
                   </TableCell>
                   <TableCell className="text-gray-300">{txn.email}</TableCell>
-                  <TableCell>
-                    <span className={`font-medium ${getTypeColor(txn.type)}`}>
-                      {txn.type === "deposit" ? "+" : "-"} {txn.type}
-                    </span>
+                  <TableCell className="capitalize flex items-center gap-2">
+                    {getTypeIcon(txn.type)}
+                    {txn.type}
                   </TableCell>
                   <TableCell className="font-semibold text-white">
                     ${txn.amount.toLocaleString()}
@@ -200,42 +211,44 @@ const TransactionsTable = () => {
                       {txn.status.charAt(0).toUpperCase() + txn.status.slice(1)}
                     </Badge>
                   </TableCell>
-                  <TableCell className="text-right">
-                    {txn.status === "pending" ? (
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="hover:bg-gray-600"
+                  {!preview && (
+                    <TableCell className="text-right">
+                      {txn.status === "pending" ? (
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="hover:bg-gray-600"
+                            >
+                              <MoreHorizontal className="h-4 w-4 text-gray-400" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent
+                            align="end"
+                            className="bg-gray-700 border-gray-600"
                           >
-                            <MoreHorizontal className="h-4 w-4 text-gray-400" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent
-                          align="end"
-                          className="bg-gray-700 border-gray-600"
-                        >
-                          <DropdownMenuItem
-                            onClick={() => handleApprove(txn.id)}
-                            className="text-green-400 cursor-pointer hover:bg-gray-600"
-                          >
-                            <CheckCircle className="h-4 w-4 mr-2" />
-                            Approve
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            onClick={() => handleReject(txn.id)}
-                            className="text-red-400 cursor-pointer hover:bg-gray-600"
-                          >
-                            <XCircle className="h-4 w-4 mr-2" />
-                            Reject
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    ) : (
-                      <span className="text-gray-500 text-sm">—</span>
-                    )}
-                  </TableCell>
+                            <DropdownMenuItem
+                              onClick={() => handleApprove(txn.id)}
+                              className="text-green-400 cursor-pointer hover:bg-gray-600"
+                            >
+                              <CheckCircle className="h-4 w-4 mr-2" />
+                              Approve
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={() => handleReject(txn.id)}
+                              className="text-red-400 cursor-pointer hover:bg-gray-600"
+                            >
+                              <XCircle className="h-4 w-4 mr-2" />
+                              Reject
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      ) : (
+                        <span className="text-gray-500 text-sm">—</span>
+                      )}
+                    </TableCell>
+                  )}
                 </TableRow>
               ))
             )}
@@ -243,8 +256,8 @@ const TransactionsTable = () => {
         </Table>
       </div>
 
-      {/* Pagination */}
-      {pagination.totalPages > 1 && (
+      {/* Pagination for full page only */}
+      {!preview && pagination.totalPages > 1 && (
         <div className="flex items-center justify-between mt-6">
           <div className="text-sm text-gray-400">
             Page {pagination.page} of {pagination.totalPages}

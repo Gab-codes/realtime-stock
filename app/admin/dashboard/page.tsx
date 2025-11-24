@@ -149,7 +149,7 @@ const Dashboard = () => {
       </div>
 
       {/* Recent Transactions */}
-      <TransactionsTable />
+      <TransactionsTable preview={true} />
 
       {/* Recent KYC Submissions */}
       <Card>
