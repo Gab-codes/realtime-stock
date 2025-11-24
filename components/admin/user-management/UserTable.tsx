@@ -15,22 +15,44 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal, CheckCircle, Clock, XCircle } from "lucide-react";
 import { formatDate } from "@/lib/utils";
-import { approveKycSubmission } from "@/lib/actions/adminKyc.action";
+import { toast } from "sonner";
+import { useMutation } from "@tanstack/react-query";
+import { byPassKycApproval } from "@/lib/actions/adminKyc.action";
 
 const UserTable = ({ usersData }: { usersData: UserExtra[] }) => {
-  console.log("Users Data in UserTable:", usersData);
   const handleDeleteUser = (id: string) => {
     console.log("Delete user:", id);
     // confirmation + API call
   };
 
   const handleApproveKyc = (id: string) => {
-    approveKycSubmission(id, "approve");
+    approveKycMutation.mutate(id);
   };
+
+  const approveKycMutation = useMutation({
+    mutationFn: (id: string) => byPassKycApproval(id),
+
+    onMutate: () => {
+      // Show a loading toast and store its ID for update later
+      const toastId = toast.loading("Approving KYC...");
+      return { toastId };
+    },
+
+    onSuccess: (_data, _id, context) => {
+      toast.success("KYC approved successfully!", {
+        id: context?.toastId,
+      });
+    },
+
+    onError: (error: any, _variables, context) => {
+      toast.error(error?.message || "Failed to approve KYC", {
+        id: context?.toastId,
+      });
+    },
+  });
 
   return (
     <div className="rounded-2xl border bg-muted shadow-sm p-6">

@@ -48,19 +48,52 @@ export const getAdminKycSubmissions = async () => {
 //   }
 // };
 
-export const approveKycSubmission = async (id: string, remarks?: string) => {
+// export const approveKycSubmission = async (id: string, remarks: string) => {
+//   try {
+//     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+//     const cookie = (await headers()).get("cookie") || "";
+
+//     const response = await axios.patch(
+//       `${baseUrl}/api/admin/kyc/approve`,
+//       {
+//         id,
+//         remarks,
+//       },
+//       {
+//         headers: {
+//           "Content-Type": "application/json",
+//           cookie,
+//         },
+//         withCredentials: true,
+//       }
+//     );
+
+//     return response.data;
+//   } catch (error: any) {
+//     console.error("Error approving KYC:", error);
+//     return {
+//       success: false,
+//       error: error.response?.data?.error || "Failed to approve KYC",
+//     };
+//   }
+// };
+
+export const byPassKycApproval = async (id: string) => {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+    const cookie = (await headers()).get("cookie") || "";
+
     const response = await axios.patch(
-      `${baseUrl}/api/admin/kyc/approve`,
+      `${baseUrl}/api/admin/kyc/bypassKyc`,
       {
         id,
-        remarks,
       },
       {
         headers: {
-          cookie: (await headers()).get("cookie") || "",
+          "Content-Type": "application/json",
+          cookie,
         },
+        withCredentials: true,
       }
     );
 
