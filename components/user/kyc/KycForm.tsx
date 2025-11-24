@@ -12,7 +12,11 @@ import { toast } from "sonner";
 import { submitKYC } from "@/lib/actions/kyc.action";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
-const KycForm = () => {
+const KycForm = ({
+  kycStatus,
+}: {
+  kycStatus: "pending" | "unverified" | "rejected";
+}) => {
   const [progress, setProgress] = useState(0);
   const [status, setStatus] = useState<"idle" | "pending" | "success">("idle");
   const [frontFile, setFrontFile] = useState<File | null>(null);
@@ -229,13 +233,15 @@ const KycForm = () => {
         )}
 
         {/* Submit Button */}
-        <Button
-          onClick={status === "idle" ? handleUpload : undefined}
-          disabled={status === "pending"}
-          className="bg-crypto-purple hover:bg-crypto-dark-purple w-full text-white"
-        >
-          {status === "pending" ? "Uploading..." : "Submit for Verification"}
-        </Button>
+        {kycStatus !== "pending" && (
+          <Button
+            onClick={status === "idle" ? handleUpload : undefined}
+            disabled={status === "pending"}
+            className="bg-crypto-purple hover:bg-crypto-dark-purple w-full text-white"
+          >
+            {status === "pending" ? "Uploading..." : "Submit for Verification"}
+          </Button>
+        )}
       </CardContent>
     </Card>
   );

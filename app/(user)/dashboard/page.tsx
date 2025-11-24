@@ -9,10 +9,7 @@ const DashboardOverview = async () => {
 
   if (!data) return null;
 
-  console.log(data);
-
-  const { depositedBalance, investmentBalance, kycStatus } =
-    data as UserBalanceData;
+  const { depositedBalance, investmentBalance, kycStatus } = data as UserExtra;
 
   const totalBalance = depositedBalance + investmentBalance;
 
