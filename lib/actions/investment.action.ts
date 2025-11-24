@@ -42,7 +42,6 @@ export const createInvestment = async (payload: InvestmentPayload) => {
 
     // Deduct from deposited balance and add to investment balance
     userExtra.depositedBalance -= amount;
-    userExtra.investmentBalance += amount;
     await userExtra.save();
 
     // Create investment portfolio record

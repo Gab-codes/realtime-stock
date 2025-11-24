@@ -2,7 +2,6 @@ import { auth } from "@/lib/better-auth/auth";
 import { headers } from "next/headers";
 import UserExtra from "@/models/userExtra.model";
 import { NextRequest } from "next/server";
-import { kycModel } from "@/models/kyc.model";
 
 export async function PATCH(request: NextRequest) {
   try {
@@ -22,36 +21,18 @@ export async function PATCH(request: NextRequest) {
       );
     }
 
-    const { id, remarks } = await request.json();
+    const { id } = await request.json();
 
     if (!id) {
       return Response.json(
-        { success: false, error: "KYC ID is required" },
+        { success: false, error: "User ID is required" },
         { status: 400 }
-      );
-    }
-
-    // Update KYC status to approved
-    const updatedKyc = await kycModel.findByIdAndUpdate(
-      id,
-      {
-        status: "approved",
-        remarks: remarks || undefined,
-        updatedAt: new Date(),
-      },
-      { new: true }
-    );
-
-    if (!updatedKyc) {
-      return Response.json(
-        { success: false, error: "KYC submission not found" },
-        { status: 404 }
       );
     }
 
     // Update user verification status
     await UserExtra.findOneAndUpdate(
-      { userId: updatedKyc.userId },
+      { userId: id },
       { kycStatus: "verified" },
       { upsert: true }
     );
@@ -59,11 +40,6 @@ export async function PATCH(request: NextRequest) {
     return Response.json({
       success: true,
       message: "KYC approved successfully",
-      data: {
-        id: updatedKyc._id,
-        status: updatedKyc.status,
-        remarks: updatedKyc.remarks,
-      },
     });
   } catch (error) {
     console.error("Error approving KYC:", error);
