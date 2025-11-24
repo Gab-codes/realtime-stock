@@ -3,9 +3,9 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
-import Step1 from "@/components/protected/deposit/step1";
-import Step2 from "@/components/protected/deposit/step2";
-import Step3 from "@/components/protected/deposit/step3";
+import Step1 from "@/components/user/deposit/step1";
+import Step2 from "@/components/user/deposit/step2";
+import Step3 from "@/components/user/deposit/step3";
 import { formatPrice } from "@/lib/utils";
 import { createDeposit } from "@/lib/actions/deposit.action";
 

@@ -1,6 +1,6 @@
-import BalanceCard from "@/components/protected/dashboard/BalanceCard";
-import DepositWithdrawActions from "@/components/protected/dashboard/DepositWithAction";
-import InvestmentForm from "@/components/protected/dashboard/InvestmentForm";
+import BalanceCard from "@/components/user/dashboard/BalanceCard";
+import DepositWithdrawActions from "@/components/user/dashboard/DepositWithAction";
+import InvestmentForm from "@/components/user/dashboard/InvestmentForm";
 import { getUserData } from "@/lib/actions/user.action";
 import { formatPrice } from "@/lib/utils";
 

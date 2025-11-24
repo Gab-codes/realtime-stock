@@ -1,4 +1,4 @@
-import TransactionHistory from "@/components/protected/transactions/History";
+import TransactionHistory from "@/components/user/transactions/History";
 import { getUserTransactions } from "@/lib/actions/transactions.action";
 
 const TransactionHistoryPage = async () => {

@@ -1,4 +1,4 @@
-import KycForm from "@/components/protected/kyc/KycForm";
+import KycForm from "@/components/user/kyc/KycForm";
 
 export default function KycPage() {
   return (
