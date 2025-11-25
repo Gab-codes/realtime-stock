@@ -10,22 +10,34 @@ import {
 } from "lucide-react";
 import AdminKycTable from "@/components/admin/kyc/KycTable";
 import TransactionsTable from "@/components/admin/transactions/TransactionsTable";
+import { getAdminMetrics } from "@/lib/actions/adminMetrics.action";
 
-const Dashboard = () => {
-  // Dummy data for development
-  const metrics = {
-    totalUsers: 1247,
-    totalInvestments: 89,
-    totalInvestedAmount: 245000,
-    activeInvestments: 67,
-    totalDeposits: 890000,
-    totalWithdrawals: 120000,
-    kycStats: {
-      pending: 23,
-      approved: 156,
-      rejected: 8,
-    },
-  };
+type Metrics = {
+  totalUsers: number;
+  totalInvestments: number;
+  totalInvestedAmount: number;
+  activeInvestments: number;
+  totalDeposits: number;
+  totalWithdrawals: number;
+  kycStats: { pending: number; approved: number; rejected: number };
+};
+
+const Dashboard = async () => {
+  // fetch real metrics from the database
+  const result = await getAdminMetrics();
+
+  const metrics: Metrics =
+    result && result.success
+      ? (result.data as Metrics)
+      : {
+          totalUsers: 0,
+          totalInvestments: 0,
+          totalInvestedAmount: 0,
+          activeInvestments: 0,
+          totalDeposits: 0,
+          totalWithdrawals: 0,
+          kycStats: { pending: 0, approved: 0, rejected: 0 },
+        };
 
   return (
     <div className="p-6 space-y-6">
@@ -99,7 +111,7 @@ const Dashboard = () => {
       </div>
 
       {/* KYC Status Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">KYC Pending</CardTitle>
