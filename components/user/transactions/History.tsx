@@ -21,7 +21,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Summary from "./summary";
-import { formatDate } from "@/lib/utils";
+import { formatDate, formatPrice } from "@/lib/utils";
 
 interface Transaction {
   _id: string;
@@ -32,113 +32,93 @@ interface Transaction {
   createdAt: string;
 }
 
-const format = (amount: number) => `$${amount.toLocaleString()}`;
-
 const TransactionHistory = ({
   transactions,
 }: {
   transactions: Transaction[];
 }) => {
-  const totalDeposits = transactions
-    .filter((t) => t.type === "deposit" && t.status === "completed")
-    .reduce((a, b) => a + b.amount, 0);
-
-  const totalWithdrawals = transactions
-    .filter((t) => t.type === "withdrawal")
-    .reduce((a, b) => a + b.amount, 0);
-
-  const totalReturns = transactions
-    .filter((t) => t.type === "ai-return")
-    .reduce((a, b) => a + b.amount, 0);
-
   return (
-    <div className="pt-4 px-1 md:p-4 space-y-6 text-white">
-      {/* Summary header */}
-      <Summary {...{ totalDeposits, totalWithdrawals, totalReturns, format }} />
+    <Card className="bg-crypto-blue/80 border border-white/10">
+      <CardHeader>
+        <CardTitle>Transaction History</CardTitle>
+      </CardHeader>
 
-      {/* Transactions Table */}
-      <Card className="bg-crypto-blue/80 border border-white/10">
-        <CardHeader>
-          <CardTitle>Transaction History</CardTitle>
-        </CardHeader>
+      <CardContent>
+        <Table>
+          <TableCaption className="text-gray-400">
+            {transactions.length === 0 && "No transactions yet."}
+          </TableCaption>
+          <TableHeader>
+            <TableRow className="border-b border-white/5 text-gray-400">
+              <TableHead className="w-[140px]">Type</TableHead>
+              <TableHead>Amount</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Date</TableHead>
+            </TableRow>
+          </TableHeader>
 
-        <CardContent>
-          <Table>
-            <TableCaption className="text-gray-400">
-              {transactions.length === 0 && "No transactions yet."}
-            </TableCaption>
-            <TableHeader>
-              <TableRow className="border-b border-white/5 text-gray-400">
-                <TableHead className="w-[140px]">Type</TableHead>
-                <TableHead>Amount</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Date</TableHead>
+          <TableBody>
+            {transactions.map((t) => (
+              <TableRow key={t._id} className="space-y-3">
+                <TableCell className="capitalize flex items-center gap-2">
+                  {t.type === "deposit" && (
+                    <ArrowDownToLine size={18} className="text-green-400" />
+                  )}
+                  {t.type === "withdrawal" && (
+                    <ArrowUpToLine size={18} className="text-rose-400" />
+                  )}
+                  {t.type === "ai-return" && (
+                    <Cpu size={18} className="text-cyan-400" />
+                  )}
+                  {t.type === "investment" && (
+                    <Sparkle size={18} className="text-purple-400" />
+                  )}
+                  {t.type.replace("_", " ")}
+                </TableCell>
+
+                <TableCell className="text-gray-200">
+                  {formatPrice(t.amount)}
+                </TableCell>
+
+                <TableCell>
+                  {t.status === "completed" && (
+                    <Badge
+                      variant="outline"
+                      className="flex items-center gap-1 text-green-400 border-green-400/30 bg-green-400/10"
+                    >
+                      <CheckCircle size={14} />
+                      Completed
+                    </Badge>
+                  )}
+                  {t.status === "pending" && (
+                    <Badge
+                      variant="outline"
+                      className="flex items-center gap-1 text-amber-300 border-amber-300/30 bg-amber-300/10"
+                    >
+                      <Clock size={14} />
+                      Pending
+                    </Badge>
+                  )}
+                  {t.status === "failed" && (
+                    <Badge
+                      variant="outline"
+                      className="flex items-center gap-1 text-rose-400 border-rose-400/30 bg-rose-400/10"
+                    >
+                      <XCircle size={14} />
+                      Failed
+                    </Badge>
+                  )}
+                </TableCell>
+
+                <TableCell className="text-sm text-gray-300">
+                  {formatDate(t.createdAt)}
+                </TableCell>
               </TableRow>
-            </TableHeader>
-
-            <TableBody>
-              {transactions.map((t) => (
-                <TableRow key={t._id} className="space-y-3">
-                  <TableCell className="capitalize flex items-center gap-2">
-                    {t.type === "deposit" && (
-                      <ArrowDownToLine size={18} className="text-green-400" />
-                    )}
-                    {t.type === "withdrawal" && (
-                      <ArrowUpToLine size={18} className="text-rose-400" />
-                    )}
-                    {t.type === "ai-return" && (
-                      <Cpu size={18} className="text-cyan-400" />
-                    )}
-                    {t.type === "investment" && (
-                      <Sparkle size={18} className="text-purple-400" />
-                    )}
-                    {t.type.replace("_", " ")}
-                  </TableCell>
-
-                  <TableCell className="text-gray-200">
-                    {format(t.amount)}
-                  </TableCell>
-
-                  <TableCell>
-                    {t.status === "completed" && (
-                      <Badge
-                        variant="outline"
-                        className="flex items-center gap-1 text-green-400 border-green-400/30 bg-green-400/10"
-                      >
-                        <CheckCircle size={14} />
-                        Completed
-                      </Badge>
-                    )}
-                    {t.status === "pending" && (
-                      <Badge
-                        variant="outline"
-                        className="flex items-center gap-1 text-amber-300 border-amber-300/30 bg-amber-300/10"
-                      >
-                        <Clock size={14} />
-                        Pending
-                      </Badge>
-                    )}
-                    {t.status === "failed" && (
-                      <Badge
-                        variant="outline"
-                        className="flex items-center gap-1 text-rose-400 border-rose-400/30 bg-rose-400/10"
-                      >
-                        <XCircle size={14} />
-                        Failed
-                      </Badge>
-                    )}
-                  </TableCell>
-
-                  <TableCell className="text-sm text-gray-300">
-                    {formatDate(t.createdAt)}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
-    </div>
+            ))}
+          </TableBody>
+        </Table>
+      </CardContent>
+    </Card>
   );
 };
 

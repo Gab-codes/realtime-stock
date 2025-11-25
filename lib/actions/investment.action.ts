@@ -104,6 +104,11 @@ export const getPortfolio = async () => {
       0
     );
 
+    // total profit earned for active investments
+    const activeProfit = investments
+      .filter((i) => i.status === "active")
+      .reduce((sum, i) => sum + (i.profit ?? 0), 0);
+
     // Active investments total principal
     const active = investments
       .filter((i) => i.status === "active")
@@ -126,6 +131,7 @@ export const getPortfolio = async () => {
         totals: {
           totalInvested,
           profitEarned: totalProfit,
+          activeProfit,
           active,
         },
       },
