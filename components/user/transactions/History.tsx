@@ -40,7 +40,7 @@ const TransactionHistory = ({
   transactions: Transaction[];
 }) => {
   const totalDeposits = transactions
-    .filter((t) => t.type === "deposit")
+    .filter((t) => t.type === "deposit" && t.status === "completed")
     .reduce((a, b) => a + b.amount, 0);
 
   const totalWithdrawals = transactions

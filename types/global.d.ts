@@ -11,9 +11,9 @@ declare global {
     days: number;
     dailyRate: number;
     startedAt: string;
-    status: "active" | "completed" | "cancelled";
-    profitAccrued: number;
     maturityDate: string;
+    status: "active" | "completed" | "cancelled";
+    profit: number;
   };
 
   type DepositRecord = {
@@ -34,7 +34,7 @@ declare global {
     kycStatus: "verified" | "pending" | "rejected" | "unverified";
   }
 
-  export type UserExtra = {
+  type UserExtra = {
     _id: string;
     userId: string;
     fullName: string;
