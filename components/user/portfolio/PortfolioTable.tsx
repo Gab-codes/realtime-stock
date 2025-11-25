@@ -36,7 +36,7 @@ export default function PortfolioTable({
               <TableCell className="py-3">{inv.planLabel}</TableCell>
               <TableCell>{formatPrice(inv.principal)}</TableCell>
               <TableCell className="text-green-300">
-                {formatPrice(inv.profitAccrued)}
+                {formatPrice(inv.profit)}
               </TableCell>
               <TableCell className="text-sm text-gray-300">
                 {formatDate(inv.startedAt)}

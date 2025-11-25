@@ -41,9 +41,7 @@ export default function InvestmentMobileList({
             </p>
             <p>
               <span className="text-gray-400">Profit:</span>{" "}
-              <span className="text-green-300">
-                {formatPrice(inv.profitAccrued)}
-              </span>
+              <span className="text-green-300">{formatPrice(inv.profit)}</span>
             </p>
             <p>
               <span className="text-gray-400">Started:</span>{" "}

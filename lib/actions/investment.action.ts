@@ -92,16 +92,24 @@ export const getPortfolio = async () => {
       Investment.find({ userId }).sort({ createdAt: -1 }),
     ]);
 
+    // Total amount invested (excluding cancelled)
     const totalInvested = investments.reduce(
       (sum, i) => sum + (i.status === "cancelled" ? 0 : i.principal),
       0
     );
 
+    // Total profit earned (use i.profit which actually exists in schema)
     const totalProfit = investments.reduce(
-      (sum, i) => sum + (i.status === "cancelled" ? 0 : i.profitAccrued ?? 0),
+      (sum, i) => sum + (i.status === "cancelled" ? 0 : i.profit ?? 0),
       0
     );
 
+    // total profit earned for active investments
+    const activeProfit = investments
+      .filter((i) => i.status === "active")
+      .reduce((sum, i) => sum + (i.profit ?? 0), 0);
+
+    // Active investments total principal
     const active = investments
       .filter((i) => i.status === "active")
       .reduce((sum, i) => sum + i.principal, 0);
@@ -118,16 +126,17 @@ export const getPortfolio = async () => {
           startedAt: i.startedAt,
           maturityDate: i.maturityDate,
           status: i.status,
-          profitAccrued: i.profitAccrued ?? 0,
+          profit: i.profit ?? 0,
         })),
         totals: {
           totalInvested,
           profitEarned: totalProfit,
+          activeProfit,
           active,
         },
       },
     };
-  } catch (error: any) {
+  } catch (error) {
     console.error("Error fetching portfolio:", error);
     return { success: false, error: "Internal server error" };
   }

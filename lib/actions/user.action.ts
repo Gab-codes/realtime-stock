@@ -1,6 +1,5 @@
 import { auth } from "@/lib/better-auth/auth";
 import userExtraModel from "@/models/userExtra.model";
-import { json } from "better-auth";
 import { headers } from "next/headers";
 
 export const getUserData = async () => {
@@ -20,7 +19,6 @@ export const getUserData = async () => {
         message: "User data not found",
         data: {
           depositedBalance: 0,
-          investmentBalance: 0,
           totalProfit: 0,
           kycStatus: "unverified",
         },
