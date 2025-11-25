@@ -24,8 +24,8 @@ export default function PortfolioTable({
             <TableHead className="py-3">Plan</TableHead>
             <TableHead>Principal</TableHead>
             <TableHead>Profit Made</TableHead>
-            <TableHead>End Date</TableHead>
             <TableHead>Started</TableHead>
+            <TableHead>End Date</TableHead>
             <TableHead>Status</TableHead>
           </TableRow>
         </TableHeader>
@@ -39,10 +39,10 @@ export default function PortfolioTable({
                 {formatPrice(inv.profitAccrued)}
               </TableCell>
               <TableCell className="text-sm text-gray-300">
-                {formatDate(inv.maturityDate)}
+                {formatDate(inv.startedAt)}
               </TableCell>
               <TableCell className="text-sm text-gray-300">
-                {formatDate(inv.startedAt)}
+                {formatDate(inv.maturityDate)}
               </TableCell>
               <TableCell>
                 {inv.status === "active" && (
