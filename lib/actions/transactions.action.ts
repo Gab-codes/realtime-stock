@@ -27,7 +27,7 @@ export const getUserTransactions = async () => {
         totalDeposits += t.amount;
       }
 
-      if (t.type === "withdrawal") {
+      if (t.type === "withdrawal" && t.status === "completed") {
         totalWithdrawals += t.amount;
       }
     }

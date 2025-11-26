@@ -17,7 +17,7 @@ export async function PATCH(
       );
     }
 
-    const sessionUser = session.user as unknown as any;
+    const sessionUser = session.user as any;
     if (sessionUser.role !== "admin") {
       return Response.json(
         { success: false, error: "Unauthorized" },
@@ -35,7 +35,7 @@ export async function PATCH(
       );
     }
 
-    // Find the transaction
+    // Find transaction
     const transaction = await Transaction.findById(id);
     if (!transaction) {
       return Response.json(
@@ -44,7 +44,7 @@ export async function PATCH(
       );
     }
 
-    // Check if transaction is already processed
+    // Already processed?
     if (transaction.status !== "pending") {
       return Response.json(
         { success: false, error: "Transaction already processed" },
@@ -52,38 +52,69 @@ export async function PATCH(
       );
     }
 
+    // Fetch user's extra data
+    const userExtra = await UserExtra.findOne({ userId: transaction.userId });
+    if (!userExtra) {
+      return Response.json(
+        { success: false, error: "User not found" },
+        { status: 404 }
+      );
+    }
+
+    // ----------------------------------------
+    // APPROVE
+    // ----------------------------------------
     if (action === "approve") {
-      // Update transaction status to completed
       transaction.status = "completed";
       await transaction.save();
 
-      // Add amount to user's deposited balance
-      const userExtra = await UserExtra.findOne({ userId: transaction.userId });
-      if (userExtra) {
+      if (transaction.type === "deposit") {
+        // Deposit → Add balance on approval
         userExtra.depositedBalance += transaction.amount;
         await userExtra.save();
-      } else {
-        return Response.json(
-          { success: false, error: "User not found" },
-          { status: 404 }
-        );
       }
-    } else if (action === "decline") {
-      // Update transaction status to failed
-      transaction.status = "failed";
-      await transaction.save();
+
+      // Withdrawal approval → NO BALANCE CHANGE
+      // Balance was already deducted at request time
+
+      return Response.json({
+        success: true,
+        message: "Transaction approved successfully",
+        transaction: {
+          id: transaction._id,
+          status: transaction.status,
+          amount: transaction.amount,
+          type: transaction.type,
+        },
+      });
     }
 
-    return Response.json({
-      success: true,
-      message: `Transaction ${action}d successfully`,
-      transaction: {
-        id: transaction._id,
-        status: transaction.status,
-        amount: transaction.amount,
-        userId: transaction.userId,
-      },
-    });
+    // ----------------------------------------
+    // DECLINE
+    // ----------------------------------------
+    if (action === "decline") {
+      transaction.status = "failed";
+      await transaction.save();
+
+      if (transaction.type === "withdrawal") {
+        // Withdrawal declined → refund user
+        userExtra.depositedBalance += transaction.amount;
+        await userExtra.save();
+      }
+
+      // Deposit decline → no balance action
+
+      return Response.json({
+        success: true,
+        message: "Transaction declined successfully",
+        transaction: {
+          id: transaction._id,
+          status: transaction.status,
+          amount: transaction.amount,
+          type: transaction.type,
+        },
+      });
+    }
   } catch (error) {
     console.error("Error updating transaction:", error);
     return Response.json(

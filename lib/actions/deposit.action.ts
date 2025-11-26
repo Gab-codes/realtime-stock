@@ -23,7 +23,7 @@ export const createDeposit = async (payload: DepositPayload) => {
     const userId = session.user.id;
 
     // Create transaction entry
-    const transaction = await Transaction.create({
+    await Transaction.create({
       userId,
       type: "deposit",
       amount: payload.usdAmount,

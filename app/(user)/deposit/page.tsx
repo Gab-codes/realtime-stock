@@ -135,9 +135,9 @@ export default function DepositFlow() {
     }
   }
 
-  const paymentURI = useMemo(() => {
+  // get qr code image
+  const qrCode = useMemo(() => {
     if (!addressFor(currency)) return "";
-    // Make QR-friendly URI strings per currency.
     if (currency === "BTC") {
       return "/assets/images/bitcoin.jpeg";
     }
@@ -204,7 +204,7 @@ export default function DepositFlow() {
                 confirmPaid,
                 setStep,
                 isCreating,
-                paymentURI,
+                qrCode,
               }}
             />
           )}
