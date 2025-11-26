@@ -43,7 +43,7 @@ const Step1 = ({
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="USDT">USDT (TRON)</SelectItem>
+              <SelectItem value="USDT">USDT (ERC 20)</SelectItem>
               <SelectItem value="BTC">BTC (Bitcoin)</SelectItem>
             </SelectContent>
           </Select>
@@ -94,7 +94,7 @@ const Step1 = ({
           className="bg-crypto-purple hover:bg-crypto-dark-purple text-white ml-auto"
           onClick={goToPayment}
         >
-          Next: Payment details
+          Next
         </Button>
       </div>
     </div>

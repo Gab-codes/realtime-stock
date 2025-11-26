@@ -11,17 +11,11 @@ import { createDeposit } from "@/lib/actions/deposit.action";
 
 // Merchant deposit addresses (replace with your real addresses)
 const MERCHANT_ADDRESSES = {
-  BTC: "1FfmbHfnpaZjKFvyi1okTjJJusN455paPH",
-  USDT: "TXYZ...EXAMPLE_TRON_USDT_ADDRESS_OR_ERC20",
+  BTC: "bc1qhlwg67pflgjd7mf9w8dl8kkax65y2xwyws3vse",
+  USDT: "0xa59E5Ea353e0c49dfCA422eE1f8680feAA8D7840",
 } as const;
 
 export type Currency = keyof typeof MERCHANT_ADDRESSES;
-
-// Deposit record shape (client-side demo)
-
-function uid(prefix = "") {
-  return prefix + Math.random().toString(36).slice(2, 9);
-}
 
 /**
  * Fetch basic price data from CoinGecko public API.
@@ -41,15 +35,7 @@ async function fetchPrices(): Promise<{ BTC: number; USDT: number }> {
   };
 }
 
-export default function DepositFlow({
-  onCreateDeposit,
-}: {
-  /**
-   * Optional callback to persist deposit. Receives the deposit record.
-   * If not provided, component uses local state only.
-   */
-  onCreateDeposit?: (d: DepositRecord) => Promise<void> | void;
-}) {
+export default function DepositFlow() {
   const [step, setStep] = useState<number>(1);
   const [currency, setCurrency] = useState<Currency>("USDT");
   const [usdAmount, setUsdAmount] = useState<number | "">("");
@@ -62,9 +48,6 @@ export default function DepositFlow({
     null
   );
   const [isCreating, setIsCreating] = useState(false);
-
-  // Local list of deposits (demo)
-  const [deposits, setDeposits] = useState<DepositRecord[]>([]);
 
   useEffect(() => {
     let mounted = true;
@@ -124,14 +107,10 @@ export default function DepositFlow({
   async function confirmPaid() {
     // create pending deposit record locally, and call optional callback to persist to server
     const record: DepositRecord = {
-      id: uid("dep_"),
       currency,
       usdAmount: typeof usdAmount === "number" ? usdAmount : 0,
       cryptoAmount,
       address: addressFor(currency),
-      status: "pending",
-      createdAt: new Date().toISOString(),
-      txHash: null,
     };
 
     setIsCreating(true);
@@ -160,16 +139,13 @@ export default function DepositFlow({
     if (!addressFor(currency)) return "";
     // Make QR-friendly URI strings per currency.
     if (currency === "BTC") {
-      // bitcoin:address?amount=0.001
-      return `bitcoin:${addressFor("BTC")}?amount=${cryptoAmount}`;
+      return "/assets/images/bitcoin.jpeg";
     }
     if (currency === "USDT") {
-      // USDT often on TRC20/ETH etc — we use a simple URI that encodes address + amount
-      // Many wallets will just scan the address; advanced integrations may use chain-specific URIs.
-      return `USDT:${addressFor("USDT")}?amount=${cryptoAmount}`;
+      return "/assets/images/usdt.jpeg";
     }
     return addressFor(currency);
-  }, [currency, cryptoAmount]);
+  }, [currency]);
 
   // UI
   return (
@@ -228,6 +204,7 @@ export default function DepositFlow({
                 confirmPaid,
                 setStep,
                 isCreating,
+                paymentURI,
               }}
             />
           )}
@@ -243,32 +220,6 @@ export default function DepositFlow({
           )}
         </CardContent>
       </Card>
-
-      {/* Optional deposit history preview */}
-      {deposits.length > 0 && (
-        <Card className="bg-crypto-blue/80 border border-crypto-blue/20 text-white">
-          <CardHeader>
-            <CardTitle>Recent deposits</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ul className="space-y-2 text-sm">
-              {deposits.map((d) => (
-                <li key={d.id} className="flex justify-between items-center">
-                  <div>
-                    <div className="text-sm">{d.currency} deposit</div>
-                    <div className="text-xs text-gray-400">
-                      {new Date(d.createdAt).toLocaleString()}
-                    </div>
-                  </div>
-                  <div className="text-sm text-gray-200">
-                    {formatPrice(d.usdAmount)}
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </CardContent>
-        </Card>
-      )}
     </div>
   );
 }
