@@ -10,7 +10,7 @@ type Step2Props = {
   confirmPaid: () => void;
   setStep: (step: number) => void;
   isCreating: boolean;
-  paymentURI: string;
+  qrCode: string;
 };
 
 const Step2 = ({
@@ -20,7 +20,7 @@ const Step2 = ({
   confirmPaid,
   setStep,
   isCreating,
-  paymentURI,
+  qrCode,
 }: Step2Props) => {
   const [copied, setCopied] = useState(false);
 
@@ -87,7 +87,7 @@ const Step2 = ({
         <div className="flex flex-col items-center">
           <div className="bg-[#071022] p-4 rounded-lg border border-white/5">
             <Image
-              src={paymentURI}
+              src={qrCode}
               width={300}
               height={300}
               alt={`${currency + " qr code"}`}
