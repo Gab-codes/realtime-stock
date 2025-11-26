@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { Copy } from "lucide-react";
+import { CheckCheck, Copy } from "lucide-react";
+import Image from "next/image";
 import { useState } from "react";
 
 type Step2Props = {
@@ -9,6 +10,7 @@ type Step2Props = {
   confirmPaid: () => void;
   setStep: (step: number) => void;
   isCreating: boolean;
+  paymentURI: string;
 };
 
 const Step2 = ({
@@ -18,6 +20,7 @@ const Step2 = ({
   confirmPaid,
   setStep,
   isCreating,
+  paymentURI,
 }: Step2Props) => {
   const [copied, setCopied] = useState(false);
 
@@ -47,24 +50,33 @@ const Step2 = ({
                   onClick={handleCopyAddress}
                   className="inline-flex items-center gap-2 px-2 py-1 rounded bg-white/5 hover:bg-white/8"
                 >
-                  <Copy size={14} />
                   {copied ? (
-                    <span className="text-xs text-green-300">Copied</span>
+                    <>
+                      <CheckCheck size={14} />
+                      <span className="text-xs text-green-300">Copied</span>
+                    </>
                   ) : (
-                    <span className="text-xs">Copy</span>
+                    <>
+                      <Copy size={14} />
+                      <span className="text-xs">Copy</span>
+                    </>
                   )}
                 </button>
               </div>
             </div>
 
-            <div className="mt-3 text-xs text-gray-300">
+            <div className="mt-3 space-y-1.5 text-xs text-gray-300">
               <div>
                 Send exactly:{" "}
                 <strong>
                   {cryptoAmount} {currency}
                 </strong>
               </div>
-              <div className="mt-1 text-gray-400 text-xs">
+              <div>
+                Wallet Network:{" "}
+                <strong>{currency === "BTC" ? "Bitcoin" : "ERC 20"}</strong>
+              </div>
+              <div className="text-gray-400 text-xs">
                 Note: sending a different coin or network may result in loss of
                 funds.
               </div>
@@ -73,21 +85,18 @@ const Step2 = ({
         </div>
 
         <div className="flex flex-col items-center">
-          <div className="bg-[#071022] p-4 rounded-md border border-white/5">
-            {/* <QRCode
-                      value={paymentURI}
-                      size={160}
-                      bgColor="transparent"
-                      fgColor="#00f6d6"
-                      level="M"
-                    /> */}
+          <div className="bg-[#071022] p-4 rounded-lg border border-white/5">
+            <Image
+              src={paymentURI}
+              width={300}
+              height={300}
+              alt={`${currency + " qr code"}`}
+              className="object-contain size-35"
+            />
           </div>
 
           <div className="mt-3 text-sm text-gray-300 text-center">
             <div>Scan the QR code with your wallet to pay</div>
-            <div className="mt-2 text-xs text-gray-400">
-              Amount will be auto-calculated using latest market rates.
-            </div>
           </div>
         </div>
       </div>

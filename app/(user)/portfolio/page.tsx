@@ -21,7 +21,7 @@ export default async function PortfolioPage() {
         <div className="p-4 border-b border-white/5">
           <h2 className="text-lg font-semibold">Active Investments</h2>
           <p className="text-sm text-gray-400 mt-1">
-            Manage your AI-managed investments.
+            View your AI-managed investments.
           </p>
         </div>
         <PortfolioTable investments={investments} />
