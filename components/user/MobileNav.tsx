@@ -9,8 +9,7 @@ import {
   History,
   MoreHorizontal,
   Briefcase,
-  LineChart,
-  Settings,
+  // Settings,
   HelpCircle,
   LogOut,
 } from "lucide-react";
@@ -81,7 +80,7 @@ export default function MobileNav() {
 
           <div className="px-6 pb-6 space-y-3">
             <DrawerLink href="/portfolio" icon={Briefcase} label="Portfolio" />
-            <DrawerLink href="/settings" icon={Settings} label="Settings" />
+            {/* <DrawerLink href="/settings" icon={Settings} label="Settings" /> */}
             <DrawerLink
               href="/kyc"
               icon={HelpCircle}
