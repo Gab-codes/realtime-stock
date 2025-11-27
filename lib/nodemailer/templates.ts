@@ -127,9 +127,9 @@ export const WELCOME_EMAIL_TEMPLATE = `<!DOCTYPE html>
                             
                             <!-- Feature List -->
                             <ul class="mobile-text dark-text-secondary" style="margin: 0 0 30px 0; padding-left: 20px; font-size: 16px; line-height: 1.6; color: #CCDADC;">
-                                <li style="margin-bottom: 12px;">Set up your watchlist to follow your favorite stocks</li>
-                                <li style="margin-bottom: 12px;">Create price and volume alerts so you never miss a move</li>
-                                <li style="margin-bottom: 12px;">Explore the dashboard for trends and the latest market news</li>
+                                <li style="margin-bottom: 12px;">Deposit funds to start trading</li>
+                                <li style="margin-bottom: 12px;">Leave all the trading to our AI Agent, you don't need to be a pro to trade, we'll do it for you</li>
+                                <li style="margin-bottom: 12px;">Watch your investment grow over time </li>
                             </ul>
                             
                             <!-- Additional Text -->

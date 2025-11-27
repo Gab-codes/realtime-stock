@@ -66,9 +66,30 @@ export const signInWithEmail = async (data: SignInFormData) => {
     return { success: true, data: response, message: "Sign in successful" };
   } catch (error) {
     console.error("Sign in failed", error);
-    return { success: false, error: "Sign in failed" };
+    // Detect unverified email from error message if available
+    const message = error instanceof Error ? error.message : String(error);
+    if (/verify|verification|verified/i.test(message)) {
+      return { success: false, error: "email_unverified", message };
+    }
+    return { success: false, error: "sign_in_failed", message };
   }
 };
+
+export async function resendVerificationEmail(email: string) {
+  try {
+    await auth.api.sendVerificationEmail({
+      body: {
+        email,
+        callbackURL: "/dashboard",
+      },
+    });
+
+    return { success: true };
+  } catch (err: any) {
+    console.error(err);
+    return { success: false, error: err?.message || "Failed" };
+  }
+}
 
 export const signOut = async () => {
   try {

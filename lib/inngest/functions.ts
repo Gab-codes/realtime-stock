@@ -29,7 +29,7 @@ export const sendSignUpEmail = inngest.createFunction(
       const part = response.candidates?.[0]?.content?.parts?.[0];
       const introText =
         (part && "text" in part ? part.text : null) ||
-        "Thanks for joining Signalist. You know have the tools to trade your way to a life changing return on your investments.";
+        "Thanks for joining Signalist. You now have the tools to trade your way to a life changing return on your investments.";
 
       return await sendWelcomeEmail({
         email: event.data.email,
