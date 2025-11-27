@@ -91,6 +91,45 @@ export async function resendVerificationEmail(email: string) {
   }
 }
 
+export async function requestPasswordReset(
+  email: string,
+  callbackURL = "/reset-password"
+) {
+  try {
+    await auth.api.requestPasswordReset({
+      body: {
+        email,
+        redirectTo: callbackURL,
+      },
+    });
+
+    return { success: true };
+  } catch (err: any) {
+    console.error("requestPasswordReset failed", err);
+    const message = err?.message || String(err);
+    // Map some common errors
+    if (/not found|no user|user_not_found/i.test(message)) {
+      return { success: false, error: "user_not_found", message };
+    }
+    return { success: false, error: "request_failed", message };
+  }
+}
+
+export async function resetPassword(newPassword: string, token: string) {
+  try {
+    await auth.api.resetPassword({ body: { newPassword, token } });
+    return { success: true };
+  } catch (err: any) {
+    console.error("resetPassword failed", err);
+    const message = err?.message || String(err);
+    if (/expired|token_expired/i.test(message))
+      return { success: false, error: "token_expired", message };
+    if (/invalid|invalid_token/i.test(message))
+      return { success: false, error: "invalid_token", message };
+    return { success: false, error: "reset_failed", message };
+  }
+}
+
 export const signOut = async () => {
   try {
     await auth.api.signOut({ headers: await headers() });

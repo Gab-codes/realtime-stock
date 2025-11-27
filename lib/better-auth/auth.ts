@@ -20,7 +20,7 @@ export const getAuth = async () => {
     secret: process.env.BETTER_AUTH_SECRET,
     baseURL: process.env.BETTER_AUTH_URL,
     emailVerification: {
-      sendVerificationEmail: async ({ user, url }: any) => {
+      sendVerificationEmail: async ({ user, url }) => {
         try {
           const to = user?.email;
           const subject = "Verify your email address";
@@ -48,6 +48,27 @@ export const getAuth = async () => {
 
     emailAndPassword: {
       enabled: true,
+      sendResetPassword: async ({ user, url }) => {
+        try {
+          const to = user?.email;
+          const subject = "Reset your password";
+          const text = `Click the link to reset your password: ${url}`;
+          const html = `<p>Hi ${
+            user?.name || ""
+          },</p><p>Please reset your password by clicking the link below. This link will expire in 1 hour:</p><p><a href="${url}">${url}</a></p>`;
+
+          await transporter.sendMail({
+            from: `"${APP_NAME}" <support@gabriel.com>`,
+            to,
+            subject,
+            text,
+            html,
+          });
+        } catch (err) {
+          console.error("Error sending verification email", err);
+          throw err;
+        }
+      },
       disableSignUp: false,
       requireEmailVerification: true,
       minPasswordLength: 8,

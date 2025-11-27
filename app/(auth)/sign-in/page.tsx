@@ -4,6 +4,7 @@ import FooterLink from "@/components/forms/FooterLink";
 import InputField from "@/components/forms/InputField";
 import { Button } from "@/components/ui/button";
 import { signInWithEmail } from "@/lib/actions/auth.action";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -36,6 +37,8 @@ const SignIn = () => {
       } else if (result.error === "email_unverified") {
         toast.error("Email not verified");
         router.push(`/verify-email?email=${data.email}`);
+      } else if (result.error) {
+        toast.error(result.error);
       }
     } catch (error) {
       console.error(error);
@@ -84,6 +87,15 @@ const SignIn = () => {
             minLength: 8,
           }}
         />
+        <div className="text-sm">
+          Forgot Password?{" "}
+          <Link
+            href="/forgot-password"
+            className="text-crypto-purple hover:text-crypto-dark-purple underline"
+          >
+            Reset Password
+          </Link>
+        </div>
 
         <Button
           type="submit"
