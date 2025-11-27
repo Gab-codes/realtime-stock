@@ -30,7 +30,7 @@ const FAQ = () => {
               <AccordionItem
                 key={index}
                 value={`item-${index}`}
-                className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl overflow-hidden animate-on-scroll"
+                className="bg-white/5 border border-white/10 rounded-xl overflow-hidden animate-on-scroll"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <AccordionTrigger className="px-6 py-4 text-white hover:text-crypto-purple hover:no-underline">

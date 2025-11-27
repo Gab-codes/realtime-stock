@@ -58,7 +58,7 @@ const Hero = () => {
             </div>
             <div className="mt-8 flex items-center space-x-6">
               <div>
-                <p className="text-2xl font-bold text-white">$2.5B+</p>
+                <p className="text-2xl font-bold text-white">$25M+</p>
                 <p className="text-sm text-gray-400">Trading Volume</p>
               </div>
               <div className="h-12 w-px bg-gray-700"></div>
@@ -77,7 +77,7 @@ const Hero = () => {
           <div className="lg:w-[45%] mt-12 lg:mt-0 animate-fade-in-right">
             <div className="relative max-w-md mx-auto animate-float">
               <Image
-                src="/signalhero.webp"
+                src="/assets/images/stock.webp"
                 width={800}
                 height={400}
                 alt="Trading platform dashboard"
@@ -102,7 +102,9 @@ const Hero = () => {
                     </svg>
                   </div>
                   <div>
-                    <p className="text-xs text-gray-400">24h Change</p>
+                    <p className="text-xs text-gray-400 font-mono">
+                      24h AI Trading
+                    </p>
                     <p className="text-lg font-bold text-green-500">+12.34%</p>
                   </div>
                 </div>

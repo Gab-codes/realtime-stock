@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { APP_NAME } from "@/lib/utils";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
+import Link from "next/link";
 
 const CTA = () => {
   return (
@@ -18,40 +19,34 @@ const CTA = () => {
         <div className="max-w-4xl mx-auto bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl p-8 md:p-12 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6 animate-fade-in">
             Ready to revolutionize your{" "}
-            <span className="text-gradient">crypto trading</span>?
+            <span className="text-gradient">investment trading</span>?
           </h2>
+
           <p
             className="text-gray-300 text-lg mb-8 max-w-2xl mx-auto animate-fade-in"
             style={{ animationDelay: "0.2s" }}
           >
-            Join thousands of traders who have already upgraded their crypto
-            experience with {APP_NAME}. Start today with zero risk.
+            Join thousands of users who trust {APP_NAME} to trade both
+            cryptocurrency and the stock market using advanced AI-driven
+            strategies. Our system analyzes the market in real time, executes
+            precision trades, and optimizes your returns automatically — no
+            experience required.
           </p>
-          <div
-            className="flex flex-col sm:flex-row justify-center gap-4 animate-fade-in"
-            style={{ animationDelay: "0.4s" }}
+
+          <Link
+            href="/sign-up"
+            style={{ animationDelay: "0.6s" }}
+            className="animate-fade-in"
           >
-            <Button
-              size="lg"
-              className="bg-crypto-purple hover:bg-crypto-dark-purple text-white px-8 py-6"
-            >
-              Get Started for Free
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
             <Button
               variant="outline"
               size="lg"
-              className="border-white/20 text-white hover:bg-white/5 py-6"
+              className="group border-gray-700 w-full text-white hover:bg-white/5 py-6"
             >
-              Schedule Demo
+              Create Account
+              <ArrowUpRight className="ml-1.5 h-5 w-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
             </Button>
-          </div>
-          <p
-            className="mt-6 text-sm text-gray-400 animate-fade-in"
-            style={{ animationDelay: "0.6s" }}
-          >
-            No credit card required. Cancel anytime.
-          </p>
+          </Link>
         </div>
       </div>
     </section>
