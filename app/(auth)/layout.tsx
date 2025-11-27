@@ -60,7 +60,7 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
 
         <div className="flex-1 relative">
           <Image
-            src="/assets/images/dashboard.png"
+            src="/assets/images/bitcoin-trade.webp"
             alt="Dashboard Preview"
             width={1440}
             height={1150}

@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { steps } from "@/data/howItWorks";
 import { APP_NAME } from "@/lib/utils";
+import { ArrowUpRight } from "lucide-react";
+import Link from "next/link";
 
 const HowItWorks = () => {
   return (
@@ -41,12 +43,15 @@ const HowItWorks = () => {
         </div>
 
         <div className="mt-16 text-center">
-          <Button
-            size="lg"
-            className="bg-crypto-purple hover:bg-crypto-dark-purple text-white px-8"
-          >
-            Create Free Account
-          </Button>
+          <Link href="/sign-up">
+            <Button
+              size="lg"
+              className="group bg-crypto-purple hover:bg-crypto-dark-purple text-white px-8"
+            >
+              Create Account
+              <ArrowUpRight className="ml-1 h-5 w-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
+            </Button>
+          </Link>
         </div>
       </div>
     </section>
