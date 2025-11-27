@@ -22,6 +22,7 @@ const SignIn = () => {
     },
     mode: "onBlur",
   });
+
   const onSubmit = async (data: SignInFormData) => {
     try {
       const result = await signInWithEmail(data);
@@ -32,6 +33,9 @@ const SignIn = () => {
 
         if (user.role === "admin") router.push("/admin/dashboard");
         else router.push("/dashboard");
+      } else if (result.error === "email_unverified") {
+        toast.error("Email not verified");
+        router.push(`/verify-email?email=${data.email}`);
       }
     } catch (error) {
       console.error(error);
@@ -49,7 +53,6 @@ const SignIn = () => {
       <h1 className="form-title">Welcome Back</h1>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-        {/* inputs  */}
         <InputField
           name="email"
           label="Email"
@@ -67,6 +70,7 @@ const SignIn = () => {
             },
           }}
         />
+
         <InputField
           name="password"
           label="Password"

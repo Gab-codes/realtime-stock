@@ -38,7 +38,7 @@ const SignUp = () => {
     try {
       const result = await signUpWithEmail(data);
       if (result.success) {
-        router.push("/dashboard");
+        router.push("/verify-email");
       }
     } catch (error) {
       console.error(error);
@@ -89,7 +89,7 @@ const SignUp = () => {
         <InputField
           name="password"
           label="Password"
-          placeholder="Enter a strong passowrd"
+          placeholder="Enter a strong password"
           register={register}
           type="password"
           error={errors.password}
