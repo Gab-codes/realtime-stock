@@ -9,10 +9,7 @@ import { APP_NAME } from "@/lib/utils";
 
 const FAQ = () => {
   return (
-    <section
-      id="faq"
-      className="py-24 max-lg:bg-crypto-blue lg:bg-gradient-to-b from-[#12141C] to-crypto-blue"
-    >
+    <section id="faq" className="transform-gpu py-24 bg-crypto-blue ">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gradient">
