@@ -1,14 +1,32 @@
 "use server";
 
-import User from "@/models/user.model";
 import Investment from "@/models/investment.model";
 import Transaction from "@/models/transaction.model";
 import { kycModel } from "@/models/kyc.model";
+import userExtraModel from "@/models/userExtra.model";
+import { auth } from "../better-auth/auth";
+import { headers } from "next/headers";
 
 export const getAdminMetrics = async () => {
   try {
+    const session = await auth.api.getSession({ headers: await headers() });
+    if (!session?.user) {
+      return Response.json(
+        { success: false, error: "Not authenticated" },
+        { status: 401 }
+      );
+    }
+
+    const sessionUser = session.user as unknown as any;
+    if (sessionUser.role !== "admin") {
+      return Response.json(
+        { success: false, error: "Unauthorized" },
+        { status: 403 }
+      );
+    }
+
     // Users
-    const totalUsers = await User.countDocuments();
+    const totalUsers = await userExtraModel.countDocuments();
 
     // Investments
     const totalInvestments = await Investment.countDocuments();
