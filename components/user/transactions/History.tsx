@@ -20,7 +20,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import Summary from "./summary";
 import { formatDate, formatPrice } from "@/lib/utils";
 
 interface Transaction {

@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { APP_NAME } from "@/lib/utils";
-import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 
 const CTA = () => {

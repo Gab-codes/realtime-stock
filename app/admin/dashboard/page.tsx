@@ -27,7 +27,7 @@ const Dashboard = async () => {
   const result = await getAdminMetrics();
 
   const metrics: Metrics =
-    result && result.success
+    result && "success" in result && result.success
       ? (result.data as Metrics)
       : {
           totalUsers: 0,
