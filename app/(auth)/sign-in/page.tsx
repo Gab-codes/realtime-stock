@@ -38,7 +38,9 @@ const SignIn = () => {
         toast.error("Email not verified");
         router.push(`/verify-email?email=${data.email}`);
       } else if (result.error) {
-        toast.error(result.error);
+        toast.error(result.error, {
+          duration: 10000,
+        });
       }
     } catch (error) {
       console.error(error);

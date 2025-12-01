@@ -35,6 +35,7 @@ declare global {
     userId: string;
     fullName: string;
     email: string;
+    isBanned?: boolean;
     depositedBalance: number;
     investmentBalance: number;
     totalProfit: number;

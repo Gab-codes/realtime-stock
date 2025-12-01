@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import {
   Table,
   TableBody,
@@ -16,16 +15,42 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { MoreHorizontal, CheckCircle, Clock, XCircle } from "lucide-react";
+import {
+  MoreHorizontal,
+  CheckCircle,
+  Clock,
+  XCircle,
+  UserX2,
+  UserCheck2,
+} from "lucide-react";
 import { formatDate } from "@/lib/utils";
 import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
 import { byPassKycApproval } from "@/lib/actions/adminKyc.action";
+import { authClient } from "@/lib/better-auth/auth-client";
 
 const UserTable = ({ usersData }: { usersData: UserExtra[] }) => {
   const handleDeleteUser = (id: string) => {
     console.log("Delete user:", id);
     // confirmation + API call
+  };
+
+  const handleBanUser = async (userId: string) => {
+    await authClient.admin.banUser({
+      userId,
+      banReason: "Banned by admin",
+      banExpiresIn: 60 * 60 * 24 * 7,
+    });
+
+    toast.success("User banned successfully!");
+  };
+
+  const handleRemoveBan = async (userId: string) => {
+    await authClient.admin.unbanUser({
+      userId,
+    });
+
+    toast.success("User unbanned successfully!");
   };
 
   const handleApproveKyc = (id: string) => {
@@ -73,6 +98,7 @@ const UserTable = ({ usersData }: { usersData: UserExtra[] }) => {
             <TableHead className="w-[200px]">Full Name</TableHead>
             <TableHead>Email Address</TableHead>
             <TableHead>Total Deposited</TableHead>
+            <TableHead>Ban Status</TableHead>
             <TableHead>KYC Status</TableHead>
             <TableHead>Date Joined</TableHead>
             <TableHead className="text-right">Actions</TableHead>
@@ -92,6 +118,17 @@ const UserTable = ({ usersData }: { usersData: UserExtra[] }) => {
                 {user.depositedBalance.toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                 })}
+              </TableCell>
+              <TableCell>
+                {user.isBanned ? (
+                  <span className="flex items-center gap-1 text-red-500 font-medium">
+                    <UserX2 className="h-4 w-4" /> Banned
+                  </span>
+                ) : (
+                  <span className="flex items-center gap-1 text-green-600 font-medium">
+                    <UserCheck2 className="h-4 w-4" /> Unbanned
+                  </span>
+                )}
               </TableCell>
 
               <TableCell>
@@ -123,15 +160,20 @@ const UserTable = ({ usersData }: { usersData: UserExtra[] }) => {
                     className="bg-muted-foreground"
                     align="end"
                   >
-                    <DropdownMenuItem asChild>
-                      <Link href={`/admin/user-management/${user.userId}`}>
-                        View User
-                      </Link>
-                    </DropdownMenuItem>
                     <DropdownMenuItem
                       onClick={() => handleApproveKyc(user.userId)}
                     >
                       Approve Kyc
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => handleBanUser(user.userId)}
+                    >
+                      Ban User
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => handleRemoveBan(user.userId)}
+                    >
+                      Remove Ban
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       className="text-red-600"
