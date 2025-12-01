@@ -24,60 +24,29 @@ import {
   UserCheck2,
 } from "lucide-react";
 import { formatDate } from "@/lib/utils";
-import { toast } from "sonner";
-import { useMutation } from "@tanstack/react-query";
-import { byPassKycApproval } from "@/lib/actions/adminKyc.action";
-import { authClient } from "@/lib/better-auth/auth-client";
+import { useUserAdminActions } from "@/hooks/useUserAdminActions";
 
-const UserTable = ({ usersData }: { usersData: UserExtra[] }) => {
+const UserTable = ({
+  usersData,
+  refetchUsers,
+}: {
+  usersData: UserExtra[];
+  refetchUsers: () => void;
+}) => {
   const handleDeleteUser = (id: string) => {
     console.log("Delete user:", id);
     // confirmation + API call
   };
 
-  const handleBanUser = async (userId: string) => {
-    await authClient.admin.banUser({
-      userId,
-      banReason: "Banned by admin",
-      banExpiresIn: 60 * 60 * 24 * 7,
-    });
+  const { banUserMutation, unbanUserMutation, kycApprovalMutation } =
+    useUserAdminActions();
 
-    toast.success("User banned successfully!");
-  };
-
-  const handleRemoveBan = async (userId: string) => {
-    await authClient.admin.unbanUser({
-      userId,
-    });
-
-    toast.success("User unbanned successfully!");
-  };
-
-  const handleApproveKyc = (id: string) => {
-    approveKycMutation.mutate(id);
-  };
-
-  const approveKycMutation = useMutation({
-    mutationFn: (id: string) => byPassKycApproval(id),
-
-    onMutate: () => {
-      // Show a loading toast and store its ID for update later
-      const toastId = toast.loading("Approving KYC...");
-      return { toastId };
-    },
-
-    onSuccess: (_data, _id, context) => {
-      toast.success("KYC approved successfully!", {
-        id: context?.toastId,
-      });
-    },
-
-    onError: (error: any, _variables, context) => {
-      toast.error(error?.message || "Failed to approve KYC", {
-        id: context?.toastId,
-      });
-    },
-  });
+  const handleBanUser = (id: string) =>
+    banUserMutation.mutate(id, { onSuccess: () => refetchUsers() });
+  const handleRemoveBan = (id: string) =>
+    unbanUserMutation.mutate(id, { onSuccess: () => refetchUsers() });
+  const handleApproveKyc = (id: string) =>
+    kycApprovalMutation.mutate(id, { onSuccess: () => refetchUsers() });
 
   return (
     <div className="rounded-2xl border bg-muted shadow-sm p-6">
