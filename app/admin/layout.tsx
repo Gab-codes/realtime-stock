@@ -15,13 +15,6 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
 
   if (sessionUser.role !== "admin") redirect("/dashboard");
 
-  const user = {
-    id: sessionUser.id,
-    name: sessionUser.name,
-    email: sessionUser.email,
-    role: sessionUser.role,
-  };
-
   return (
     <SidebarProvider>
       <AppSidebar />

@@ -71,7 +71,7 @@ export const signInWithEmail = async (data: SignInFormData) => {
     if (/verify|verification|verified/i.test(message)) {
       return { success: false, error: "email_unverified", message };
     }
-    return { success: false, error: "sign_in_failed", message };
+    return { success: false, error: message, message };
   }
 };
 
