@@ -21,6 +21,8 @@ export const getUserTransactions = async () => {
     //
     let totalDeposits = 0;
     let totalWithdrawals = 0;
+    let pendingDeposits = 0;
+    let pendingWithdrawals = 0;
 
     for (const t of transactions) {
       if (t.type === "deposit" && t.status === "completed") {
@@ -30,6 +32,14 @@ export const getUserTransactions = async () => {
       if (t.type === "withdrawal" && t.status === "completed") {
         totalWithdrawals += t.amount;
       }
+
+      if (t.type === "deposit" && t.status === "pending") {
+        pendingDeposits += t.amount;
+      }
+
+      if (t.type === "withdrawal" && t.status === "pending") {
+        pendingWithdrawals += t.amount;
+      }
     }
 
     return {
@@ -38,6 +48,8 @@ export const getUserTransactions = async () => {
       stats: {
         totalDeposits,
         totalWithdrawals,
+        pendingDeposits,
+        pendingWithdrawals,
       },
     };
   } catch (error) {
