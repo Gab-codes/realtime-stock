@@ -34,7 +34,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -176,13 +175,8 @@ const TransactionHistory = ({
 
       <CardContent>
         {/* Filters and Search */}
-        <div className="flex flex-col sm:flex-row gap-4 mb-4">
-          <Input
-            placeholder="Search transactions..."
-            value={globalFilter ?? ""}
-            onChange={(event) => setGlobalFilter(String(event.target.value))}
-            className="max-w-sm"
-          />
+
+        <div className="flex max-sm:justify-between gap-4 mb-4">
           <Select
             value={(table.getColumn("type")?.getFilterValue() as string) ?? ""}
             onValueChange={(value) =>
@@ -202,6 +196,7 @@ const TransactionHistory = ({
               <SelectItem value="investment">Investment</SelectItem>
             </SelectContent>
           </Select>
+
           <Select
             value={
               (table.getColumn("status")?.getFilterValue() as string) ?? ""
