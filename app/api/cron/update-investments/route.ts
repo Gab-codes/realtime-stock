@@ -3,22 +3,32 @@ import Investment from "@/models/investment.model";
 import UserExtra from "@/models/userExtra.model";
 import Transaction from "@/models/transaction.model";
 
+/**
+ * Runs daily:
+ * - credits daily profit -> inv.profit + user.totalProfit
+ * - if investment matured -> migrates inv.profit -> user.depositedBalance
+ * - marks inv.matured = true and inv.status = "completed"
+ *
+ * NOTE: This migrates ONLY the accumulated profit (inv.profit), not the principal.
+ */
 export const runDailyInvestmentCron = async () => {
   try {
+    // Connect (serverless friendly)
     if (!mongoose.connection.readyState) {
       await mongoose.connect(process.env.MONGODB_URL!);
     }
 
+    // Normalize "today" to UTC midnight (prevent timezone drift)
     const today = new Date();
-    today.setHours(0, 0, 0, 0); // Normalize to prevent time drift issues
+    today.setUTCHours(0, 0, 0, 0);
 
-    // Fetch active, not-matured investments
+    // Get all active, not-yet-matured investments
     const activeInvestments = await Investment.find({
       status: "active",
       matured: false,
     });
 
-    if (activeInvestments.length === 0) {
+    if (!activeInvestments.length) {
       console.log("No active investments to process.");
       return;
     }
@@ -27,38 +37,42 @@ export const runDailyInvestmentCron = async () => {
 
     for (const inv of activeInvestments) {
       const session = await mongoose.startSession();
-      session.startTransaction();
+      await session.startTransaction();
 
       try {
+        // load user inside session
         const user = await UserExtra.findOne({ userId: inv.userId }).session(
           session
         );
         if (!user)
           throw new Error(`UserExtra not found for userId ${inv.userId}`);
 
-        // Prevent double-crediting (important!)
+        // Prevent double crediting for the same day
         if (inv.lastProfitAt) {
           const last = new Date(inv.lastProfitAt);
-          last.setHours(0, 0, 0, 0);
+          last.setUTCHours(0, 0, 0, 0);
           if (last.getTime() === today.getTime()) {
+            // already processed today — skip this investment
             await session.abortTransaction();
             session.endSession();
-            continue; // Already processed today
+            continue;
           }
         }
 
-        // 1. DAILY PROFIT CALCULATION
+        // 1) DAILY profit calculation & credit (accumulate on the investment)
         const dailyProfit = inv.principal * inv.dailyRate;
 
-        inv.profit += dailyProfit;
-        inv.lastProfitAt = new Date();
+        inv.profit = (inv.profit ?? 0) + dailyProfit;
+        inv.lastProfitAt = new Date(); // record actual timestamp
 
-        user.totalProfit += dailyProfit;
+        // update user's aggregate profit metric (for reporting)
+        user.totalProfit = (user.totalProfit ?? 0) + dailyProfit;
 
+        // persist changes within transaction
         await inv.save({ session });
         await user.save({ session });
 
-        // 2. Record daily profit transaction
+        // create daily ai-return transaction
         await Transaction.create(
           [
             {
@@ -74,38 +88,47 @@ export const runDailyInvestmentCron = async () => {
           { session }
         );
 
-        // 3. MATURITY CHECK
-        const isMature =
-          today.getTime() >= new Date(inv.maturityDate).setHours(0, 0, 0, 0);
+        // 2) MATURITY CHECK: normalize maturity date and compare
+        const maturity = new Date(inv.maturityDate);
+        maturity.setUTCHours(0, 0, 0, 0);
+        const isMature = maturity.getTime() <= today.getTime();
 
         if (isMature) {
-          const totalReturn = inv.principal + inv.profit;
+          // Transfer accumulated profit only (not principal)
+          const profitToTransfer = inv.profit ?? 0;
 
-          // Move all returns → depositedBalance
-          user.depositedBalance += totalReturn;
+          if (profitToTransfer > 0) {
+            user.depositedBalance =
+              (user.depositedBalance ?? 0) + profitToTransfer;
+          }
 
+          // mark investment completed / matured and clear profit to avoid double counting
           inv.status = "completed";
-          inv.matured = true; // Critical flag
-          inv.profit = 0; // lock profit after migration
+          inv.matured = true;
+          inv.profit = 0;
+          inv.lastProfitAt = new Date();
 
+          // persist updates
           await inv.save({ session });
           await user.save({ session });
 
-          // Record maturity transaction
-          await Transaction.create(
-            [
-              {
-                userId: inv.userId,
-                type: "maturity-payout",
-                amount: totalReturn,
-                currency: "USD",
-                status: "completed",
-                investmentId: inv._id.toString(),
-                description: `Investment matured. Principal + Profit credited.`,
-              },
-            ],
-            { session }
-          );
+          // record maturity transaction (use ai-return type to match schema)
+          if (profitToTransfer > 0) {
+            await Transaction.create(
+              [
+                {
+                  userId: inv.userId,
+                  type: "ai-return", // or update your Transaction schema to include a 'maturity' type
+                  amount: profitToTransfer,
+                  currency: "USD",
+                  status: "completed",
+                  investmentId: inv._id.toString(),
+                  description: `Investment matured — profit credited to deposited balance.`,
+                },
+              ],
+              { session }
+            );
+          }
         }
 
         await session.commitTransaction();
