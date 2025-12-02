@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { auth } from "../better-auth/auth";
 import { inngest } from "../inngest/client";
 import userExtraModel from "@/models/userExtra.model";
+import axios from "axios";
 
 export const signUpWithEmail = async ({
   email,
@@ -137,5 +138,33 @@ export const signOut = async () => {
   } catch (error) {
     console.error("Sign out failed", error);
     return { success: false, error: "Sign out failed" };
+  }
+};
+
+// admin function
+export const deleteUser = async (userId: string) => {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+    const cookie = (await headers()).get("cookie") || "";
+
+    const response = await axios.delete(
+      `${baseUrl}/api/admin/users/${userId}`,
+      {
+        headers: {
+          cookie,
+        },
+        withCredentials: true,
+      }
+    );
+
+    return response.data;
+  } catch (error: any) {
+    console.error("Error updating transaction status:", error);
+
+    // Axios error handling
+    const apiError =
+      error.response?.data?.error || "Failed to update transaction";
+
+    return { success: false, error: apiError };
   }
 };
