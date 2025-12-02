@@ -27,8 +27,10 @@ export async function GET(request: NextRequest) {
     const limit = 15;
     const skip = (page - 1) * limit;
 
-    // Count for pagination
-    const totalTransactions = await Transaction.countDocuments();
+    // Count only relevant transactions for pagination
+    const totalTransactions = await Transaction.countDocuments({
+      type: { $in: ["deposit", "withdrawal", "investment"] },
+    });
 
     // Paginated transactions
     const transactions = await Transaction.find({

@@ -257,22 +257,26 @@ const TransactionsTable = ({ preview = false }: TransactionsTableProps) => {
       </div>
 
       {/* Pagination for full page only */}
-      {!preview && pagination.totalPages > 1 && (
+      {!preview && pagination?.totalPages > 1 && (
         <div className="flex items-center justify-between mt-6">
           <div className="text-sm text-gray-400">
             Page {pagination.page} of {pagination.totalPages}
           </div>
+
           <div className="flex items-center space-x-2">
+            {/* Previous */}
             <Button
               variant="outline"
               size="sm"
               onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-              disabled={currentPage === 1}
+              disabled={pagination.page === 1}
               className="border-gray-600 text-gray-300 hover:bg-gray-700"
             >
               <ChevronLeft className="h-4 w-4" />
               Previous
             </Button>
+
+            {/* Next */}
             <Button
               variant="outline"
               size="sm"
@@ -281,7 +285,7 @@ const TransactionsTable = ({ preview = false }: TransactionsTableProps) => {
                   Math.min(prev + 1, pagination.totalPages)
                 )
               }
-              disabled={currentPage === pagination.totalPages}
+              disabled={pagination.page === pagination.totalPages}
               className="border-gray-600 text-gray-300 hover:bg-gray-700"
             >
               Next

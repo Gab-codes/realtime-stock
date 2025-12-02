@@ -31,7 +31,7 @@ const Navbar = () => {
     <nav
       className={`fixed w-full z-50 transition-all duration-300 ${
         isScrolled
-          ? "bg-crypto-blue/80 backdrop-blur-md py-3 shadow-lg"
+          ? "bg-crypto-blue/80 backdrop-blur-md py-6 md:py-4 max-md:px-2 shadow-lg"
           : "py-6"
       }`}
     >
@@ -40,7 +40,7 @@ const Navbar = () => {
         <div className="flex items-center">
           <h1 className="text-2xl font-bold text-white inline-flex gap-2 items-center">
             {APP_NAME}
-            <Biohazard className="size-7 text-crypto-purple" />
+            <Biohazard className="size-7.5 text-crypto-purple" />
           </h1>
         </div>
 
@@ -78,9 +78,13 @@ const Navbar = () => {
         {/* Mobile Menu Toggle */}
         <button
           className="lg:hidden text-white"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          onClick={() => setIsMobileMenuOpen((prev) => !prev)}
         >
-          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          {isMobileMenuOpen ? (
+            <X className="size-6.5" />
+          ) : (
+            <Menu className="size-6.5" />
+          )}
         </button>
       </div>
 

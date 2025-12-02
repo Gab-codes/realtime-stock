@@ -74,16 +74,16 @@ const Hero = () => {
             </div>
           </div>
 
-          <div className="lg:w-[45%] mt-12 lg:mt-0 animate-fade-in-right">
-            <div className="relative max-w-md mx-auto animate-float">
+          <div className="lg:w-[45%] mt-15 lg:mt-0 animate-fade-in-right">
+            <div className="relative max-w-md flex justify-center animate-float">
               <Image
                 src="/assets/images/stock.webp"
                 width={800}
                 height={400}
                 alt="Trading platform dashboard"
-                className="rounded-xl shadow-2xl border border-white/10"
+                className="rounded-xl max-sm:max-w-4/5 w-full shadow-2xl border border-white/10"
               />
-              <div className="absolute -right-6 -bottom-6 bg-crypto-purple/20 backdrop-blur-md rounded-lg p-4 border border-crypto-purple/30 shadow-lg">
+              <div className="absolute -right-2 sm:-right-6 -bottom-6 bg-crypto-purple/20 backdrop-blur-md rounded-lg p-2.5 md:p-4 border border-crypto-purple/30 shadow-lg">
                 <div className="flex items-center space-x-3">
                   <div className="h-10 w-10 bg-green-500/20 rounded-full flex items-center justify-center">
                     <svg
@@ -109,7 +109,7 @@ const Hero = () => {
                   </div>
                 </div>
               </div>
-              <div className="absolute -left-6 -top-6 bg-crypto-purple/20 backdrop-blur-md rounded-lg p-4 border border-crypto-purple/30 shadow-lg">
+              <div className="absolute -left-2 sm:-left-6 -top-6 bg-crypto-purple/20 backdrop-blur-md rounded-lg p-2.5 md:p-4 border border-crypto-purple/30 shadow-lg">
                 <div className="flex items-center space-x-3">
                   <div className="h-10 w-10 bg-crypto-purple/20 rounded-full flex items-center justify-center">
                     <svg
@@ -129,7 +129,9 @@ const Hero = () => {
                   </div>
                   <div>
                     <p className="text-xs text-gray-400">Security Level</p>
-                    <p className="text-lg font-bold text-white">Enterprise</p>
+                    <p className="sm:text-lg font-bold text-white">
+                      Enterprise
+                    </p>
                   </div>
                 </div>
               </div>
