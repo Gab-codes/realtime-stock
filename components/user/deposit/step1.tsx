@@ -32,23 +32,28 @@ const Step1 = ({
 }: Step1Props) => {
   return (
     <div className="space-y-4">
+      {" "}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {" "}
         <div>
+          {" "}
           <label className="text-sm text-gray-400">Currency</label>
           <Select
             value={currency}
             onValueChange={(v) => setCurrency(v as "BTC" | "USDT")}
           >
+            {" "}
             <SelectTrigger className="w-full">
-              <SelectValue />
-            </SelectTrigger>
+              {" "}
+              <SelectValue />{" "}
+            </SelectTrigger>{" "}
             <SelectContent>
-              <SelectItem value="USDT">USDT (ERC 20)</SelectItem>
-              <SelectItem value="BTC">BTC (Bitcoin)</SelectItem>
-            </SelectContent>
-          </Select>
+              {" "}
+              <SelectItem value="USDT">USDT (ERC 20)</SelectItem>{" "}
+              <SelectItem value="BTC">BTC (Bitcoin)</SelectItem>{" "}
+            </SelectContent>{" "}
+          </Select>{" "}
         </div>
-
         <div>
           <label className="text-sm text-gray-400">Amount (USD)</label>
           <Input
@@ -64,7 +69,6 @@ const Step1 = ({
           />
         </div>
       </div>
-
       <div className="text-sm text-gray-300">
         <div>
           Live prices:{" "}
@@ -79,8 +83,11 @@ const Step1 = ({
             </span>
           ) : null}
         </div>
+        <div className="text-xs text-gray-400 mt-3">
+          Need another funding method? You can easily reach out to our live chat
+          for guidance.
+        </div>
       </div>
-
       <div className="flex gap-2 mt-4">
         <Button
           onClick={() => {

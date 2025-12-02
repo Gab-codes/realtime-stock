@@ -35,12 +35,12 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
       <section className="auth-right-section bg-gradient-to-b from-[#12141C] to-crypto-blue">
         <div className="z-10 relative lg:mt-4 lg:mb-16">
           <blockquote className="auth-blockqote">
-            {APP_NAME} turned my wathclist inot a winning list. The alerts are
-            spot on, and i feel more confident making moves in the market.
+            {APP_NAME} transformed my life, and I couldn&apos;t be happier. The
+            simplicity and accessibility make trading a breeze.
           </blockquote>
           <div className="flex items-center justify-between">
             <div>
-              <cite className="auth-testimonial-author">- Ethan R</cite>
+              <cite className="auth-testimonial-author">- Jeffrey W</cite>
               <p className="max-md: text-xs text-gray-500">Retail Investor</p>
             </div>
             <div className="flex items-center gap-0.5">
