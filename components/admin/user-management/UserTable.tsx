@@ -33,13 +33,12 @@ const UserTable = ({
   usersData: UserExtra[];
   refetchUsers: () => void;
 }) => {
-  const handleDeleteUser = (id: string) => {
-    console.log("Delete user:", id);
-    // confirmation + API call
-  };
-
-  const { banUserMutation, unbanUserMutation, kycApprovalMutation } =
-    useUserAdminActions();
+  const {
+    banUserMutation,
+    unbanUserMutation,
+    kycApprovalMutation,
+    deleteUserMutation,
+  } = useUserAdminActions();
 
   const handleBanUser = (id: string) =>
     banUserMutation.mutate(id, { onSuccess: () => refetchUsers() });
@@ -47,6 +46,8 @@ const UserTable = ({
     unbanUserMutation.mutate(id, { onSuccess: () => refetchUsers() });
   const handleApproveKyc = (id: string) =>
     kycApprovalMutation.mutate(id, { onSuccess: () => refetchUsers() });
+  const handleDeleteUser = (id: string) =>
+    deleteUserMutation.mutate(id, { onSuccess: () => refetchUsers() });
 
   return (
     <div className="rounded-2xl border bg-muted shadow-sm p-6">
