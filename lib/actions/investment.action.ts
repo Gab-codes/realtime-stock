@@ -24,6 +24,15 @@ export const createInvestment = async (payload: InvestmentPayload) => {
       return { success: false, error: "Invalid amount" };
     }
 
+    // Minimum investment requirement
+    const MIN_INVESTMENT = 500;
+    if (amount < MIN_INVESTMENT) {
+      return {
+        success: false,
+        error: `Minimum investment is $${MIN_INVESTMENT}`,
+      };
+    }
+
     const userExtra = await userExtraModel.findOne({ userId });
     if (!userExtra) {
       return { success: false, error: "User data not found" };

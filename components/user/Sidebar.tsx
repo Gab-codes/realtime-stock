@@ -10,6 +10,7 @@ import {
   Briefcase,
   // Settings,
   HelpCircle,
+  UserPlus,
   Biohazard,
   LogOut,
 } from "lucide-react";
@@ -24,6 +25,7 @@ const navItems = [
   { label: "Deposit", href: "/deposit", icon: ArrowDownToLine },
   { label: "Withdraw", href: "/withdraw", icon: ArrowUpToLine },
   { label: "Verification Center", href: "/kyc", icon: HelpCircle },
+  { label: "Referrals", href: "/referrals", icon: UserPlus },
   // { label: "Settings", href: "/settings", icon: Settings },
 ];
 

@@ -11,7 +11,7 @@ import {
   PREFERRED_INDUSTRIES,
   RISK_TOLERANCE_OPTIONS,
 } from "@/lib/constants";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -34,11 +34,15 @@ const SignUp = () => {
     },
     mode: "onBlur",
   });
+  const searchParams = useSearchParams();
   const onSubmit = async (data: SignUpFormData) => {
     try {
-      const result = await signUpWithEmail(data);
+      const referralCode = searchParams.get("ref") || undefined;
+      const result = await signUpWithEmail({ ...data, referralCode });
       if (result.success) {
         router.push("/verify-email");
+      } else {
+        toast.error(result.error);
       }
     } catch (error) {
       console.error(error);

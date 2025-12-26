@@ -39,12 +39,12 @@ const InputField = ({
         />
         {type === "password" && showPassword === false ? (
           <Eye
-            className="absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer"
+            className="absolute size-5 top-1/2 right-4 -translate-y-1/2 cursor-pointer"
             onClick={() => setShowPassword(!showPassword)}
           />
         ) : type === "password" && showPassword === true ? (
           <EyeOff
-            className="absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer"
+            className="absolute size-5 top-1/2 right-4 -translate-y-1/2 cursor-pointer"
             onClick={() => setShowPassword(!showPassword)}
           />
         ) : null}

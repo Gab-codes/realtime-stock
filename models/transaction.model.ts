@@ -5,7 +5,13 @@ const TransactionSchema = new Schema<ITransaction>(
     userId: { type: String, required: true },
     type: {
       type: String,
-      enum: ["deposit", "withdrawal", "ai-return", "investment"],
+      enum: [
+        "deposit",
+        "withdrawal",
+        "ai-return",
+        "investment",
+        "referral-bonus",
+      ],
       required: true,
     },
     amount: { type: Number, required: true },
@@ -18,6 +24,8 @@ const TransactionSchema = new Schema<ITransaction>(
     txHash: String,
     network: String,
     investmentId: String,
+    // Optional description for transactions
+    description: String,
   },
   { timestamps: true }
 );

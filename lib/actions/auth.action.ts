@@ -14,6 +14,7 @@ export const signUpWithEmail = async ({
   investmentGoals,
   riskTolerance,
   preferredIndustry,
+  referralCode,
 }: SignUpFormData) => {
   try {
     const response = await auth.api.signUpEmail({
@@ -25,7 +26,7 @@ export const signUpWithEmail = async ({
     });
 
     if (response) {
-      await userExtraModel.create({
+      const newUserExtra = await userExtraModel.create({
         fullName: fullName,
         email: email,
         userId: response.user.id,
@@ -34,6 +35,34 @@ export const signUpWithEmail = async ({
         totalProfit: 0,
         kycStatus: "unverified",
       });
+
+      // If referral code was used, link to referrer and create pending referral record
+      if (referralCode) {
+        try {
+          const referrerExtra = await userExtraModel.findOne({ referralCode });
+          if (
+            referrerExtra &&
+            referrerExtra._id.toString() !== newUserExtra._id.toString()
+          ) {
+            newUserExtra.referrer = referrerExtra._id;
+            await newUserExtra.save();
+
+            const { createPendingReferral, ensureReferralCodeForUser } =
+              await import("@/lib/actions/referral.action");
+
+            // Ensure referrer has a referral code (generate if missing)
+            if (!referrerExtra.referralCode) {
+              const code = await ensureReferralCodeForUser(referrerExtra);
+              referrerExtra.referralCode = code;
+              await referrerExtra.save();
+            }
+
+            await createPendingReferral(referrerExtra._id, newUserExtra._id);
+          }
+        } catch (err) {
+          console.error("Failed to link referral on signup:", err);
+        }
+      }
 
       // send inngest event
       await inngest.send({
@@ -52,7 +81,8 @@ export const signUpWithEmail = async ({
     return { success: true, data: response, message: "Sign up successful" };
   } catch (error) {
     console.error("Sign up failed", error);
-    return { success: false, error: "Sign up failed" };
+    const message = error instanceof Error ? error.message : String(error);
+    return { success: false, error: message || "Sign up failed" };
   }
 };
 
