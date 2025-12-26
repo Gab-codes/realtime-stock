@@ -39,6 +39,10 @@ const SignUp = () => {
       const result = await signUpWithEmail(data);
       if (result.success) {
         router.push("/verify-email");
+      } else {
+        toast.error(result.error, {
+          duration: 8000,
+        });
       }
     } catch (error) {
       console.error(error);
