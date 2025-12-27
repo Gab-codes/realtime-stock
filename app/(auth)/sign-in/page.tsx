@@ -34,9 +34,6 @@ const SignIn = () => {
 
         if (user.role === "admin") router.push("/admin/dashboard");
         else router.push("/dashboard");
-      } else if (result.error === "email_unverified") {
-        toast.error("Email not verified");
-        router.push(`/verify-email?email=${data.email}`);
       } else if (result.error) {
         toast.error(result.error, {
           duration: 10000,

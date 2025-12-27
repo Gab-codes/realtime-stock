@@ -82,7 +82,7 @@ export const signUpWithEmail = async ({
   } catch (error) {
     console.error("Sign up failed", error);
     const message = error instanceof Error ? error.message : String(error);
-    return { success: false, error: message || "Sign up failed" };
+    return { success: false, error: message, status: 400 };
   }
 };
 
@@ -99,9 +99,6 @@ export const signInWithEmail = async (data: SignInFormData) => {
     console.error("Sign in failed", error);
     // Detect unverified email from error message if available
     const message = error instanceof Error ? error.message : String(error);
-    if (/verify|verification|verified/i.test(message)) {
-      return { success: false, error: "email_unverified", message };
-    }
     return { success: false, error: message, message };
   }
 };

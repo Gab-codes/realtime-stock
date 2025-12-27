@@ -42,7 +42,9 @@ const SignUp = () => {
       if (result.success) {
         router.push("/verify-email");
       } else {
-        toast.error(result.error);
+        toast.error(result.error, {
+          duration: 8000,
+        });
       }
     } catch (error) {
       console.error(error);
