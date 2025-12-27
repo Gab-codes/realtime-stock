@@ -15,7 +15,10 @@ export const GET = async () => {
       );
     }
 
-    const allUsers = await userExtraModel.find({}).lean();
+    const allUsers = await userExtraModel
+      .find({})
+      .sort({ createdAt: -1 })
+      .lean();
     if (!allUsers?.length) {
       return NextResponse.json({ success: true, data: [] });
     }

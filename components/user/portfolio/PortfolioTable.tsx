@@ -31,6 +31,13 @@ export default function PortfolioTable({
         </TableHeader>
 
         <TableBody>
+          {investments.length === 0 && (
+            <TableRow>
+              <TableCell colSpan={6} className="text-center font-semibold py-6">
+                No investments found.
+              </TableCell>
+            </TableRow>
+          )}
           {investments.map((inv) => (
             <TableRow key={inv.id} className="border-b border-white/5">
               <TableCell className="py-3">{inv.planLabel}</TableCell>
