@@ -31,7 +31,7 @@ type Props = {
 const randInt = (min: number, max: number) =>
   Math.floor(Math.random() * (max - min + 1)) + min;
 
-const randDelay = () => 4000 + Math.floor(Math.random() * 1001);
+const randDelay = () => 5000 + Math.floor(Math.random() * 1001);
 
 const pick = <T,>(arr: T[]) => arr[Math.floor(Math.random() * arr.length)];
 
@@ -138,6 +138,11 @@ const InvestmentForm = ({ depositedBalance, kycStatus }: Props) => {
     if (kycStatus !== "verified") {
       toast.error("KYC Verification Required, please complete your KYC first.");
       router.push("/kyc");
+      return;
+    }
+
+    if (amount < 500) {
+      toast.error("Minimum investment amount is $500.");
       return;
     }
 
