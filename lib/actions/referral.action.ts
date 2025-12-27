@@ -2,8 +2,7 @@ import crypto from "crypto";
 import Referral from "@/models/referral.model";
 import UserExtra from "@/models/userExtra.model";
 import Transaction from "@/models/transaction.model";
-import Investment from "@/models/investment.model";
-import { transporter } from "@/lib/nodemailer";
+import mongoose from "mongoose";
 
 export const REFERRAL_AMOUNT = 100;
 export const MIN_INVESTMENT = 500;
@@ -20,7 +19,7 @@ export async function ensureReferralCodeForUser(userExtra: any) {
   if (userExtra.referralCode) return userExtra.referralCode;
 
   const code = generateReferralCode();
-  // Ensure uniqueness
+
   const exists = await UserExtra.findOne({ referralCode: code });
   if (exists) return ensureReferralCodeForUser(userExtra);
 
@@ -30,149 +29,117 @@ export async function ensureReferralCodeForUser(userExtra: any) {
 }
 
 export async function createPendingReferral(
-  referrerId: string | any,
-  referredId: string | any
+  referrerUserExtraId: string,
+  referredUserExtraId: string
 ) {
-  // Accept both ObjectId and string ids
   const exists = await Referral.findOne({
-    referrer: referrerId,
-    referred: referredId,
+    referrer: referrerUserExtraId,
+    referred: referredUserExtraId,
   });
+
   if (exists) return exists;
 
-  const ref = await Referral.create({
-    referrer: referrerId,
-    referred: referredId,
+  return Referral.create({
+    referrer: referrerUserExtraId,
+    referred: referredUserExtraId,
     amount: REFERRAL_AMOUNT,
+    status: "pending",
   });
-  return ref;
 }
 
-export async function awardReferralIfEligible(referredUserId: string) {
+export async function awardReferralIfEligible(referredUserExtraId: string) {
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
   try {
-    // Get referred user's extra doc
-    const referred = await UserExtra.findOne({ userId: referredUserId });
-    if (!referred) return { success: false, reason: "no_referred_user" };
-
-    // Find a pending referral for this referred user
+    // Get pending referral for THIS USER
     const referral = await Referral.findOne({
-      referred: referred._id,
+      referred: referredUserExtraId,
       status: "pending",
-    });
+    }).session(session);
 
-    // If no explicit referral record, check if referred.referrer exists and create a pending referral
-    let referrerExtra = null;
     if (!referral) {
-      if (!referred.referrer) return { success: false, reason: "no_referrer" };
-      referrerExtra = await UserExtra.findById(referred.referrer);
-      if (!referrerExtra)
-        return { success: false, reason: "no_referrer_user_extra" };
-    } else {
-      referrerExtra = await UserExtra.findById(referral.referrer);
+      await session.abortTransaction();
+      return;
     }
 
-    if (!referrerExtra) return { success: false, reason: "no_referrer_extra" };
+    // Fetch referred user (to access auth userId)
+    const referredUser = await UserExtra.findById(referral.referred).session(
+      session
+    );
 
-    // Ensure there's at least one completed deposit transaction for referred
-    const deposit = await Transaction.findOne({
-      userId: referredUserId,
+    if (!referredUser) throw new Error("Referred user not found");
+
+    const authUserId = referredUser.userId;
+
+    // Check COMPLETED deposit exists
+    const hasDeposit = await Transaction.exists({
+      userId: authUserId,
       type: "deposit",
       status: "completed",
     });
-    if (!deposit) return { success: false, reason: "no_completed_deposit" };
 
-    // Check for an active investment >= MIN_INVESTMENT
-    const investment = await Investment.findOne({
-      userId: referredUserId,
-      status: "active",
-      principal: { $gte: MIN_INVESTMENT },
-    });
-    if (!investment)
-      return { success: false, reason: "no_qualifying_investment" };
-
-    // At this point: eligible. Ensure we have a referral record
-    let referralRecord = referral;
-    if (!referralRecord) {
-      referralRecord = await createPendingReferral(
-        referrerExtra._id,
-        referred._id
-      );
+    if (!hasDeposit) {
+      await session.abortTransaction();
+      return;
     }
 
-    if (referralRecord.status === "awarded") {
-      return { success: false, reason: "already_awarded" };
+    // Check COMPLETED investment exists
+    const qualifyingInvestment = await Transaction.findOne({
+      userId: authUserId,
+      type: "investment",
+      status: "completed",
+      amount: { $gte: MIN_INVESTMENT },
+    }).session(session);
+
+    if (!qualifyingInvestment) {
+      await session.abortTransaction();
+      return;
     }
 
-    // Award the referrer: create transaction and credit depositedBalance
-    const session = await Transaction.db.startSession();
-    session.startTransaction();
-    try {
-      const tx = await Transaction.create([
+    // Prevent double-award
+    if (referral.status === "awarded") {
+      await session.abortTransaction();
+      return;
+    }
+
+    // Credit referrer
+    const referrer = await UserExtra.findById(referral.referrer).session(
+      session
+    );
+
+    if (!referrer) throw new Error("Referrer not found");
+
+    referrer.depositedBalance += referral.amount;
+    await referrer.save({ session });
+
+    // Create transaction
+    const txn = await Transaction.create(
+      [
         {
-          userId: referrerExtra.userId || referrerExtra.userId?.toString(),
+          userId: referrer.userId,
           type: "referral-bonus",
-          amount: REFERRAL_AMOUNT,
+          amount: referral.amount,
           currency: "USD",
           status: "completed",
-          description: `Referral bonus for referring user ${
-            referred.email || referred._id
-          }`,
+          description: "Referral bonus awarded",
         },
-      ]);
+      ],
+      { session }
+    );
 
-      // tx is an array because create with array returns array
-      const createdTx: any = Array.isArray(tx) ? tx[0] : tx;
+    // Update referral
+    referral.status = "awarded";
+    referral.awardedAt = new Date();
+    referral.transactionId = txn[0]._id.toString();
+    await referral.save({ session });
 
-      referrerExtra.depositedBalance =
-        (referrerExtra.depositedBalance || 0) + REFERRAL_AMOUNT;
-      referrerExtra.totalReferralBonus =
-        (referrerExtra.totalReferralBonus || 0) + REFERRAL_AMOUNT;
-      await referrerExtra.save();
-
-      referralRecord.status = "awarded";
-      referralRecord.awardedAt = new Date();
-      referralRecord.transactionId = createdTx._id;
-      await referralRecord.save();
-
-      await session.commitTransaction();
-      session.endSession();
-
-      // Send email to referrer (no inngest)
-      try {
-        const mailOptions = {
-          from: `"Signalist" <${process.env.NODEMAILER_EMAIL}>`,
-          to: referrerExtra.email,
-          subject: `You received a $${REFERRAL_AMOUNT} referral bonus!`,
-          text: `Congrats! You've received a $${REFERRAL_AMOUNT} referral bonus for referring ${
-            referred.email || "a user"
-          }. The funds have been added to your deposited balance.`,
-          html: `<p>Congratulations <strong>${
-            referrerExtra.fullName
-          }</strong>!</p>
-                 <p>You've received a <strong>$${REFERRAL_AMOUNT}</strong> referral bonus for referring <strong>${
-            referred.email || "a user"
-          }</strong>. The funds have been added to your deposited balance.</p>
-                 <p>Thanks for sharing Signalist!</p>`,
-        };
-        await transporter.sendMail(mailOptions);
-      } catch (err) {
-        console.error("Failed to send referral email:", err);
-      }
-
-      return {
-        success: true,
-        referral: referralRecord,
-        transactionId: createdTx._id,
-      };
-    } catch (err) {
-      await session.abortTransaction();
-      session.endSession();
-      console.error("Error awarding referral:", err);
-      return { success: false, error: err };
-    }
-  } catch (error) {
-    console.error("awardReferralIfEligible error:", error);
-    return { success: false, error };
+    await session.commitTransaction();
+  } catch (err) {
+    await session.abortTransaction();
+    console.error("Referral award failed:", err);
+  } finally {
+    session.endSession();
   }
 }
 
@@ -200,20 +167,32 @@ export const getReferralsForCurrentUser = async () => {
     const enriched = await Promise.all(
       referrals.map(async (r: any) => {
         const referred = await UserExtra.findById(r.referred).lean();
+
         return {
           ...r,
+
+          // FIX: convert ObjectIds to strings
+          _id: r._id.toString(),
+          referrer: r.referrer?.toString(),
           referred: referred
             ? {
-                id: referred._id.toString(),
-                email: referred.email,
-                fullName: referred.fullName,
+                id: (referred as any)._id.toString(),
+                email: (referred as any).email,
+                fullName: (referred as any).fullName,
               }
             : null,
+
+          // FIX: Dates → ISO strings
+          createdAt: r.createdAt?.toISOString(),
+          updatedAt: r.updatedAt?.toISOString(),
         };
       })
     );
 
-    return { success: true, data: { referralCode: userExtra.referralCode, referrals: enriched } };
+    return {
+      success: true,
+      data: { referralCode: userExtra.referralCode, referrals: enriched },
+    };
   } catch (err) {
     console.error("getReferralsForCurrentUser error:", err);
     return { success: false, error: "Failed to fetch referrals" };

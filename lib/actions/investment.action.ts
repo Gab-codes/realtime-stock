@@ -5,6 +5,7 @@ import { auth } from "@/lib/better-auth/auth";
 import userExtraModel from "@/models/userExtra.model";
 import Transaction from "@/models/transaction.model";
 import Investment from "@/models/investment.model";
+import { awardReferralIfEligible } from "./referral.action";
 
 interface InvestmentPayload {
   amount: number;
@@ -52,6 +53,8 @@ export const createInvestment = async (payload: InvestmentPayload) => {
     // Deduct from deposited balance and add to investment balance
     userExtra.depositedBalance -= amount;
     await userExtra.save();
+
+    await awardReferralIfEligible(userExtra._id.toString());
 
     // Create investment portfolio record
     const investment = await Investment.create({
