@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { formatDate } from "@/lib/utils";
 
 type Referred = {
   id: string;
@@ -54,8 +55,8 @@ export default function ReferralInvite({
             Invite friends & earn $100
           </h3>
           <p className="text-sm text-gray-300">
-            Share your referral link. You get $100 when they deposit and invest
-            $500+.
+            Share your referral link. You get $100 when they deposit and make
+            their first investment.
           </p>
         </div>
         <div>
@@ -89,7 +90,7 @@ export default function ReferralInvite({
                     {r.referred?.email ?? r.referred?.fullName ?? "Unknown"}
                   </div>
                   <div className="text-xs text-gray-400">
-                    {new Date(r.createdAt || "").toLocaleString()}
+                    {formatDate(r.createdAt || "")}
                   </div>
                 </div>
                 <div className="text-right">
@@ -104,7 +105,7 @@ export default function ReferralInvite({
                   </div>
                   {r.status === "awarded" && r.awardedAt ? (
                     <div className="text-xs text-gray-400">
-                      Paid {new Date(r.awardedAt).toLocaleDateString()}
+                      Paid {formatDate(r.awardedAt)}
                     </div>
                   ) : null}
                 </div>

@@ -67,7 +67,7 @@ const UserTable = ({
           <TableRow>
             <TableHead className="w-[200px]">Full Name</TableHead>
             <TableHead>Email Address</TableHead>
-            <TableHead>Total Deposited</TableHead>
+            <TableHead>Deposite Balance</TableHead>
             <TableHead>Ban Status</TableHead>
             <TableHead>KYC Status</TableHead>
             <TableHead>Date Joined</TableHead>

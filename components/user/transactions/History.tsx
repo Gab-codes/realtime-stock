@@ -22,6 +22,7 @@ import {
   Sparkle,
   ChevronLeft,
   ChevronRight,
+  Handshake,
 } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -46,7 +47,12 @@ import { formatDate, formatPrice } from "@/lib/utils";
 
 interface Transaction {
   _id: string;
-  type: "deposit" | "withdrawal" | "ai-return" | "investment";
+  type:
+    | "deposit"
+    | "withdrawal"
+    | "ai-return"
+    | "investment"
+    | "referral-bonus";
   amount: number;
   currency: "USDT" | "BTC";
   status: "pending" | "completed" | "failed";
@@ -82,6 +88,9 @@ const TransactionHistory = ({
               )}
               {type === "investment" && (
                 <Sparkle size={18} className="text-purple-400" />
+              )}
+              {type === "referral-bonus" && (
+                <Handshake size={18} className="text-blue-400" />
               )}
               {type.replace("_", " ")}
             </div>
