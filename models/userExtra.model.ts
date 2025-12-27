@@ -8,6 +8,9 @@ export interface IUserExtra extends Document {
   investmentBalance: number;
   totalProfit: number;
   kycStatus: "verified" | "pending" | "rejected" | "unverified";
+  referralCode?: string;
+  referrer?: Types.ObjectId | null;
+  totalReferralBonus?: number;
 }
 
 const UserExtraSchema = new Schema<IUserExtra>(
@@ -24,6 +27,14 @@ const UserExtraSchema = new Schema<IUserExtra>(
     investmentBalance: { type: Number, default: 0 },
     totalProfit: { type: Number, default: 0 },
     kycStatus: { type: String, default: "unverified" },
+    // Referral fields
+    referralCode: { type: String, unique: true, sparse: true },
+    referrer: {
+      type: Schema.Types.ObjectId,
+      ref: "UserExtra",
+      default: null,
+    },
+    totalReferralBonus: { type: Number, default: 0 },
   },
   { timestamps: true }
 );

@@ -72,6 +72,16 @@ export async function PATCH(
         // Deposit → Add balance on approval
         userExtra.depositedBalance += transaction.amount;
         await userExtra.save();
+
+        // Check referral eligibility (deposit approval may unlock award)
+        try {
+          const { awardReferralIfEligible } = await import(
+            "@/lib/actions/referral.action"
+          );
+          await awardReferralIfEligible(transaction.userId);
+        } catch (err) {
+          console.error("awardReferralIfEligible failed (admin approve):", err);
+        }
       }
 
       // Withdrawal approval → NO BALANCE CHANGE

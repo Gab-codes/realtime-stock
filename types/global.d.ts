@@ -40,6 +40,10 @@ declare global {
     investmentBalance: number;
     totalProfit: number;
     kycStatus: "verified" | "pending" | "rejected" | "unverified";
+    // Referral fields
+    referralCode?: string;
+    referrer?: string;
+    totalReferralBonus?: number;
     createdAt: Data;
     updatedAt: Data;
     __v: number;
@@ -47,16 +51,34 @@ declare global {
 
   interface ITransaction extends Document {
     userId: string;
-    type: "deposit" | "withdrawal" | "ai-return" | "investment";
+    type:
+      | "deposit"
+      | "withdrawal"
+      | "ai-return"
+      | "investment"
+      | "referral-bonus";
     amount: number;
     currency: "USDT" | "BTC" | "USD";
     status: "pending" | "completed" | "failed";
     txHash?: string;
     network?: string;
     investmentId?: string;
+    description?: string;
     createdAt: Date;
     updatedAt: Date;
   }
+
+  type Referral = {
+    _id: string;
+    referrer: string;
+    referred: string;
+    amount: number;
+    status: "pending" | "awarded" | "revoked";
+    awardedAt?: string;
+    transactionId?: string;
+    createdAt: Date;
+    updatedAt: Date;
+  };
 
   type SignUpFormData = {
     fullName: string;
@@ -66,6 +88,7 @@ declare global {
     investmentGoals: string;
     riskTolerance: string;
     preferredIndustry: string;
+    referralCode?: string;
   };
 
   type CountrySelectProps = {
