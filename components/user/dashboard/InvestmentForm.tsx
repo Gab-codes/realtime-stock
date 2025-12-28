@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/dialog";
 import { CheckCircle2, Lightbulb, Brain } from "lucide-react";
 import { toast } from "sonner";
-import { cn } from "@/lib/utils";
+import { cn, formatPrice } from "@/lib/utils";
 import { createInvestment } from "@/lib/actions/investment.action";
 import { useRouter } from "next/navigation";
 
@@ -83,7 +83,7 @@ const InvestmentForm = ({ depositedBalance, kycStatus }: Props) => {
   ];
 
   const step3Variants = [
-    "Finalizing the tailored earning strategy and preparing deployment.",
+    "Finalizing the tailored investment strategy and preparing deployment.",
     "Consolidating results and preparing your personalized execution plan.",
     "Applying final optimizations and ensuring the plan meets safety thresholds.",
   ];
@@ -166,6 +166,9 @@ const InvestmentForm = ({ depositedBalance, kycStatus }: Props) => {
       if (!response?.success) {
         throw new Error(response?.error || "Failed to create investment.");
       }
+
+      router.refresh();
+      setAmount("");
     } catch (error) {
       console.error("Error creating investment:", error);
       toast.error("Investment failed. Please try again.");
@@ -187,18 +190,29 @@ const InvestmentForm = ({ depositedBalance, kycStatus }: Props) => {
 
     // finished all steps -> show success after randomized delay
     if (stepIndex >= sequenceMessages.length) {
-      // show success after a random delay (4-5s)
       timerRef.current = window.setTimeout(() => {
-        setCurrentMessage("Investment plan successfully created.");
-        setAnimState("brain"); // final positive state
+        if (typeof amount === "number") {
+          const formattedAmount = formatPrice(amount);
+          const formattedProfit = formatPrice(parseFloat(profit));
+
+          setCurrentMessage(
+            `Congratulations, your investment plan is now active. Based on your investment of ${formattedAmount}, our system is projected to generate ${formattedProfit} over the next ${days} days. Earnings will be added to your account automatically.`
+          );
+        } else {
+          setCurrentMessage(
+            "Congratulations — your investment plan is now active."
+          );
+        }
+
+        setAnimState("brain");
       }, randDelay());
+
       return () => {
         if (timerRef.current) window.clearTimeout(timerRef.current);
       };
     }
 
     // decide delay:
-    // - subsequent transitions randomized 4000-5000 ms
     const delay = randDelay();
 
     timerRef.current = window.setTimeout(() => {
@@ -212,7 +226,6 @@ const InvestmentForm = ({ depositedBalance, kycStatus }: Props) => {
     return () => {
       if (timerRef.current) window.clearTimeout(timerRef.current);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stepIndex, open, sequenceMessages]);
 
   // cleanup on close
@@ -220,13 +233,11 @@ const InvestmentForm = ({ depositedBalance, kycStatus }: Props) => {
     if (!open) {
       cleanup();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
   // stop timers on unmount
   useEffect(() => {
     return () => cleanup();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -377,7 +388,7 @@ const InvestmentForm = ({ depositedBalance, kycStatus }: Props) => {
 
             {/* final success icon */}
             {currentMessage &&
-              currentMessage.toLowerCase().includes("successfully") && (
+              currentMessage.toLowerCase().includes("plan is now active") && (
                 <div className="flex items-center justify-center gap-2">
                   <CheckCircle2 className="w-8 h-8 animate-bounce text-green-400" />
                   <span className="text-green-300 font-medium">Success</span>
