@@ -105,7 +105,7 @@ export default function ReferralInvite({
                   </div>
                   {r.status === "awarded" && r.awardedAt ? (
                     <div className="text-xs text-gray-400">
-                      Paid {formatDate(r.awardedAt)}
+                      {formatDate(r.awardedAt)}
                     </div>
                   ) : null}
                 </div>

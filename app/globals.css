@@ -515,6 +515,13 @@
   font-size: 1.2em;
 }
 
+/* Hide arrows for all number inputs */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 /* Custom scrollbar that shows on hover */
 .scrollbar-hide-default {
   scrollbar-width: thin;
