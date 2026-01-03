@@ -1,3 +1,5 @@
+import { APP_NAME, APP_URL } from "../utils";
+
 export const WELCOME_EMAIL_TEMPLATE = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,7 +7,7 @@ export const WELCOME_EMAIL_TEMPLATE = `<!DOCTYPE html>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="format-detection" content="telephone=no">
     <meta name="x-apple-disable-message-reformatting">
-    <title>Welcome to Signalist</title>
+    <title>Welcome to ${APP_NAME}</title>
     <!--[if mso]>
     <noscript>
         <xml>
@@ -118,7 +120,9 @@ export const WELCOME_EMAIL_TEMPLATE = `<!DOCTYPE html>
                             </h1>
                             
                             <!-- Intro Text -->
-                            {{intro}}  
+                           <p class="mobile-text dark-text-secondary" style="margin: 0 0 30px 0; font-size: 16px; line-height: 1.6; color: #CCDADC;">
+                                We’re excited to have you with us. Your account is now ready, and you can start exploring the platform at your own pace. Our goal is to make investing accessible to everyone, and everything has been built to make your investing experience straightforward and transparent.
+                            </p>
                             
                             <!-- Feature List Label -->
                             <p class="mobile-text dark-text-secondary" style="margin: 0 0 15px 0; font-size: 16px; line-height: 1.6; color: #CCDADC; font-weight: 600;">
@@ -152,7 +156,7 @@ export const WELCOME_EMAIL_TEMPLATE = `<!DOCTYPE html>
                             <p class="mobile-text dark-text-muted" style="margin: 40px 0 0 0; font-size: 14px; line-height: 1.5; color: #CCDADC !important; text-align: center;">
                                Signalist HQ, 200 Market Street, San Francisco, CA 94105<br>
                                 <a href="#" style="color: #CCDADC !important; text-decoration: underline;">Unsubscribe</a> | 
-                                <a href="https://stock-market-dev.vercel.app/" style="color: #CCDADC !important; text-decoration: underline;">Visit Signalist</a><br>
+                                <a href=${APP_URL} style="color: #CCDADC !important; text-decoration: underline;">Visit ${APP_NAME}</a><br>
                                 © 2025 Signalist
                             </p>
                         </td>

@@ -2,18 +2,18 @@
 
 import { headers } from "next/headers";
 import { auth } from "../better-auth/auth";
-import { inngest } from "../inngest/client";
 import userExtraModel from "@/models/userExtra.model";
 import axios from "axios";
+import { sendWelcomeEmail } from "../nodemailer";
 
 export const signUpWithEmail = async ({
   email,
   password,
   fullName,
-  country,
-  investmentGoals,
-  riskTolerance,
-  preferredIndustry,
+  // country,
+  // investmentGoals,
+  // riskTolerance,
+  // preferredIndustry,
   referralCode,
 }: SignUpFormData) => {
   try {
@@ -64,18 +64,9 @@ export const signUpWithEmail = async ({
         }
       }
 
-      // send inngest event
-      await inngest.send({
-        name: "app/user.created",
-        data: {
-          email,
-          name: fullName,
-          country,
-          investmentGoals,
-          riskTolerance,
-          preferredIndustry,
-        },
-      });
+      sendWelcomeEmail({ email, name: fullName }).catch((err) =>
+        console.error("Failed to send welcome email:", err)
+      );
     }
 
     return { success: true, data: response, message: "Sign up successful" };

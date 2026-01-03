@@ -85,9 +85,9 @@ declare global {
     email: string;
     password: string;
     country: string;
-    investmentGoals: string;
-    riskTolerance: string;
-    preferredIndustry: string;
+    investmentGoals?: string;
+    riskTolerance?: string;
+    preferredIndustry?: string;
     referralCode?: string;
   };
 
@@ -141,7 +141,7 @@ declare global {
   type WelcomeEmailData = {
     email: string;
     name: string;
-    intro: string;
+    intro?: string;
   };
 
   type User = {
