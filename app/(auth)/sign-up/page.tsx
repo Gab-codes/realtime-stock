@@ -27,10 +27,10 @@ const SignUp = () => {
       fullName: "",
       email: "",
       password: "",
-      country: "US",
-      investmentGoals: "Growth",
-      riskTolerance: "Medium",
-      preferredIndustry: "Technology",
+      // country: "US",
+      // investmentGoals: "Growth",
+      // riskTolerance: "Medium",
+      // preferredIndustry: "Technology",
     },
     mode: "onBlur",
   });
@@ -40,7 +40,7 @@ const SignUp = () => {
       const referralCode = searchParams.get("ref") || undefined;
       const result = await signUpWithEmail({ ...data, referralCode });
       if (result.success) {
-        router.push("/verify-email");
+        router.push("/email-verification");
       } else {
         toast.error(result.error, {
           duration: 8000,
@@ -111,34 +111,6 @@ const SignUp = () => {
           name="country"
           control={control}
           error={errors.country}
-          required
-        />
-
-        <SelectField
-          name="investmentGoals"
-          label="Investment Goals"
-          placeholder="Select your investment goal"
-          options={INVESTMENT_GOALS}
-          control={control}
-          error={errors.investmentGoals}
-          required
-        />
-        <SelectField
-          name="riskTolerance"
-          label="Risk Tolerance"
-          placeholder="Select your risk level"
-          options={RISK_TOLERANCE_OPTIONS}
-          control={control}
-          error={errors.riskTolerance}
-          required
-        />
-        <SelectField
-          name="preferredIndustry"
-          label="Preferred Industry"
-          placeholder="Select your preferred industry"
-          options={PREFERRED_INDUSTRIES}
-          control={control}
-          error={errors.preferredIndustry}
           required
         />
 

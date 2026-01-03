@@ -6,6 +6,8 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? "SignalBite";
+export const APP_URL =
+  process.env.NEXT_PUBLIC_BASE_URL ?? "https://localhost:3000";
 
 export const formatTimeAgo = (timestamp: number) => {
   const now = Date.now();

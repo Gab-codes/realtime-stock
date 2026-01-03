@@ -17,7 +17,7 @@ export default async function VerifyEmailPage({
       <div className="max-w-xl mx-auto py-16">
         <h1 className="text-2xl font-semibold mb-4">Verify Your Email</h1>
         <p className="text-gray-400">
-          Email is missing from the URL. Please return to sign-in or sign-up.
+          Email is missing. Please return to sign-in or sign-up.
         </p>
         <Link href="/sign-in">
           <Button className="purple-btn mt-4">Go to Sign In</Button>
