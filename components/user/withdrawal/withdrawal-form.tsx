@@ -11,7 +11,7 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import { Info } from "lucide-react";
+import { Info, Loader } from "lucide-react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { createWithdrawal } from "@/lib/actions/withdraw.action";
@@ -85,9 +85,7 @@ export default function WithdrawalForm({
   return (
     <Card className="bg-crypto-blue/80 border border-crypto-blue/20 text-white max-w-2xl mx-auto md:mt-4">
       <CardHeader>
-        <CardTitle className="text-xl font-semibold">
-          Withdraw Funds 💸
-        </CardTitle>
+        <CardTitle className="text-xl font-semibold">Withdraw Funds</CardTitle>
         <div className="text-muted-foreground text-sm">
           Available Balance: <strong>{formatPrice(depositedBalance)}</strong>
         </div>
@@ -174,7 +172,8 @@ export default function WithdrawalForm({
             className="bg-crypto-purple hover:bg-crypto-dark-purple text-white w-full"
             disabled={isSubmitting}
           >
-            {isSubmitting ? "Processing..." : "Request Withdrawal"}
+            {isSubmitting && <Loader className="animate-spin mr-2" />}
+            {isSubmitting ? "Processing..." : "Confirm Withdrawal"}
           </Button>
         </form>
       </CardContent>

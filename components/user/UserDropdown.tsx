@@ -18,7 +18,7 @@ const UserDropdown = ({
   user,
 }: {
   user: User;
-  initialStocks: StockWithWatchlistStatus[];
+  initialStocks?: StockWithWatchlistStatus[];
 }) => {
   const router = useRouter();
 

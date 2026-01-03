@@ -1,5 +1,5 @@
 import { formatDate, formatPrice } from "@/lib/utils";
-import { Clock, CheckCircle, XCircle, Trash } from "lucide-react";
+import { Clock, CheckCircle, XCircle } from "lucide-react";
 
 export default function InvestmentMobileList({
   investments,
