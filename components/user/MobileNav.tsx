@@ -74,7 +74,7 @@ export default function MobileNav() {
             <DrawerTitle className="text-lg font-semibold">
               More Options
             </DrawerTitle>
-            <DrawerDescription className="text-gray-400">
+            <DrawerDescription className="text-gray-400 sr-only">
               Access additional sections and settings
             </DrawerDescription>
           </DrawerHeader>

@@ -105,7 +105,6 @@ export const runDailyInvestmentCron = async () => {
           // mark investment completed / matured and clear profit to avoid double counting
           inv.status = "completed";
           inv.matured = true;
-          inv.profit = 0;
           inv.lastProfitAt = new Date();
 
           // persist updates

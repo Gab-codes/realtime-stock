@@ -49,7 +49,7 @@ export default function ReferralInvite({
 
   return (
     <div className="bg-crypto-blue/40 border border-crypto-blue rounded-lg p-4 space-y-4">
-      <div className="flex items-center justify-between">
+      <div className="flex gap-2 items-center justify-between">
         <div>
           <h3 className="text-white font-semibold">
             Invite friends & earn $100
@@ -68,7 +68,7 @@ export default function ReferralInvite({
 
       <div className="bg-gray-900 p-3 rounded">
         <div className="text-xs text-gray-400">Your referral code</div>
-        <div className="flex items-center justify-between">
+        <div className="flex max-md:mt-2 gap-3 flex-wrap items-center justify-between">
           <div className="font-mono text-sm text-white truncate">
             {referralCode || "-"}
           </div>
@@ -87,7 +87,7 @@ export default function ReferralInvite({
               >
                 <div>
                   <div className="text-sm text-white">
-                    {r.referred?.email ?? r.referred?.fullName ?? "Unknown"}
+                    {r.referred?.fullName ?? "Unknown"}
                   </div>
                   <div className="text-xs text-gray-400">
                     {formatDate(r.createdAt || "")}
