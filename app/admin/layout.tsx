@@ -28,7 +28,7 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
               <UserDropdown user={sessionUser} />
             </div>
           </div>
-          {children}
+          <div className="p-2">{children}</div>
         </div>
       </main>
     </SidebarProvider>
