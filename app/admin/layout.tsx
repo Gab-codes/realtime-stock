@@ -1,6 +1,5 @@
 import { AppSidebar } from "@/components/admin/AppSidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import Header from "@/components/user/Header";
 import UserDropdown from "@/components/user/UserDropdown";
 import { auth } from "@/lib/better-auth/auth";
 import { headers } from "next/headers";
