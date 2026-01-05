@@ -1,23 +1,25 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Biohazard, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { APP_NAME } from "@/lib/utils";
 
-// Centralized navigation links
-const NAV_LINKS = [
-  { href: "/#features", label: "Features" },
-  { href: "/#how-it-works", label: "How it works" },
-  { href: "/#testimonials", label: "Testimonials" },
-  { href: "/#faq", label: "FAQ" },
-  { href: "/overview", label: "Market Overview" },
-];
-
 const Navbar = () => {
+  const { t } = useTranslation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Centralized navigation links with translations - reactive to language changes
+  const NAV_LINKS = [
+    { href: "/#features", label: t("navbar.features") },
+    { href: "/#how-it-works", label: t("navbar.howItWorks") },
+    { href: "/#testimonials", label: t("navbar.testimonials") },
+    { href: "/#faq", label: t("navbar.faq") },
+    { href: "/overview", label: t("navbar.marketOverview") },
+  ];
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 10);
@@ -35,17 +37,17 @@ const Navbar = () => {
           : "py-6"
       }`}
     >
-      <div className="container mx-auto px-4 flex justify-between items-center">
+      <div className="container mx-auto px-4 gap-4 flex justify-between items-center">
         {/* Logo */}
         <div className="flex items-center">
-          <h1 className="text-2xl font-bold text-white inline-flex gap-2 items-center">
+          <h1 className="text-xl font-bold text-white inline-flex gap-2 items-center">
             {APP_NAME}
             <Biohazard className="size-7.5 text-crypto-purple" />
           </h1>
         </div>
 
         {/* Desktop Menu */}
-        <ul className="hidden lg:flex items-center space-x-8">
+        <ul className="hidden lg:flex flex-wrap items-center space-x-8">
           {NAV_LINKS.map((link) => (
             <li key={link.href}>
               <Link
@@ -65,12 +67,12 @@ const Navbar = () => {
               variant="outline"
               className="text-gray-300 hover:text-white"
             >
-              Login
+              {t("navbar.login")}
             </Button>
           </Link>
           <Link href="/sign-up">
             <Button className="bg-crypto-purple hover:bg-crypto-dark-purple text-white w-full">
-              Sign Up
+              {t("navbar.signUp")}
             </Button>
           </Link>
         </div>
@@ -112,12 +114,12 @@ const Navbar = () => {
                     variant="outline"
                     className="text-gray-300 hover:text-white w-full justify-start"
                   >
-                    Login
+                    {t("navbar.login")}
                   </Button>
                 </Link>
                 <Link href="/sign-up">
                   <Button className="bg-crypto-purple hover:bg-crypto-dark-purple text-white w-full">
-                    Sign Up
+                    {t("navbar.signUp")}
                   </Button>
                 </Link>
               </li>

@@ -16,9 +16,14 @@
   "navbar": {
     "home": "Home",
     "features": "Features",
+    "howItWorks": "How it works",
+    "testimonials": "Testimonials",
+    "faq": "FAQ",
+    "marketOverview": "Market Overview",
     "pricing": "Pricing",
     "about": "About",
     "contact": "Contact",
+    "login": "Login",
     "signIn": "Sign In",
     "signUp": "Sign Up"
   },
