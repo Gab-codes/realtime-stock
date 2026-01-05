@@ -1,0 +1,117 @@
+{
+  "hero": {
+    "newFeature": "Nueva Función",
+    "aiTradingSignals": "Señales de Trading con IA",
+    "title": "Opera con Criptomonedas y Acciones con Confianza",
+    "subtitle": "Experimenta el trading de criptomonedas sin problemas con análisis en tiempo real, conocimientos de IA y trading automático de IA.",
+    "startTrading": "Comenzar a Operar",
+    "createAccount": "Crear Cuenta",
+    "tradingVolume": "Volumen de Trading",
+    "activeTraders": "Operadores Activos",
+    "globalMarkets": "Mercados Globales",
+    "aiTrading": "Trading con IA 24h",
+    "securityLevel": "Nivel de Seguridad",
+    "enterprise": "Empresa"
+  },
+  "navbar": {
+    "home": "Inicio",
+    "features": "Características",
+    "pricing": "Precios",
+    "about": "Acerca de",
+    "contact": "Contacto",
+    "signIn": "Iniciar Sesión",
+    "signUp": "Registrarse"
+  },
+  "features": {
+    "title": "Características Potentes",
+    "subtitle": "Todo lo que necesitas para dominar el trading de criptomonedas y acciones con {appName}."
+  },
+  "pricing": {
+    "title": "Precios Transparentes y Simples",
+    "subtitle": "Elige el plan que mejor se adapte a tus necesidades de trading. Todos los planes incluyen nuestras funciones principales de plataforma.",
+    "mostPopular": "Más Popular",
+    "perMonth": "/mes",
+    "whatsIncluded": "Qué está incluido:"
+  },
+  "testimonials": {
+    "title": "Lo que Dicen Nuestros Usuarios",
+    "subtitle": "Únete a miles de traders que confían en {appName} para sus inversiones."
+  },
+  "faq": {
+    "title": "Preguntas Frecuentes",
+    "subtitle": "¿Tienes preguntas sobre {appName}? Tenemos respuestas. Si no encuentras lo que buscas, contacta a nuestro equipo de soporte.",
+    "questions": {
+      "isFree": "¿Es {appName} gratis de usar?",
+      "experienceRequired": "¿Necesito experiencia en trading para invertir en {appName}?",
+      "aiRisk": "¿Es riesgoso invertir con IA? ¿Qué pasa si la IA pierde dinero?",
+      "howCompanyMakesMoney": "Si los usuarios ganan un porcentaje fijo diariamente, ¿cómo gana dinero {appName}?",
+      "availableInCountry": "¿Está {appName} disponible en mi país?",
+      "startEarning": "¿Cuánto tiempo toma comenzar a ganar?",
+      "paymentMethods": "¿Qué métodos de pago puedo usar para invertir?",
+      "withdrawAnytime": "¿Puedo retirar mis ganancias en cualquier momento?"
+    },
+    "answers": {
+      "isFree": "{appName} es completamente gratis de usar. No hay tarifas de suscripción, cargos de configuración ni costos ocultos. Puedes crear una cuenta, invertir y retirar tus ganancias en cualquier momento sin pagar tarifas de plataforma.",
+      "experienceRequired": "No se requiere experiencia. {appName} utiliza un motor de trading de IA avanzado que maneja el análisis de mercado, ejecución de operaciones y gestión de riesgos automáticamente. Tú simplemente inviertes y la IA lo maneja todo por ti.",
+      "aiRisk": "Toda inversión lleva cierto nivel de riesgo, pero nuestra IA está entrenada con algoritmos avanzados diseñados para minimizar pérdidas y maximizar ganancias. Monitorea constantemente el mercado y ejecuta operaciones rápidas para asegurar las mejores posiciones posibles. Además, tu retorno diario está protegido — incluso si la IA tiene un rendimiento inferior en un día determinado, aún recibirás tu porcentaje diario fijo.",
+      "howCompanyMakesMoney": "{appName} gana de la ganancia extra generada por la IA. Cuando la IA rinde por encima del retorno diario fijo dado a los usuarios, la ganancia adicional es recolectada por la plataforma. Esto permite a los usuarios ganar consistentemente mientras la empresa se beneficia del sobre-rendimiento de la IA. No hay tarifas ocultas ni cargos sorpresa.",
+      "availableInCountry": "{appName} es accesible globalmente. Puedes invertir desde cualquier país siempre que tengas una dirección de email válida y conexión a internet. No hay restricciones regionales para crear una cuenta o invertir.",
+      "startEarning": "Las ganancias comienzan inmediatamente después de que tu inversión sea confirmada. Tu retorno diario se calcula y acredita automáticamente cada 24 horas, sin requerir acción de tu parte.",
+      "paymentMethods": "{appName} soporta múltiples métodos de financiación, incluyendo las principales criptomonedas como USDT, BTC, ETH y otras. Los depósitos se procesan rápidamente, permitiéndote comenzar a ganar sin demoras.",
+      "withdrawAnytime": "Sí. Puedes retirar tanto tus ganancias como tu capital en cualquier momento. Los retiros se procesan rápidamente, y no hay penalizaciones por retirar tus fondos."
+    }
+  },
+  "cta": {
+    "title": "¿Listo para revolucionar tu trading de inversiones?",
+    "subtitle": "Únete a {appName} hoy y comienza a construir tu portafolio de criptomonedas y acciones con confianza.",
+    "createAccount": "Crear Cuenta"
+  },
+  "footer": {
+    "description": "La plataforma definitiva para trading inteligente de criptomonedas y acciones con IA.",
+    "products": "Productos",
+    "resources": "Recursos",
+    "company": "Empresa",
+    "legal": "Legal",
+    "support": "Soporte",
+    "api": "API",
+    "blog": "Blog",
+    "helpCenter": "Centro de Ayuda",
+    "aboutUs": "Acerca de Nosotros",
+    "careers": "Carreras",
+    "press": "Prensa",
+    "termsOfService": "Términos de Servicio",
+    "privacyPolicy": "Política de Privacidad",
+    "cookiePolicy": "Política de Cookies",
+    "contactUs": "Contáctanos",
+    "allRightsReserved": "Todos los derechos reservados."
+  },
+  "common": {
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "view": "Ver",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "previous": "Anterior"
+  },
+  "auth": {
+    "signIn": "Iniciar Sesión",
+    "signUp": "Registrarse",
+    "signOut": "Cerrar Sesión",
+    "email": "Correo Electrónico",
+    "password": "Contraseña",
+    "confirmPassword": "Confirmar Contraseña",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "resetPassword": "Restablecer Contraseña",
+    "createAccount": "Crear Cuenta",
+    "alreadyHaveAccount": "¿Ya tienes una cuenta?",
+    "dontHaveAccount": "¿No tienes una cuenta?",
+    "login": "Iniciar Sesión",
+    "register": "Registrarse"
+  }
+}
