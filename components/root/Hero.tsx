@@ -2,8 +2,11 @@ import { ArrowRight, ArrowUpRight, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
 
 const Hero = () => {
+  const { t } = useTranslation();
+
   return (
     <section className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-gradient-hero hero-glow">
       {/* Animated Background Elements */}
@@ -20,20 +23,18 @@ const Hero = () => {
           <div className="lg:w-[55%] animate-fade-in-left">
             <div className="inline-flex items-center bg-white/5 backdrop-blur-sm border border-white/10 rounded-full px-4 py-1.5 mb-6">
               <span className="text-xs font-medium text-crypto-purple mr-2">
-                New Feature
+                {t("hero.newFeature")}
               </span>
               <span className="text-xs text-gray-300">
-                AI-Powered Trading Signals
+                {t("hero.aiTradingSignals")}
               </span>
               <ChevronRight className="h-4 w-4 text-gray-400 ml-1" />
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-              <span className="text-gradient">Trade Crypto & Stocks</span> with
-              Confidence
+              <span className="text-gradient">{t("hero.title")}</span>
             </h1>
             <p className="text-lg text-gray-300 mb-8 max-w-lg">
-              Experience seamless cryptocurrency trading with real-time
-              analytics, AI insights, and AI auto trading.
+              {t("hero.subtitle")}
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link href="/sign-in">
@@ -41,7 +42,7 @@ const Hero = () => {
                   size="lg"
                   className="w-full bg-crypto-purple hover:bg-crypto-dark-purple text-white px-8 py-6"
                 >
-                  Start Trading
+                  {t("hero.startTrading")}
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
@@ -51,7 +52,7 @@ const Hero = () => {
                   size="lg"
                   className="border-gray-700 w-full text-white hover:bg-white/5 py-6"
                 >
-                  Create Account
+                  {t("hero.createAccount")}
                   <ArrowUpRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
@@ -59,17 +60,23 @@ const Hero = () => {
             <div className="mt-8 flex items-center space-x-6">
               <div>
                 <p className="text-2xl font-bold text-white">$25M+</p>
-                <p className="text-sm text-gray-400">Trading Volume</p>
+                <p className="text-sm text-gray-400">
+                  {t("hero.tradingVolume")}
+                </p>
               </div>
               <div className="h-12 w-px bg-gray-700"></div>
               <div>
                 <p className="text-2xl font-bold text-white">120K+</p>
-                <p className="text-sm text-gray-400">Active Traders</p>
+                <p className="text-sm text-gray-400">
+                  {t("hero.activeTraders")}
+                </p>
               </div>
               <div className="h-12 w-px bg-gray-700"></div>
               <div>
                 <p className="text-2xl font-bold text-white">50+</p>
-                <p className="text-sm text-gray-400">Global Markets</p>
+                <p className="text-sm text-gray-400">
+                  {t("hero.globalMarkets")}
+                </p>
               </div>
             </div>
           </div>
@@ -103,7 +110,7 @@ const Hero = () => {
                   </div>
                   <div>
                     <p className="text-xs text-gray-400 font-mono">
-                      24h AI Trading
+                      {t("hero.aiTrading")}
                     </p>
                     <p className="text-lg font-bold text-green-500">+12.34%</p>
                   </div>

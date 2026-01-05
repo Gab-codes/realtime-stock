@@ -1,0 +1,54 @@
+{
+  "hero": {
+    "newFeature": "New Feature",
+    "aiTradingSignals": "AI-Powered Trading Signals",
+    "title": "Trade Crypto & Stocks with Confidence",
+    "subtitle": "Experience seamless cryptocurrency trading with real-time analytics, AI insights, and AI auto trading.",
+    "startTrading": "Start Trading",
+    "createAccount": "Create Account",
+    "tradingVolume": "Trading Volume",
+    "activeTraders": "Active Traders",
+    "globalMarkets": "Global Markets",
+    "aiTrading": "24h AI Trading",
+    "securityLevel": "Security Level",
+    "enterprise": "Enterprise"
+  },
+  "navbar": {
+    "home": "Home",
+    "features": "Features",
+    "pricing": "Pricing",
+    "about": "About",
+    "contact": "Contact",
+    "signIn": "Sign In",
+    "signUp": "Sign Up"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "view": "View",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous"
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "signOut": "Sign Out",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "forgotPassword": "Forgot Password?",
+    "resetPassword": "Reset Password",
+    "createAccount": "Create Account",
+    "alreadyHaveAccount": "Already have an account?",
+    "dontHaveAccount": "Don't have an account?",
+    "login": "Login",
+    "register": "Register"
+  }
+}

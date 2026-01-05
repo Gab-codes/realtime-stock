@@ -4,6 +4,8 @@ import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 import { APP_NAME } from "@/lib/utils";
 import TanstackProvider from "./tanstack-provider";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { I18nProvider } from "@/components/I18nProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,14 +30,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <TanstackProvider>
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
-          {children}
-          <Toaster />
-        </body>
-      </TanstackProvider>
+      <I18nProvider>
+        <TanstackProvider>
+          <body
+            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          >
+            {children}
+            <Toaster />
+            <LanguageSwitcher />
+          </body>
+        </TanstackProvider>
+      </I18nProvider>
     </html>
   );
 }

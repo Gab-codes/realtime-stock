@@ -24,7 +24,6 @@ export const formatTimeAgo = (timestamp: number) => {
     return `${diffInMinutes} minute${diffInMinutes > 1 ? "s" : ""} ago`;
   }
 };
-
 export function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
