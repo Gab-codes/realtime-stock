@@ -38,7 +38,7 @@ export const createDeposit = async (payload: DepositPayload) => {
         `User: ${userId}\n` +
         `Currency: ${payload.currency}\n` +
         `USD Amount: $${payload.usdAmount}\n` +
-        `Status: Pending` +
+        `Status: Pending\n` +
         `confirm payment and login to admin dashboard`
     ).catch((err) => console.error(err));
 
