@@ -27,7 +27,7 @@ export const faqItems = [
   },
   {
     question: `What payment methods can I use to invest?`,
-    answer: `${APP_NAME} supports multiple funding methods, including major cryptocurrencies such as USDT, BTC, ETH, and others. Deposits are processed quickly, allowing you to begin earning without delays.`,
+    answer: `${APP_NAME} supports multiple funding methods, including major cryptocurrencies such as USDT, BTC, ETH, and others. Deposits are processed quickly, allowing you to begin earning without delays. If you have any questions about supported payment methods, please contact our support team.`,
   },
   {
     question: `Can I withdraw my earnings anytime?`,

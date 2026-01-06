@@ -26,133 +26,38 @@ const Footer = () => {
             </p>
             <div className="flex space-x-4">
               <a
-                href="#!"
+                href="https://facebook.com"
+                target="_blank"
                 className="text-gray-400 hover:text-crypto-purple transition-colors"
               >
                 <Facebook className="h-5 w-5" />
                 <span className="sr-only">Facebook</span>
               </a>
               <a
-                href="#!"
+                href="https://x.com"
+                target="_blank"
                 className="text-gray-400 hover:text-crypto-purple transition-colors"
               >
                 <Twitter className="h-5 w-5" />
                 <span className="sr-only">Twitter</span>
               </a>
               <a
-                href="#!"
+                href="https://instagram.com"
+                target="_blank"
                 className="text-gray-400 hover:text-crypto-purple transition-colors"
               >
                 <Instagram className="h-5 w-5" />
                 <span className="sr-only">Instagram</span>
               </a>
               <a
-                href="#!"
+                href="https://linkedin.com"
+                target="_blank"
                 className="text-gray-400 hover:text-crypto-purple transition-colors"
               >
                 <Linkedin className="h-5 w-5" />
                 <span className="sr-only">LinkedIn</span>
               </a>
-              <a
-                href="#!"
-                className="text-gray-400 hover:text-crypto-purple transition-colors"
-              >
-                <Github className="h-5 w-5" />
-                <span className="sr-only">GitHub</span>
-              </a>
             </div>
-          </div>
-
-          <div>
-            <h3 className="text-white font-medium mb-4">Products</h3>
-            <ul className="space-y-2">
-              <li>
-                <a
-                  href="#!"
-                  className="text-gray-400 hover:text-crypto-purple transition-colors"
-                >
-                  Exchange
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#!"
-                  className="text-gray-400 hover:text-crypto-purple transition-colors"
-                >
-                  Wallet
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#!"
-                  className="text-gray-400 hover:text-crypto-purple transition-colors"
-                >
-                  API
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#!"
-                  className="text-gray-400 hover:text-crypto-purple transition-colors"
-                >
-                  Institutional
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#!"
-                  className="text-gray-400 hover:text-crypto-purple transition-colors"
-                >
-                  DeFi Platform
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="text-white font-medium mb-4">Resources</h3>
-            <ul className="space-y-2">
-              <li>
-                <a
-                  href="#!"
-                  className="text-gray-400 hover:text-crypto-purple transition-colors"
-                >
-                  Blog
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#!"
-                  className="text-gray-400 hover:text-crypto-purple transition-colors"
-                >
-                  Tutorials
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#!"
-                  className="text-gray-400 hover:text-crypto-purple transition-colors"
-                >
-                  Market Data
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#!"
-                  className="text-gray-400 hover:text-crypto-purple transition-colors"
-                >
-                  Documentation
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#!"
-                  className="text-gray-400 hover:text-crypto-purple transition-colors"
-                >
-                  Help Center
-                </a>
-              </li>
-            </ul>
           </div>
 
           <div>
