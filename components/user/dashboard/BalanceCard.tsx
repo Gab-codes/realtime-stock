@@ -7,7 +7,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/components/ui/popover";
 import { formatPrice } from "@/lib/utils";
+import { CircleQuestionMarkIcon } from "lucide-react";
 
 type BalanceCardProps = {
   title: string;
@@ -24,9 +30,18 @@ const BalanceCard = ({
 }: BalanceCardProps) => {
   return (
     <Card className="bg-crypto-blue/60 border border-crypto-blue/20 text-white">
-      <CardHeader>
+      <CardHeader className="flex items-center gap-2">
         <CardTitle className="text-gray-300 text-sm">{title}</CardTitle>
-        {subtitle && <p className="text-xs text-gray-400">({subtitle})</p>}
+
+        <Popover>
+          <PopoverTrigger asChild>
+            <CircleQuestionMarkIcon className="size-4 text-crypto-light-purple" />
+          </PopoverTrigger>
+
+          <PopoverContent className="w-full bg-accent border-crypto-light-purple/50">
+            {subtitle && <p className="text-xs">{subtitle}</p>}
+          </PopoverContent>
+        </Popover>
       </CardHeader>
       <CardContent>
         <p className="text-2xl font-bold">{`${formatPrice(amount)}`}</p>
