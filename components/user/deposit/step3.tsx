@@ -20,7 +20,7 @@ const Step3 = ({ pendingDeposit, setStep, setPendingDeposit }: Step3Props) => {
         <div className="text-xs text-gray-400 mt-1">
           Status: <span className="text-amber-300">Pending</span>
         </div>
-        <div className="mt-3 text-gray-400 text-sm">
+        <div className="mt-3 text-foreground font-medium text-sm">
           You account will be credited automatically once the funds arrive.
         </div>
       </div>
