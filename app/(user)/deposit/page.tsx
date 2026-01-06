@@ -105,7 +105,7 @@ export default function DepositFlow() {
   }
 
   async function confirmPaid() {
-    // create pending deposit record locally, and call optional callback to persist to server
+    // create pending deposit record to server
     const record: DepositRecord = {
       currency,
       usdAmount: typeof usdAmount === "number" ? usdAmount : 0,
