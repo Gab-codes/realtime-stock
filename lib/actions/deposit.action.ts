@@ -3,6 +3,7 @@
 import { headers } from "next/headers";
 import { auth } from "@/lib/better-auth/auth";
 import Transaction from "@/models/transaction.model";
+import { notifyAdmin } from "../telegram";
 
 interface DepositPayload {
   currency: "BTC" | "USDT";
@@ -22,7 +23,6 @@ export const createDeposit = async (payload: DepositPayload) => {
 
     const userId = session.user.id;
 
-    // Create transaction entry
     await Transaction.create({
       userId,
       type: "deposit",
@@ -32,6 +32,16 @@ export const createDeposit = async (payload: DepositPayload) => {
       txHash: payload.txHash || null,
       network: payload.network || undefined,
     });
+
+    notifyAdmin(
+      `🔔 *New Deposit Recorded*\n\n` +
+        `User: ${userId}\n` +
+        `Currency: ${payload.currency}\n` +
+        `USD Amount: $${payload.usdAmount}\n` +
+        `Status: Pending` +
+        `confirm payment and login to admin dashboard`
+    ).catch((err) => console.error(err));
+
     return {
       success: true,
       message: "Deposit request created successfully.",
