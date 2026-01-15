@@ -12,9 +12,9 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
 
   if (!session?.user) redirect("/sign-in");
 
-  const sessionUser = session.user as unknown as User;
+  const user = session.user as unknown as User;
 
-  if (sessionUser.role !== "admin") redirect("/dashboard");
+  if (user.role !== "admin") redirect("/dashboard");
 
   return (
     <SidebarProvider>
@@ -24,7 +24,7 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
           <div className="sticky top-0 z-50 w-full backdrop-blur-md border-b shadow-sm">
             <div className="p-2 flex items-center justify-between">
               <SidebarTrigger />
-              <UserDropdown user={sessionUser} />
+              <UserDropdown user={user} />
             </div>
           </div>
           <div className="p-2">{children}</div>

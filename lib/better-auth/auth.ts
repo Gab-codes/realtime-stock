@@ -5,6 +5,7 @@ import { nextCookies } from "better-auth/next-js";
 import { admin } from "better-auth/plugins";
 import { transporter } from "@/lib/nodemailer";
 import { APP_NAME } from "../utils";
+import { getEmailTemplate } from "../nodemailer/email-template";
 
 let authInstance: ReturnType<typeof betterAuth> | null = null;
 
@@ -25,9 +26,13 @@ export const getAuth = async () => {
           const to = user?.email;
           const subject = "Verify your email address";
           const text = `Click the link to verify your email: ${url}`;
-          const html = `<p>Hi ${
-            user?.name || ""
-          },</p><p>Please verify your email by clicking the link below. This link will expire in 1 hour:</p><p><a href="${url}">${url}</a></p>`;
+          const html = getEmailTemplate({
+            title: "Verify your email address",
+            greeting: user?.name || "there",
+            body: "Please verify your email by clicking the button below. This link will expire in 1 hour.",
+            buttonText: "Verify Email",
+            buttonUrl: url,
+          });
 
           await transporter.sendMail({
             from: `"${APP_NAME}" <support@gabriel.com>`,
@@ -53,9 +58,13 @@ export const getAuth = async () => {
           const to = user?.email;
           const subject = "Reset your password";
           const text = `Click the link to reset your password: ${url}`;
-          const html = `<p>Hi ${
-            user?.name || ""
-          },</p><p>Please reset your password by clicking the link below. This link will expire in 1 hour:</p><p><a href="${url}">${url}</a></p>`;
+          const html = getEmailTemplate({
+            title: "Reset your password",
+            greeting: user?.name || "there",
+            body: "Please reset your password by clicking the button below. This link will expire in 1 hour.",
+            buttonText: "Reset Password",
+            buttonUrl: url,
+          });
 
           await transporter.sendMail({
             from: `"${APP_NAME}" <support@gabriel.com>`,
