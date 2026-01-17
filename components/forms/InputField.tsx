@@ -30,7 +30,7 @@ const InputField = ({
           name={name}
           placeholder={placeholder}
           type={showPassword ? "text" : type}
-          className={cn("form-input", {
+          className={cn("h-10 rounded-sm", {
             "opacity-50 cursor-not-allowed": disabled,
           })}
           disabled={disabled}

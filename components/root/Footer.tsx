@@ -4,12 +4,26 @@ import {
   Twitter,
   Instagram,
   Linkedin,
-  Github,
   Biohazard,
 } from "lucide-react";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+
+  const socialLinks = [
+    { href: "https://facebook.com", Icon: Facebook, label: "Facebook" },
+    { href: "https://x.com", Icon: Twitter, label: "Twitter" },
+    { href: "https://instagram.com", Icon: Instagram, label: "Instagram" },
+    { href: "https://linkedin.com", Icon: Linkedin, label: "LinkedIn" },
+  ];
+
+  const companyLinks = [
+    { href: "/#features", label: "About" },
+    { href: "/privacy-policy", label: "Privacy Policy" },
+    { href: "/terms-of-service", label: "Terms of Service" },
+    { href: "/affiliate", label: "Affiliate Program" },
+    { href: "/contact", label: "Contact Us" },
+  ];
 
   return (
     <footer className="bg-[#12141C] pt-16 pb-8">
@@ -21,117 +35,58 @@ const Footer = () => {
               <Biohazard className="size-7 text-crypto-purple" />
             </h2>
             <p className="text-gray-400 mb-6 max-w-xs">
-              The most trusted cryptocurrency platform, empowering traders with
-              innovative tools and unparalleled security.
+              The most trusted stock and crypto trading platform, empowering
+              traders with innovative AI powered tools and unparalleled
+              security.
             </p>
             <div className="flex space-x-4">
-              <a
-                href="https://facebook.com"
-                target="_blank"
-                className="text-gray-400 hover:text-crypto-purple transition-colors"
-              >
-                <Facebook className="h-5 w-5" />
-                <span className="sr-only">Facebook</span>
-              </a>
-              <a
-                href="https://x.com"
-                target="_blank"
-                className="text-gray-400 hover:text-crypto-purple transition-colors"
-              >
-                <Twitter className="h-5 w-5" />
-                <span className="sr-only">Twitter</span>
-              </a>
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                className="text-gray-400 hover:text-crypto-purple transition-colors"
-              >
-                <Instagram className="h-5 w-5" />
-                <span className="sr-only">Instagram</span>
-              </a>
-              <a
-                href="https://linkedin.com"
-                target="_blank"
-                className="text-gray-400 hover:text-crypto-purple transition-colors"
-              >
-                <Linkedin className="h-5 w-5" />
-                <span className="sr-only">LinkedIn</span>
-              </a>
+              {socialLinks.map(({ href, Icon, label }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  className="text-gray-400 hover:text-crypto-purple transition-colors"
+                >
+                  <Icon className="h-5 w-5" />
+                  <span className="sr-only">{label}</span>
+                </a>
+              ))}
             </div>
           </div>
 
           <div>
             <h3 className="text-white font-medium mb-4">Company</h3>
             <ul className="space-y-2">
-              <li>
-                <a
-                  href="#!"
-                  className="text-gray-400 hover:text-crypto-purple transition-colors"
-                >
-                  About
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#!"
-                  className="text-gray-400 hover:text-crypto-purple transition-colors"
-                >
-                  Careers
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#!"
-                  className="text-gray-400 hover:text-crypto-purple transition-colors"
-                >
-                  Press
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#!"
-                  className="text-gray-400 hover:text-crypto-purple transition-colors"
-                >
-                  Legal & Privacy
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#!"
-                  className="text-gray-400 hover:text-crypto-purple transition-colors"
-                >
-                  Contact Us
-                </a>
-              </li>
+              {companyLinks.map(({ href, label }) => (
+                <li key={label}>
+                  <a
+                    href={href}
+                    className="text-gray-400 hover:text-crypto-purple transition-colors"
+                  >
+                    {label}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
 
         <div className="border-t border-white/10 pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center">
+          <div className="flex flex-col md:flex-row justify-center items-center">
             <p className="text-gray-400 text-sm mb-4 md:mb-0">
-              &copy; {currentYear} {APP_NAME}. All rights reserved.
+              &copy; {currentYear} {APP_NAME} Inc. All rights reserved.
             </p>
-            <div className="flex space-x-6">
-              <a
-                href="#!"
-                className="text-gray-400 hover:text-crypto-purple text-sm transition-colors"
-              >
-                Terms of Service
-              </a>
-              <a
-                href="#!"
-                className="text-gray-400 hover:text-crypto-purple text-sm transition-colors"
-              >
-                Privacy Policy
-              </a>
-              <a
-                href="#!"
-                className="text-gray-400 hover:text-crypto-purple text-sm transition-colors"
-              >
-                Cookie Policy
-              </a>
-            </div>
+            {/* <div className="flex space-x-6">
+              {legalLinks.map(({ href, label }) => (
+                <a
+                  key={label}
+                  href={href}
+                  className="text-gray-400 hover:text-crypto-purple text-sm transition-colors"
+                >
+                  {label}
+                </a>
+              ))}
+            </div> */}
           </div>
         </div>
       </div>
