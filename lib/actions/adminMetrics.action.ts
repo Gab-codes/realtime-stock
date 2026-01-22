@@ -11,18 +11,18 @@ export const getAdminMetrics = async () => {
   try {
     const session = await auth.api.getSession({ headers: await headers() });
     if (!session?.user) {
-      return Response.json(
-        { success: false, error: "Not authenticated" },
-        { status: 401 }
-      );
+      return {
+        success: false,
+        error: "Not authenticated",
+      };
     }
 
     const sessionUser = session.user as unknown as any;
     if (sessionUser.role !== "admin") {
-      return Response.json(
-        { success: false, error: "Unauthorized" },
-        { status: 403 }
-      );
+      return {
+        success: false,
+        error: "Unauthorized",
+      };
     }
 
     // Users
