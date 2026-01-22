@@ -25,6 +25,9 @@ type Metrics = {
 const Dashboard = async () => {
   // fetch real metrics from the database
   const result = await getAdminMetrics();
+  if (!result || result.success !== true) {
+    console.error("Admin metrics error:", result);
+  }
 
   const metrics: Metrics =
     result && "success" in result && result.success
