@@ -148,9 +148,7 @@ const Dashboard = async () => {
         <CardHeader>
           <CardTitle>Recent KYC Submissions</CardTitle>
         </CardHeader>
-        <CardContent>
-          <AdminKycTable />
-        </CardContent>
+        <CardContent>{/* <AdminKycTable /> */}</CardContent>
       </Card>
     </div>
   );
