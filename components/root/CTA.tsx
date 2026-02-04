@@ -18,19 +18,18 @@ const CTA = () => {
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-4xl mx-auto bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl p-8 md:p-12 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6 animate-fade-in">
-            Ready to revolutionize your{" "}
-            <span className="text-gradient">investment trading</span>?
+            Let AI handle your{" "}
+            <span className="text-gradient">trading decisions</span>
           </h2>
 
           <p
             className="text-gray-300 text-lg mb-8 max-w-2xl mx-auto animate-fade-in"
             style={{ animationDelay: "0.2s" }}
           >
-            Join thousands of users who trust {APP_NAME} to trade both
-            cryptocurrency and the stock market using advanced AI-driven
-            strategies. Our system analyzes the market in real time, executes
-            precision trades, and optimizes your returns automatically — no
-            experience required.
+            With {APP_NAME}, you don’t need to understand markets, charts, or
+            strategies. Simply fund your account and let our AI automatically
+            identify opportunities, manage risk, and execute trades across
+            multiple markets, all in real time.
           </p>
 
           <Link
@@ -43,7 +42,7 @@ const CTA = () => {
               size="lg"
               className="group border-gray-700 w-full text-white hover:bg-white/5 py-6"
             >
-              Create Account
+              Get Started in Minutes
               <ArrowUpRight className="ml-1.5 h-5 w-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
             </Button>
           </Link>
