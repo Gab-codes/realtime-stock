@@ -31,7 +31,7 @@ const Affiliate = () => {
               </button>
             </Link>
           </div>
-          <div className="inline-flex items-center gap-2 bg-crypto-purple/10 text-crypto-purple px-4 py-2 rounded-full text-sm font-medium">
+          <div className="inline-flex items-center mt-4 gap-2 bg-crypto-purple/10 text-crypto-purple px-4 py-2 rounded-full text-sm font-medium">
             <Gift className="h-4 w-4" />
             No Limits • Transparent • Real Earnings
           </div>
