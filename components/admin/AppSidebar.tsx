@@ -42,11 +42,9 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className="text-base">
-            {APP_NAME}
-          </SidebarGroupLabel>
+          <SidebarGroupLabel className="text-lg">{APP_NAME}</SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu className="space-y-3 mt-5">
+            <SidebarMenu className="space-y-5 mt-5">
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
