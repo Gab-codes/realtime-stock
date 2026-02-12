@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Biohazard, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { APP_NAME } from "@/lib/utils";
+import LanguageSwitcher from "../LanguageSwitcher";
 
 // Centralized navigation links
 const NAV_LINKS = [
@@ -73,6 +74,8 @@ const Navbar = () => {
               Sign Up
             </Button>
           </Link>
+
+          <LanguageSwitcher />
         </div>
 
         {/* Mobile Menu Toggle */}

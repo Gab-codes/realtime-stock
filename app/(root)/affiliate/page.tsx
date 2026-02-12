@@ -16,7 +16,7 @@ const Affiliate = () => {
       <div className="container py-12">
         {/* Hero Section */}
         <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-crypto-purple to-crypto-light-purple bg-clip-text text-transparent">
+          <h1 className="text-4xl md:text-5xl font-bold mb-6 text-gradient">
             Earn While You Share
           </h1>
           <p className="text-xl text-foreground/80 max-w-3xl mx-auto mb-8">
