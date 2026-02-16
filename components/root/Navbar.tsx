@@ -80,6 +80,7 @@ const Navbar = () => {
 
         {/* Mobile Menu Toggle */}
         <div className="flex items-center gap-2 lg:hidden">
+          <LanguageSwitcher />
           <button
             className="text-white"
             onClick={() => setIsMobileMenuOpen((prev) => !prev)}
@@ -90,8 +91,6 @@ const Navbar = () => {
               <Menu className="size-6.5" />
             )}
           </button>
-
-          <LanguageSwitcher />
         </div>
       </div>
 
