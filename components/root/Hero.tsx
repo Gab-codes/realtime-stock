@@ -18,7 +18,7 @@ const Hero = () => {
       <div className="container mx-auto px-4 py-20 relative z-10">
         <div className="flex flex-col lg:flex-row gap-3 items-center">
           <div className="lg:w-[55%] animate-fade-in-left">
-            <div className="inline-flex items-center bg-white/5 backdrop-blur-sm border border-white/10 rounded-full px-4 py-1.5 mb-6">
+            <div className="inline-flex items-center bg-white/5 backdrop-blur-sm border border-white/10 rounded-full px-4 py-1.5 mt-3 mb-6">
               <span className="text-xs font-medium text-crypto-purple mr-2">
                 AI Automation
               </span>

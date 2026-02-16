@@ -79,16 +79,20 @@ const Navbar = () => {
         </div>
 
         {/* Mobile Menu Toggle */}
-        <button
-          className="lg:hidden text-white"
-          onClick={() => setIsMobileMenuOpen((prev) => !prev)}
-        >
-          {isMobileMenuOpen ? (
-            <X className="size-6.5" />
-          ) : (
-            <Menu className="size-6.5" />
-          )}
-        </button>
+        <div className="flex items-center gap-2 lg:hidden">
+          <button
+            className="text-white"
+            onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+          >
+            {isMobileMenuOpen ? (
+              <X className="size-6.5" />
+            ) : (
+              <Menu className="size-6.5" />
+            )}
+          </button>
+
+          <LanguageSwitcher />
+        </div>
       </div>
 
       {/* Mobile Menu */}

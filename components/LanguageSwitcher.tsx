@@ -1,7 +1,11 @@
 "use client";
 
 import { LANGUAGES } from "@/data/languages";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import {
+  NativeSelect,
+  NativeSelectOption,
+} from "@/components/ui/native-select";
 
 declare global {
   interface Window {
@@ -11,7 +15,11 @@ declare global {
 }
 
 export default function LanguageSwitcher() {
+  const [mounted, setMounted] = useState(false);
+
   useEffect(() => {
+    setMounted(true);
+
     if (document.getElementById("google-translate-script")) return;
 
     window.googleTranslateElementInit = () => {
@@ -42,24 +50,24 @@ export default function LanguageSwitcher() {
     select.dispatchEvent(new Event("change"));
   };
 
+  if (!mounted) return null; // Only render on client
+
   return (
     <>
-      {/* Hidden Google container */}
+      {/* Hidden Google Translate container */}
       <div id="google_translate_element" className="hidden" />
 
-      <select
-        onChange={(e) => handleChange(e.target.value)}
-        className="rounded-md border border-teal-400
-                   bg-transparent px-2 py-1 text-sm
-                   focus:outline-none focus:ring-2 focus:ring-teal-400"
-        aria-label="Select language"
-      >
+      <NativeSelect onChange={(e) => handleChange(e.target.value)}>
         {LANGUAGES.map((lang) => (
-          <option key={lang.value} value={lang.value} className="text-black">
+          <NativeSelectOption
+            className="bg-background"
+            key={lang.value}
+            value={lang.value}
+          >
             {lang.label}
-          </option>
+          </NativeSelectOption>
         ))}
-      </select>
+      </NativeSelect>
     </>
   );
 }
