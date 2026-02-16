@@ -57,10 +57,13 @@ export default function LanguageSwitcher() {
       {/* Hidden Google Translate container */}
       <div id="google_translate_element" className="hidden" />
 
-      <NativeSelect onChange={(e) => handleChange(e.target.value)}>
+      <NativeSelect
+        className="max-w-17 text-xs"
+        onChange={(e) => handleChange(e.target.value)}
+      >
         {LANGUAGES.map((lang) => (
           <NativeSelectOption
-            className="bg-background"
+            className="bg-background "
             key={lang.value}
             value={lang.value}
           >
