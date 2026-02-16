@@ -7,20 +7,20 @@ export const steps = [
     icon: <Download className="h-6 w-6" />,
     title: "Create Your Account",
     description:
-      "Sign up in minutes with our streamlined onboarding process. No complicated forms or lengthy verification.",
+      "Sign up in minutes with a simple onboarding process. No trading knowledge or prior experience required.",
   },
   {
     number: "02",
     icon: <Wallet className="h-6 w-6" />,
-    title: "Fund Your Wallet",
+    title: "Fund & Choose a Trading Period",
     description:
-      "Easily deposit crypto or fiat through our platform with zero deposit fees.",
+      "Deposit funds and select a fixed trading duration — 30, 60, or 90 days. Your capital is securely allocated for the selected period.",
   },
   {
     number: "03",
     icon: <BarChart4 className="h-6 w-6" />,
-    title: "Start Trading",
+    title: "AI Trades, You Monitor",
     description:
-      "Don't know where to start? Our AI can do the heavy lifting and trade on your behalf with daily consistent return.",
+      "Our AI handles all trading decisions automatically. Earnings are calculated daily, reflected in your account, and recorded in your transaction history while your funds remain locked.",
   },
 ];
