@@ -16,8 +16,8 @@ const HowItWorks = () => {
             How It Works
           </h2>
           <p className="text-gray-400 max-w-2xl mx-auto">
-            Getting started with {APP_NAME} is easy. Follow these simple steps
-            to begin your crypto journey.
+            Getting started with {APP_NAME} is simple. Deposit once, choose a
+            duration, and let our AI handle the rest.
           </p>
         </div>
 
@@ -28,15 +28,18 @@ const HowItWorks = () => {
               className="relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-8 animate-on-scroll"
               style={{ animationDelay: `${index * 0.2}s` }}
             >
-              <span className="absolute -top-4 -left-4 bg-crypto-blue border rounded-md border-crypto-purple/30 text-crypto-purple font-bold  text-xl px-3 py-1">
+              <span className="absolute -top-4 -left-4 bg-crypto-blue border rounded-md border-crypto-purple/30 text-crypto-purple font-bold text-xl px-3 py-1">
                 {step.number}
               </span>
+
               <div className="bg-crypto-purple/20 rounded-xl w-12 h-12 flex items-center justify-center mb-6 text-crypto-purple">
                 {step.icon}
               </div>
+
               <h3 className="text-xl font-semibold mb-4 text-white">
                 {step.title}
               </h3>
+
               <p className="text-gray-400">{step.description}</p>
             </div>
           ))}
