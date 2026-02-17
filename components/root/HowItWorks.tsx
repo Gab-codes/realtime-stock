@@ -8,7 +8,7 @@ const HowItWorks = () => {
   return (
     <section
       id="how-it-works"
-      className="py-24 bg-gradient-to-b from-[#12141C] to-crypto-blue"
+      className="py-24 max-sm:px-1.5 bg-gradient-to-b from-[#12141C] to-crypto-blue"
     >
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
