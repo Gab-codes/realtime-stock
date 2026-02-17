@@ -44,10 +44,10 @@ export const createInvestment = async (payload: InvestmentPayload) => {
       return { success: false, error: "Insufficient deposited balance" };
     }
 
-    const profitRate = profitRates[days] ?? 0.3;
+    const profitRate = profitRates[days] ?? 0.2;
     const startedAt = new Date();
     const maturityDate = new Date(
-      startedAt.getTime() + days * 24 * 60 * 60 * 1000
+      startedAt.getTime() + days * 24 * 60 * 60 * 1000,
     );
 
     // Deduct from deposited balance and add to investment balance
@@ -107,13 +107,13 @@ export const getPortfolio = async () => {
     // Total amount invested (excluding cancelled)
     const totalInvested = investments.reduce(
       (sum, i) => sum + (i.status === "cancelled" ? 0 : i.principal),
-      0
+      0,
     );
 
     // Total profit earned (use i.profit which actually exists in schema)
     const totalProfit = investments.reduce(
-      (sum, i) => sum + (i.status === "cancelled" ? 0 : i.profit ?? 0),
-      0
+      (sum, i) => sum + (i.status === "cancelled" ? 0 : (i.profit ?? 0)),
+      0,
     );
 
     // total profit earned for active investments

@@ -52,9 +52,9 @@ const InvestmentForm = ({ depositedBalance, kycStatus }: Props) => {
 
   // Profit configuration
   const profitRates: Record<number, number> = {
-    30: 0.3,
-    60: 0.35,
-    90: 0.4,
+    30: 0.2,
+    60: 0.25,
+    90: 0.3,
   };
 
   const profitRate = profitRates[days];
@@ -125,7 +125,7 @@ const InvestmentForm = ({ depositedBalance, kycStatus }: Props) => {
 
     if (amount > depositedBalance) {
       toast.error(
-        "Insufficient Balance: your deposit cannot cover this investment."
+        "Insufficient Balance: your deposit cannot cover this investment.",
       );
       return;
     }
@@ -196,11 +196,11 @@ const InvestmentForm = ({ depositedBalance, kycStatus }: Props) => {
           const formattedProfit = formatPrice(parseFloat(profit));
 
           setCurrentMessage(
-            `Congratulations, your investment plan is now active. Based on your investment of ${formattedAmount}, our system is projected to generate ${formattedProfit} over the next ${days} days. Earnings will be added to your account automatically.`
+            `Congratulations, your investment plan is now active. Based on your investment of ${formattedAmount}, our system is projected to generate ${formattedProfit} over the next ${days} days. Earnings will be added to your account automatically.`,
           );
         } else {
           setCurrentMessage(
-            "Congratulations — your investment plan is now active."
+            "Congratulations — your investment plan is now active.",
           );
         }
 
@@ -286,9 +286,9 @@ const InvestmentForm = ({ depositedBalance, kycStatus }: Props) => {
                   <SelectValue placeholder="Select duration" />
                 </SelectTrigger>
                 <SelectContent className="bg-[#0a0a0a] text-gray-200 border border-gray-800">
-                  <SelectItem value="30">30 Days (30%)</SelectItem>
-                  <SelectItem value="60">60 Days (35%)</SelectItem>
-                  <SelectItem value="90">90 Days (40%)</SelectItem>
+                  <SelectItem value="30">30 Days (20%)</SelectItem>
+                  <SelectItem value="60">60 Days (25%)</SelectItem>
+                  <SelectItem value="90">90 Days (30%)</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -333,7 +333,7 @@ const InvestmentForm = ({ depositedBalance, kycStatus }: Props) => {
                     currentMessage.toLowerCase().includes("successfully")
                     ? "animate-none"
                     : "animate-pulse",
-                  "p-3 rounded-full bg-gradient-to-br from-yellow-400/5 to-white/2 shadow-sm"
+                  "p-3 rounded-full bg-gradient-to-br from-yellow-400/5 to-white/2 shadow-sm",
                 )}
                 aria-hidden
               >
