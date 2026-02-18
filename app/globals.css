@@ -242,7 +242,7 @@ body {
     @apply border-6 border-gray-800 left-0 hidden w-[640px] h-auto max-w-none lg:block rounded-xl shadow-2xl;
   }
   .form-title {
-    @apply text-4xl font-bold text-gray-400 mb-10;
+    @apply text-2xl sm:text-3xl md:text-4xl font-bold text-gray-400 mb-10;
   }
   .form-label {
     @apply text-sm font-medium text-gray-400;
@@ -598,4 +598,22 @@ input[type="number"]::-webkit-outer-spin-button {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+@keyframes success-pop {
+  0% {
+    transform: scale(0.55);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-success-pop {
+  animation: success-pop 0.95s ease-out forwards;
 }

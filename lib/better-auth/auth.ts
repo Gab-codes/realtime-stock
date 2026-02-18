@@ -35,7 +35,7 @@ export const getAuth = async () => {
           });
 
           await transporter.sendMail({
-            from: `"${APP_NAME}" <support@gabriel.com>`,
+            from: `${APP_NAME} <support@${process.env.RESEND_DOMAIN}>`,
             to,
             subject,
             text,
@@ -67,7 +67,7 @@ export const getAuth = async () => {
           });
 
           await transporter.sendMail({
-            from: `"${APP_NAME}" <support@gabriel.com>`,
+            from: `${APP_NAME} <support@${process.env.RESEND_DOMAIN}>`,
             to,
             subject,
             text,
