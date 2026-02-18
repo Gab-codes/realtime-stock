@@ -246,7 +246,7 @@ const InvestmentForm = ({ depositedBalance, kycStatus }: Props) => {
         id="invest"
         className="bg-crypto-blue/80 border border-crypto-blue/20 text-white mt-4 md:mt-8"
       >
-        <CardHeader>
+        <CardHeader className="px-3">
           <CardTitle className="text-xl font-semibold">
             Invest and Let AI Work for You 🤖
           </CardTitle>
