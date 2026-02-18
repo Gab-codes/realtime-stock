@@ -201,7 +201,7 @@ export default function WithdrawalForm({
       </Card>
 
       <Dialog open={open} onOpenChange={(val) => !isSubmitting && setOpen(val)}>
-        <DialogContent className="border-white/30">
+        <DialogContent className="border-white/30 data-[state=open]:!zoom-in-0 data-[state=open]:duration-600 data-[state=closed]:!zoom-out-0 data-[state=closed]:duration-300">
           {!isSuccess ? (
             <>
               <DialogHeader>

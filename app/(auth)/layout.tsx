@@ -32,7 +32,7 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
       </section>
 
       {/* right section  */}
-      <section className="auth-right-section bg-gradient-to-b from-[#12141C] to-crypto-blue">
+      <section className="auth-right-section hidden! lg:block! bg-gradient-to-b from-[#12141C] to-crypto-blue">
         <div className="z-10 relative lg:mt-4 lg:mb-16">
           <blockquote className="auth-blockqote">
             {APP_NAME} transformed my life, and I couldn&apos;t be happier. The
@@ -41,7 +41,7 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
           <div className="flex items-center justify-between">
             <div>
               <cite className="auth-testimonial-author">- Jeffrey W</cite>
-              <p className="max-md: text-xs text-gray-500">Retail Investor</p>
+              <p className="text-xs text-gray-500">Retail Investor</p>
             </div>
             <div className="flex items-center gap-0.5">
               {[1, 2, 3, 4, 5].map((star) => (
