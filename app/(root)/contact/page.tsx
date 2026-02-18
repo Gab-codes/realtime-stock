@@ -143,7 +143,7 @@ const Contact = () => {
                   <div>
                     <h3 className="font-semibold mb-1">Email Support</h3>
                     <p className="text-foreground/70 mb-1">
-                      support@{APP_NAME.toLowerCase().replace(/\s+/g, "")}.com
+                      support@atlasaitrader.com
                     </p>
                     <p className="text-sm text-foreground/60">
                       We typically respond within 24 hours
@@ -157,7 +157,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold mb-1">Phone Support</h3>
-                    <p className="text-foreground/70 mb-1">+1 (555) 123-4567</p>
+                    <p className="text-foreground/70 mb-1">+1 (508) 025-0749</p>
                     <p className="text-sm text-foreground/60">
                       Mon-Fri, 9 AM - 6 PM EST
                     </p>
@@ -171,9 +171,9 @@ const Contact = () => {
                   <div>
                     <h3 className="font-semibold mb-1">Office Address</h3>
                     <p className="text-foreground/70">
-                      123 Financial District
+                      200 Market Street
                       <br />
-                      New York, NY 10001
+                      San Francisco, CA 94105
                       <br />
                       United States
                     </p>
