@@ -40,12 +40,12 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="hidden md:flex  w-64 h-screen sticky top-0 bg-[#0a0a0a] border-r border-white/10 flex-col justify-between">
+    <aside className="hidden md:flex  w-68 h-screen sticky top-0 bg-[#0a0a0a] border-r border-white/10 flex-col justify-between">
       {/* Top Section */}
       <div>
         {/* Logo */}
         <Link href="/dashboard">
-          <div className="flex items-center p-6">
+          <div className="flex items-center px-4 py-6">
             <h1 className="text-2xl font-bold text-white inline-flex gap-2 items-center">
               {APP_NAME}
 
@@ -61,7 +61,7 @@ export default function Sidebar() {
                 variant="ghost"
                 className={cn(
                   "w-full justify-start gap-3 text-gray-400 hover:text-white hover:bg-white/10 transition-all",
-                  pathname === href && "bg-crypto-purple/20 text-white"
+                  pathname === href && "bg-crypto-purple/20 text-white",
                 )}
               >
                 <Icon size={20} />
