@@ -5,7 +5,10 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export const SUPPORT_EMAIL = "support@atlasaitrader.com";
+
 export const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? "SignalBite";
+
 export const APP_URL =
   process.env.NEXT_PUBLIC_BASE_URL ?? "https://localhost:3000";
 
@@ -87,7 +90,7 @@ export const formatArticle = (
   article: RawNewsArticle,
   isCompanyNews: boolean,
   symbol?: string,
-  index: number = 0
+  index: number = 0,
 ) => ({
   id: isCompanyNews ? Date.now() + Math.random() : article.id + index,
   headline: article.headline!.trim(),

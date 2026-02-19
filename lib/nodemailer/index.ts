@@ -1,6 +1,6 @@
 import nodemailer from "nodemailer";
 import { WELCOME_EMAIL_TEMPLATE } from "./templates";
-import { APP_NAME } from "../utils";
+import { APP_NAME, SUPPORT_EMAIL } from "../utils";
 
 export const transporter = nodemailer.createTransport({
   host: "smtp.resend.com",
@@ -17,6 +17,7 @@ export const sendWelcomeEmail = async ({ email, name }: WelcomeEmailData) => {
 
   const mailOptions = {
     from: `"${APP_NAME}" <support@${process.env.RESEND_DOMAIN}>`,
+    replyTo: `${APP_NAME} <${SUPPORT_EMAIL}>`,
     to: email,
     subject: `Welcome to ${APP_NAME} - your account is ready!`,
     text: `Thanks for joining ${APP_NAME}. You now have the tools to trade your way to a life changing return on your investments!`,
