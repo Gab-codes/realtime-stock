@@ -215,7 +215,7 @@ body {
     @apply w-full gap-8 grid-cols-1 md:grid-cols-2 xl:grid-cols-3;
   }
   .header {
-    @apply z-50 w-full h-[70px] bg-gray-800;
+    @apply z-50 w-full h-[70px] bg-[#010115] border-b border-white/10;
   }
   .header-wrapper {
     @apply flex justify-between items-center px-6 py-4 text-gray-500;

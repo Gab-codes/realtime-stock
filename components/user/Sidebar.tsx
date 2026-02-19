@@ -77,7 +77,7 @@ export default function Sidebar() {
         className="px-4 pb-6 border-t border-white/10"
         onClick={handleSignOut}
       >
-        <Button variant="destructive" className="w-full text-gray-100">
+        <Button variant="destructive" className="w-full text-gray-100 mt-2">
           <LogOut size={20} />
           Logout
         </Button>

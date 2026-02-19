@@ -6,8 +6,10 @@ import { getUserData } from "@/lib/actions/user.action";
 import { formatPrice } from "@/lib/utils";
 
 const DashboardOverview = async () => {
-  const { data: userData } = await getUserData();
-  const { data: portfolioData } = await getPortfolio();
+  const [{ data: userData }, { data: portfolioData }] = await Promise.all([
+    getUserData(),
+    getPortfolio(),
+  ]);
 
   if (!userData) return null;
   const { depositedBalance, kycStatus } = userData as UserExtra;
@@ -16,7 +18,7 @@ const DashboardOverview = async () => {
   const totalBalance = depositedBalance + totals.activeProfit;
   const activeInvestmentPrincipals = investments?.reduce(
     (sum, i) => sum + (i.status === "active" ? i.principal : 0),
-    0
+    0,
   );
 
   return (

@@ -6,11 +6,13 @@ import { Button } from "@/components/ui/button";
 import { signInWithEmail } from "@/lib/actions/auth.action";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 const SignIn = () => {
   const router = useRouter();
+  const [isPending, startTransition] = useTransition();
 
   const {
     register,
@@ -32,23 +34,23 @@ const SignIn = () => {
         const res = await fetch("/api/me");
         const user = await res.json();
 
-        if (user.role === "admin") router.push("/admin/dashboard");
-        else router.push("/dashboard");
-      } else if (result.error) {
-        toast.error(result.error, {
-          duration: 10000,
+        startTransition(() => {
+          if (user.role === "admin") router.push("/admin/dashboard");
+          else router.push("/dashboard");
         });
+      } else if (result.error) {
+        toast.error(result.error, { duration: 10000 });
       }
     } catch (error) {
       console.error(error);
       toast.error("Sign In failed", {
         description:
-          error instanceof Error
-            ? error.message
-            : "Something went wrong, failed to sign in",
+          error instanceof Error ? error.message : "Something went wrong",
       });
     }
   };
+
+  const isLoading = isSubmitting || isPending;
 
   return (
     <>
@@ -62,7 +64,7 @@ const SignIn = () => {
           register={register}
           error={errors.email}
           type="email"
-          disabled={isSubmitting}
+          disabled={isLoading}
           validation={{
             required: "Email is required",
             minLength: 2,
@@ -80,7 +82,7 @@ const SignIn = () => {
           register={register}
           type="password"
           error={errors.password}
-          disabled={isSubmitting}
+          disabled={isLoading}
           validation={{
             required: "Password is required",
             minLength: 8,
@@ -98,10 +100,10 @@ const SignIn = () => {
 
         <Button
           type="submit"
-          disabled={isSubmitting}
+          disabled={isLoading}
           className="purple-btn w-full mt-5"
         >
-          {isSubmitting ? "Signing In..." : "Sign In"}
+          {isLoading ? "Signing In..." : "Sign In"}
         </Button>
 
         <FooterLink
