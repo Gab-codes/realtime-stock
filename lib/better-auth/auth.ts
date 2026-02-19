@@ -4,7 +4,7 @@ import { connectToDatabase } from "@/database/mongoose";
 import { nextCookies } from "better-auth/next-js";
 import { admin } from "better-auth/plugins";
 import { transporter } from "@/lib/nodemailer";
-import { APP_NAME } from "../utils";
+import { APP_NAME, SUPPORT_EMAIL } from "../utils";
 import { getEmailTemplate } from "../nodemailer/email-template";
 
 let authInstance: ReturnType<typeof betterAuth> | null = null;
@@ -36,6 +36,7 @@ export const getAuth = async () => {
 
           await transporter.sendMail({
             from: `${APP_NAME} <support@${process.env.RESEND_DOMAIN}>`,
+            replyTo: `${APP_NAME} <${SUPPORT_EMAIL}>`,
             to,
             subject,
             text,
@@ -68,6 +69,7 @@ export const getAuth = async () => {
 
           await transporter.sendMail({
             from: `${APP_NAME} <support@${process.env.RESEND_DOMAIN}>`,
+            replyTo: `${APP_NAME} <${SUPPORT_EMAIL}>`,
             to,
             subject,
             text,
