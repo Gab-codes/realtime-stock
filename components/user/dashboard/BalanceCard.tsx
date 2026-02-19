@@ -34,7 +34,7 @@ const BalanceCard = ({
         <CardTitle className="text-gray-300 text-sm">{title}</CardTitle>
 
         <Popover>
-          <PopoverTrigger asChild>
+          <PopoverTrigger className="cursor-pointer" asChild>
             <CircleQuestionMarkIcon className="size-4 text-crypto-light-purple" />
           </PopoverTrigger>
 
