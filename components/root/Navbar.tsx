@@ -9,11 +9,11 @@ import LanguageSwitcher from "../LanguageSwitcher";
 
 // Centralized navigation links
 const NAV_LINKS = [
-  { href: "/#features", label: "Features" },
-  { href: "/#how-it-works", label: "How it works" },
-  { href: "/#testimonials", label: "Testimonials" },
-  { href: "/#faq", label: "FAQ" },
+  { href: "/", label: "Home" },
+  { href: "/about", label: "About Us" },
+  { href: "/affiliate", label: "Affiliate Program" },
   { href: "/overview", label: "Market Overview" },
+  { href: "/contact", label: "Contact Us" },
 ];
 
 const Navbar = () => {

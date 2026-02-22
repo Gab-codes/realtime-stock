@@ -8,11 +8,11 @@ import {
   ArrowDownToLine,
   ArrowUpToLine,
   Briefcase,
-  // Settings,
   HelpCircle,
   UserPlus,
   Biohazard,
   LogOut,
+  MessageCircleQuestion,
 } from "lucide-react";
 import { APP_NAME, cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -26,7 +26,7 @@ const navItems = [
   { label: "Withdraw", href: "/withdraw", icon: ArrowUpToLine },
   { label: "Verification Center", href: "/kyc", icon: HelpCircle },
   { label: "Referrals", href: "/referrals", icon: UserPlus },
-  // { label: "Settings", href: "/settings", icon: Settings },
+  { label: "Live Support", href: "/support", icon: MessageCircleQuestion },
 ];
 
 export default function Sidebar() {
