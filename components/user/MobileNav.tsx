@@ -82,7 +82,7 @@ export default function MobileNav() {
           <div className="px-6 pb-6 space-y-3">
             <DrawerLink href="/portfolio" icon={Briefcase} label="Portfolio" />
             <DrawerLink
-              href="/settings"
+              href="/support"
               icon={MessageCircleQuestion}
               label="Support"
             />

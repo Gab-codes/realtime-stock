@@ -4,6 +4,8 @@ import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 import { APP_NAME } from "@/lib/utils";
 import TanstackProvider from "./tanstack-provider";
+import Script from "next/script";
+import TawkManager from "@/components/TawkManager";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,9 +18,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: APP_NAME,
-  description:
-    "AI Smart Investment Planner, with real-time stock prices, personalized alerts and detailed company insights.",
+  title: `${APP_NAME} | AI-Powered Automated Trading Platform`,
+  description: `${APP_NAME} is an AI-powered automated trading platform designed to remove complexity from investing. Allocate funds, choose a fixed trading duration, and let our AI analyze markets and execute trades while you monitor daily earnings transparently.`,
 };
 
 export default function RootLayout({
@@ -33,9 +34,29 @@ export default function RootLayout({
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
           {children}
+          <TawkManager />
           <Toaster />
         </body>
       </TanstackProvider>
+
+      <Script
+        id="tawk-to"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+              var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+              (function(){
+                var s1=document.createElement("script"),
+                s0=document.getElementsByTagName("script")[0];
+                s1.async=true;
+                s1.src='https://embed.tawk.to/6997727604b3791c3bb9aa46/1jhrpe8ad';
+                s1.charset='UTF-8';
+                s1.setAttribute('crossorigin','*');
+                s0.parentNode.insertBefore(s1,s0);
+              })();
+            `,
+        }}
+      />
     </html>
   );
 }

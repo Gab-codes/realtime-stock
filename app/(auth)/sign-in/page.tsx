@@ -35,8 +35,8 @@ const SignIn = () => {
         const user = await res.json();
 
         startTransition(() => {
-          if (user.role === "admin") router.push("/admin/dashboard");
-          else router.push("/dashboard");
+          if (user.role === "admin") router.replace("/admin/dashboard");
+          else router.replace("/dashboard");
         });
       } else if (result.error) {
         toast.error(result.error, { duration: 10000 });

@@ -99,7 +99,15 @@ export const WELCOME_EMAIL_TEMPLATE = `<!DOCTYPE html>
                     <!-- Header with Logo -->
                     <tr>
                         <td align="left" class="mobile-header-padding" style="padding: 40px 40px 20px 40px;">
-                            <img src="https://ik.imagekit.io/a6fkjou7d/logo.png?updatedAt=1756378431634" alt="${APP_NAME} Logo" width="150" style="max-width: 100%; height: auto;">
+                        <a href="${APP_URL}" style="text-decoration: none;">
+                            <span style="font-size: 24px; font-weight: 600; line-height: 1; vertical-align: middle; margin-left: 6px;">${APP_NAME}</span>
+                            <img 
+                            src="https://ik.imagekit.io/7ywthbsojd/logo.webp" 
+                            alt="${APP_NAME} Logo" 
+                            width="50" 
+                            style="vertical-align: middle; height: auto; display: inline-block;"
+                            >
+                        </a>
                         </td>
                     </tr>
                     
@@ -139,7 +147,7 @@ export const WELCOME_EMAIL_TEMPLATE = `<!DOCTYPE html>
                             <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin: 0 0 40px 0; width: 100%;">
                                 <tr>
                                     <td align="center">
-                                        <a href="https://stock-market-dev.vercel.app/" style="display: block; width: 100%; background: linear-gradient(135deg, #FDD458 0%, #E8BA40 100%); color: #000000; text-decoration: none; padding: 16px 32px; border-radius: 8px; font-size: 16px; font-weight: 500; line-height: 1; text-align: center; box-sizing: border-box;">
+                                        <a href="${APP_URL}/dashboard" style="display: block; width: 100%; background: linear-gradient(135deg, #FDD458 0%, #E8BA40 100%); color: #000000; text-decoration: none; padding: 16px 32px; border-radius: 8px; font-size: 16px; font-weight: 500; line-height: 1; text-align: center; box-sizing: border-box;">
                                             Go to Dashboard
                                         </a>
                                     </td>
@@ -151,7 +159,7 @@ export const WELCOME_EMAIL_TEMPLATE = `<!DOCTYPE html>
                                ${APP_NAME} HQ, 110 Market Street, San Francisco, CA 94105<br>
                                 <a href="#" style="color: #CCDADC !important; text-decoration: underline;">Unsubscribe</a> | 
                                 <a href=${APP_URL} style="color: #CCDADC !important; text-decoration: underline;">Visit ${APP_NAME}</a><br>
-                                © 2025 ${APP_NAME}
+                                © ${new Date().getFullYear()} ${APP_NAME}
                             </p>
                         </td>
                     </tr>
@@ -258,7 +266,10 @@ export const NEWS_SUMMARY_EMAIL_TEMPLATE = `<!DOCTYPE html>
                     <!-- Header with Logo -->
                     <tr>
                         <td align="left" class="mobile-header-padding" style="padding: 40px 40px 20px 40px;">
-                            <img src="https://ik.imagekit.io/a6fkjou7d/logo.png?updatedAt=1756378431634" alt="Signalist Logo" width="150" style="max-width: 100%; height: auto;">
+                            <a href="${APP_URL}" style="display: flex; align-items: center; gap: 6px; text-decoration: none;">
+                                <h2 style="margin: 0; font-size: 24px; font-weight: 600; line-height: 1.2;">${APP_NAME}</h2>
+                                <img src="https://ik.imagekit.io/a6fkjou7d/logo.png?updatedAt=1756378431634" alt="${APP_NAME} Logo" width="150" style="max-width: 100%; height: auto;">
+                            </a>
                         </td>
                     </tr>
                     

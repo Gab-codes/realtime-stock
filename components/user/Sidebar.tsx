@@ -10,13 +10,14 @@ import {
   Briefcase,
   HelpCircle,
   UserPlus,
-  Biohazard,
+  // Biohazard,
   LogOut,
   MessageCircleQuestion,
 } from "lucide-react";
 import { APP_NAME, cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { signOut } from "@/lib/actions/auth.action";
+import Image from "next/image";
 
 const navItems = [
   { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
@@ -46,10 +47,10 @@ export default function Sidebar() {
         {/* Logo */}
         <Link href="/dashboard">
           <div className="flex items-center px-4 py-6">
-            <h1 className="text-2xl font-bold text-white inline-flex gap-2 items-center">
+            <h1 className="text-xl sm:text-[22px] font-bold text-white inline-flex tracking-tight gap-0.5 md:gap-1 items-center">
               {APP_NAME}
-
-              <Biohazard className="size-7 text-crypto-purple" />
+              {/* <Biohazard className="size-7.5 text-crypto-purple" /> */}
+              <Image src="/logo.webp" alt="Logo" width={60} height={60} />
             </h1>
           </div>
         </Link>

@@ -1,11 +1,6 @@
 import { APP_NAME } from "@/lib/utils";
-import {
-  Facebook,
-  Twitter,
-  Instagram,
-  Linkedin,
-  Biohazard,
-} from "lucide-react";
+import { Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
+import Image from "next/image";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -31,10 +26,11 @@ const Footer = () => {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 pb-8">
           <div className="lg:col-span-2">
-            <h2 className="text-2xl font-bold text-white mb-4 inline-flex gap-2 items-center">
+            <h1 className="text-xl sm:text-2xl font-bold text-white inline-flex tracking-tight gap-0.5 md:gap-1 items-center">
               {APP_NAME}
-              <Biohazard className="size-7 text-crypto-purple" />
-            </h2>
+              {/* <Biohazard className="size-7.5 text-crypto-purple" /> */}
+              <Image src="/logo.webp" alt="Logo" width={60} height={60} />
+            </h1>
             <p className="text-gray-400 mb-6 max-w-xs">
               The most trusted stock and crypto trading platform, empowering
               traders with innovative AI powered tools and unparalleled

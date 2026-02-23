@@ -6,6 +6,7 @@ import { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { MessageCircle } from "lucide-react";
 import { SUPPORT_EMAIL } from "@/lib/utils";
+import Link from "next/link";
 
 export default function SupportPage() {
   const scriptLoaded = useRef(false);
@@ -108,9 +109,11 @@ export default function SupportPage() {
             <p className="text-sm text-gray-400 mb-3">
               Check our frequently asked questions for quick answers.
             </p>
-            <Button variant="link" className="p-0 h-auto">
-              Visit FAQ →
-            </Button>
+            <Link href="/#faq">
+              <Button variant="link" className="p-0 h-auto">
+                Visit FAQ →
+              </Button>
+            </Link>
           </div>
         </div>
       </div>
