@@ -16,8 +16,8 @@ const Index = () => {
   return (
     <div className="min-h-screen overflow-x-hidden">
       <Hero />
-      <Features />
       <HowItWorks />
+      <Features />
       <Testimonials />
       {/* <Pricing /> */}
       <FAQ />

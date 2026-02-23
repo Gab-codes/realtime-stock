@@ -177,13 +177,6 @@ const Affiliate = () => {
               <li className="flex items-start gap-3">
                 <div className="w-2 h-2 bg-yellow-500 rounded-full mt-2 flex-shrink-0"></div>
                 <span>
-                  All referrals must comply with our terms of service and
-                  complete KYC verification
-                </span>
-              </li>
-              <li className="flex items-start gap-3">
-                <div className="w-2 h-2 bg-yellow-500 rounded-full mt-2 flex-shrink-0"></div>
-                <span>
                   Fraudulent referrals or spam will result in account suspension
                 </span>
               </li>

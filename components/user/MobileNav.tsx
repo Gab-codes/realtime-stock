@@ -9,10 +9,10 @@ import {
   History,
   MoreHorizontal,
   Briefcase,
-  // Settings,
   HelpCircle,
   UserPlus,
   LogOut,
+  MessageCircleQuestion,
 } from "lucide-react";
 import {
   Drawer,
@@ -52,7 +52,7 @@ export default function MobileNav() {
           <div
             className={cn(
               "flex flex-col items-center text-gray-400 text-xs transition-colors",
-              pathname === href && "text-crypto-purple"
+              pathname === href && "text-crypto-purple",
             )}
           >
             <Icon size={20} />
@@ -81,7 +81,11 @@ export default function MobileNav() {
 
           <div className="px-6 pb-6 space-y-3">
             <DrawerLink href="/portfolio" icon={Briefcase} label="Portfolio" />
-            {/* <DrawerLink href="/settings" icon={Settings} label="Settings" /> */}
+            <DrawerLink
+              href="/settings"
+              icon={MessageCircleQuestion}
+              label="Support"
+            />
             <DrawerLink href="/referrals" icon={UserPlus} label="Referrals" />
             <DrawerLink
               href="/kyc"
