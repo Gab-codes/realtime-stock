@@ -18,7 +18,8 @@ const Footer = () => {
   ];
 
   const companyLinks = [
-    { href: "/#features", label: "About" },
+    { href: "/", label: "Home" },
+    { href: "/about", label: "About" },
     { href: "/privacy-policy", label: "Privacy Policy" },
     { href: "/terms-of-service", label: "Terms of Service" },
     { href: "/affiliate", label: "Affiliate Program" },

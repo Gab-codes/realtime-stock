@@ -12,7 +12,6 @@ const NAV_LINKS = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About Us" },
   { href: "/affiliate", label: "Affiliate Program" },
-  { href: "/overview", label: "Market Overview" },
   { href: "/contact", label: "Contact Us" },
 ];
 
