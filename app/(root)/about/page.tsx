@@ -1,5 +1,12 @@
+"use client";
+
+import AboutUs from "@/components/root/AboutUs";
+import useScrollAnimation from "@/hooks/useScrollAnimation";
+
 const About = () => {
-  return <div className="mt-20">About</div>;
+  useScrollAnimation();
+
+  return <AboutUs />;
 };
 
 export default About;
