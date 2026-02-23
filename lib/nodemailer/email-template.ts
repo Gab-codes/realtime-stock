@@ -1,4 +1,4 @@
-import { APP_NAME } from "../utils";
+import { APP_NAME, APP_URL } from "../utils";
 
 interface EmailTemplateOptions {
   title: string;
@@ -141,14 +141,25 @@ export const getEmailTemplate = ({
         [data-ogsc] .button {
             background-color: #6e59a5 !important;
         }
+        .mobile-header-padding {
+            padding: 15px 15px 8px 15px !important;
+        }
     </style>
 </head>
 <body>
     <div class="wrapper">
         <table class="main" cellpadding="0" cellspacing="0" role="presentation">
             <tr>
-                <td class="header">
-                    <a href="#">${APP_NAME}</a>
+                <td align="left" class="mobile-header-padding" style="padding: 40px 40px 20px 40px;">
+                <a href="${APP_URL}" style="text-decoration: none;">
+                    <span style="font-size: 24px; font-weight: 600; line-height: 1; vertical-align: middle; margin-left: 6px;">${APP_NAME}</span>
+                    <img 
+                    src="https://ik.imagekit.io/7ywthbsojd/logo.webp" 
+                    alt="${APP_NAME} Logo" 
+                    width="50" 
+                    style="vertical-align: middle; height: auto; display: inline-block;"
+                    >
+                </a>
                 </td>
             </tr>
             <tr>

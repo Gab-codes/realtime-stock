@@ -3,7 +3,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { testimonials } from "@/data/testimonials";
 
 const Testimonials = () => (
-  <div className="flex min-h-screen items-center justify-center px-6 py-12">
+  <section
+    id="testimonials"
+    className="flex min-h-screen items-center justify-center px-6 py-12"
+  >
     <div>
       <h2 className="text-center font-semibold text-5xl tracking-[-0.03em]">
         Real Users. Real Feedback.
@@ -57,7 +60,7 @@ const Testimonials = () => (
         </div>
       </div>
     </div>
-  </div>
+  </section>
 );
 
 export default Testimonials;
