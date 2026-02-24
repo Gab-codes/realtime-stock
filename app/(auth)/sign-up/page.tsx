@@ -34,7 +34,7 @@ const SignUp = () => {
       const referralCode = searchParams.get("ref") || undefined;
       const result = await signUpWithEmail({ ...data, referralCode });
       if (result.success) {
-        router.push("/email-verification");
+        router.push("/email-confirmation");
       } else {
         toast.error(result.error, {
           duration: 8000,
