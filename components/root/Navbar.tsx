@@ -40,9 +40,9 @@ const Navbar = () => {
         {/* Logo */}
         <div className="flex items-center">
           <h1 className="text-xl sm:text-2xl font-bold text-white inline-flex tracking-tight gap-0.5 md:gap-1 items-center">
+            <Image src="/logo.webp" alt="Logo" width={60} height={60} />
             {APP_NAME}
             {/* <Biohazard className="size-7.5 text-crypto-purple" /> */}
-            <Image src="/logo.webp" alt="Logo" width={60} height={60} />
           </h1>
         </div>
 

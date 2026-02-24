@@ -48,9 +48,9 @@ export default function Sidebar() {
         <Link href="/dashboard">
           <div className="flex items-center px-4 py-6">
             <h1 className="text-xl sm:text-[22px] font-bold text-white inline-flex tracking-tight gap-0.5 md:gap-1 items-center">
+              <Image src="/logo.webp" alt="Logo" width={60} height={60} />
               {APP_NAME}
               {/* <Biohazard className="size-7.5 text-crypto-purple" /> */}
-              <Image src="/logo.webp" alt="Logo" width={60} height={60} />
             </h1>
           </div>
         </Link>
