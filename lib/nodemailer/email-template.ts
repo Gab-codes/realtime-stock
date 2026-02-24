@@ -152,13 +152,13 @@ export const getEmailTemplate = ({
             <tr>
                 <td align="left" class="mobile-header-padding" style="padding: 40px 40px 20px 40px;">
                 <a href="${APP_URL}" style="text-decoration: none;">
-                    <span style="font-size: 24px; font-weight: 600; line-height: 1; vertical-align: middle; margin-left: 6px;">${APP_NAME}</span>
                     <img 
                     src="https://ik.imagekit.io/7ywthbsojd/logo.webp" 
                     alt="${APP_NAME} Logo" 
                     width="50" 
                     style="vertical-align: middle; height: auto; display: inline-block;"
                     >
+                    <span style="font-size: 24px; font-weight: 600; line-height: 1; vertical-align: middle; margin-left: 3px;">${APP_NAME}</span>
                 </a>
                 </td>
             </tr>
