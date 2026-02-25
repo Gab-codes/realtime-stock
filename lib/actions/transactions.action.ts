@@ -14,42 +14,91 @@ export const getUserTransactions = async () => {
 
     const userId = session.user.id;
 
-    const transactions = await Transaction.find({ userId })
-      .sort({ createdAt: -1 })
-      .lean();
+    // Run both queries in parallel for better performance
+    const [transactions, statsResult] = await Promise.all([
+      Transaction.find({ userId }).sort({ createdAt: -1 }).lean(),
 
-    //
-    let totalDeposits = 0;
-    let totalWithdrawals = 0;
-    let pendingDeposits = 0;
-    let pendingWithdrawals = 0;
+      Transaction.aggregate([
+        { $match: { userId } },
+        {
+          $group: {
+            _id: null,
+            totalDeposits: {
+              $sum: {
+                $cond: [
+                  {
+                    $and: [
+                      { $eq: ["$type", "deposit"] },
+                      { $eq: ["$status", "completed"] },
+                    ],
+                  },
+                  "$amount",
+                  0,
+                ],
+              },
+            },
+            totalWithdrawals: {
+              $sum: {
+                $cond: [
+                  {
+                    $and: [
+                      { $eq: ["$type", "withdrawal"] },
+                      { $eq: ["$status", "completed"] },
+                    ],
+                  },
+                  "$amount",
+                  0,
+                ],
+              },
+            },
+            pendingDeposits: {
+              $sum: {
+                $cond: [
+                  {
+                    $and: [
+                      { $eq: ["$type", "deposit"] },
+                      { $eq: ["$status", "pending"] },
+                    ],
+                  },
+                  "$amount",
+                  0,
+                ],
+              },
+            },
+            pendingWithdrawals: {
+              $sum: {
+                $cond: [
+                  {
+                    $and: [
+                      { $eq: ["$type", "withdrawal"] },
+                      { $eq: ["$status", "pending"] },
+                    ],
+                  },
+                  "$amount",
+                  0,
+                ],
+              },
+            },
+          },
+        },
+      ]),
+    ]);
 
-    for (const t of transactions) {
-      if (t.type === "deposit" && t.status === "completed") {
-        totalDeposits += t.amount;
-      }
-
-      if (t.type === "withdrawal" && t.status === "completed") {
-        totalWithdrawals += t.amount;
-      }
-
-      if (t.type === "deposit" && t.status === "pending") {
-        pendingDeposits += t.amount;
-      }
-
-      if (t.type === "withdrawal" && t.status === "pending") {
-        pendingWithdrawals += t.amount;
-      }
-    }
+    const stats = statsResult[0] || {
+      totalDeposits: 0,
+      totalWithdrawals: 0,
+      pendingDeposits: 0,
+      pendingWithdrawals: 0,
+    };
 
     return {
       success: true,
       data: JSON.parse(JSON.stringify(transactions)),
       stats: {
-        totalDeposits,
-        totalWithdrawals,
-        pendingDeposits,
-        pendingWithdrawals,
+        totalDeposits: stats.totalDeposits || 0,
+        totalWithdrawals: stats.totalWithdrawals || 0,
+        pendingDeposits: stats.pendingDeposits || 0,
+        pendingWithdrawals: stats.pendingWithdrawals || 0,
       },
     };
   } catch (error) {

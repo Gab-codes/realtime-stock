@@ -24,11 +24,14 @@ const TransactionSchema = new Schema<ITransaction>(
     txHash: String,
     network: String,
     investmentId: String,
-    // Optional description for transactions
     description: String,
   },
-  { timestamps: true }
+  { timestamps: true },
 );
+
+// (IMPORTANT FOR SCALING)
+TransactionSchema.index({ userId: 1, createdAt: -1 });
+TransactionSchema.index({ investmentId: 1 });
 
 export default models.Transaction ||
   model<ITransaction>("Transaction", TransactionSchema);
